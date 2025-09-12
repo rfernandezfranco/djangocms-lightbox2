@@ -10,6 +10,12 @@ Esta implementación se inspira en djangocms-light-gallery y proporciona un plug
 - Plugin "Lightbox2 Image" para cada elemento de la galería.
 - Assets locales (CSS/JS/imagenes) servidos desde `static/` del proyecto.
 - Integración con `sekizai` para inyectar CSS/JS sin duplicados.
+- Layouts de galería: Grid, Masonry y Justified.
+- Filmstrip (cinta de miniaturas) dentro del lightbox, sincronizada con la imagen activa.
+- Deep-linking: abrir una imagen específica vía `#lb=<grupo>:<indice>` y actualizar la URL al navegar.
+- Rendimiento: miniaturas con `loading="lazy"`, `decoding="async"`, `srcset/sizes` básicos.
+- Experiencia móvil: gestos táctiles (swipe izquierda/derecha) en el overlay del lightbox.
+- Accesibilidad mejorada: `role=dialog`, `aria-modal`, live region, focus trap y labels.
 
 ## Requisitos y compatibilidad
 
@@ -65,6 +71,41 @@ Esta implementación se inspira en djangocms-light-gallery y proporciona un plug
 - Dentro de la galería, añade uno o más plugins "Lightbox2 Image" y selecciona imágenes de `django-filer`.
 - Opcionalmente, usa una sola imagen fuera de una galería; seguirá funcionando, creando su propio grupo de lightbox por instancia.
 
+### Campos del plugin y layouts
+
+- Galería:
+  - `layout`: selecciona Grid, Masonry o Justified.
+  - `columns_desktop/tablet/mobile` (Grid/Masonry): número de columnas por breakpoint.
+  - `gutter`: separación entre elementos (px).
+  - `show_captions`: muestra el caption debajo de cada miniatura.
+  - `justified_row_height` y `justified_tolerance` (Justified): alto objetivo por fila y tolerancia de ajuste.
+  - `limit_items`: limita la cantidad de imágenes renderizadas.
+  - Opciones de Lightbox2 por galería: `album_label`, `always_show_nav_on_touch_devices`, `fade_duration`, `fit_images_in_viewport`, `image_fade_duration`, `position_from_top`, `resize_duration`, `show_image_number_label`, `wrap_around`, `disable_scrolling`, `max_width`, `max_height`.
+
+- Imagen:
+  - `caption` y `alt_text` para título/alternativo.
+  - `thumbnail_width` y `thumbnail_height` para generar miniaturas (según layout se usan tamaños derivados por alto o por ancho cuando aplica).
+
+### Deep-linking y contador
+
+- Puedes enlazar directamente a una imagen con `#lb=<grupo>:<indice>` (1-based), por ejemplo: `#lb=gallery-42:3`.
+- Al navegar en el lightbox, la URL se actualiza manteniendo el estado actual.
+- El contador en el overlay muestra "i de N" sincronizado con la navegación.
+
+### Filmstrip (cinta de miniaturas)
+
+- Al abrir el lightbox, se muestra una tira de miniaturas debajo del área principal.
+- Clic en una miniatura salta a esa imagen. La miniatura activa se resalta y se centra automáticamente.
+
+### Gestos táctiles
+
+- En dispositivos táctiles, desliza a izquierda/derecha para navegar entre imágenes dentro del overlay.
+
+### Rendimiento
+
+- Las miniaturas usan `loading="lazy"` y `decoding="async"`.
+- Se genera un `srcset` básico (480/960/1440w) y un atributo `sizes` acorde al layout para mejorar nitidez y tiempos de carga.
+
 ## Assets locales
 
 - Los templates incluyen los assets desde `static/djangocms_lightbox2/lightbox2/`.
@@ -79,6 +120,10 @@ Rutas esperadas:
 
 - Si necesitas opciones avanzadas de configuración de Lightbox2, adáptalas en `templates/djangocms_lightbox2/includes/assets.html` o añade un fichero JS de inicialización en `static/djangocms_lightbox2/js/`.
 - Si actualizas a una versión nueva de Lightbox2, recuerda reemplazar los archivos en `static/djangocms_lightbox2/lightbox2/` y mantener la correspondencia con la versión de Lightbox2 indicada en este paquete.
+
+Actualización desde versiones previas:
+- Ejecuta migraciones para incorporar los campos de layout: `python manage.py migrate` (incluye `0003_layout_fields`).
+- Vuelve a ejecutar `collectstatic` para incluir los nuevos assets de galería y filmstrip.
 
 ## Configuración
 

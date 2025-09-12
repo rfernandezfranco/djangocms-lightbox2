@@ -28,6 +28,10 @@ msgstr "Vignette"
 msgid "Opciones de Lightbox2"
 msgstr "Options de Lightbox2"
 
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Layout"
+msgstr "Disposition"
+
 #: djangocms_lightbox2/models.py
 msgid "Nombre de grupo para 'data-lightbox'. Si está vacío, se usará 'gallery-<id>'."
 msgstr "Nom de groupe pour 'data-lightbox'. S'il est vide, 'gallery-<id>' sera utilisé."
@@ -80,3 +84,51 @@ msgstr "Largeur maximale de l'image (px). Vide utilise la valeur par dfaut de L
 msgid "Altura máxima de la imagen (px). Vacío usa el defecto de Lightbox2."
 msgstr "Hauteur maximale de l'image (px). Vide utilise la valeur par dfaut de Lightbox2."
 
+# Layout options and related help_texts
+#: djangocms_lightbox2/models.py
+msgid "Grid"
+msgstr "Grille"
+
+#: djangocms_lightbox2/models.py
+msgid "Masonry"
+msgstr "Masonry"
+
+#: djangocms_lightbox2/models.py
+msgid "Justified"
+msgstr "Justifie"
+
+#: djangocms_lightbox2/models.py
+msgid "Disposición de la galería en la página."
+msgstr "Disposition de la galerie sur la page."
+
+#: djangocms_lightbox2/models.py
+msgid "Columnas en desktop (Grid)."
+msgstr "Colonnes sur desktop (Grille)."
+
+#: djangocms_lightbox2/models.py
+msgid "Columnas en tablet (Grid)."
+msgstr "Colonnes sur tablette (Grille)."
+
+#: djangocms_lightbox2/models.py
+msgid "Columnas en móvil (Grid)."
+msgstr "Colonnes sur mobile (Grille)."
+
+#: djangocms_lightbox2/models.py
+msgid "Espacio entre elementos (px)."
+msgstr "Espacement entre elments (px)."
+
+#: djangocms_lightbox2/models.py
+msgid "Mostrar captions bajo miniaturas."
+msgstr "Afficher les legendes sous les vignettes."
+
+#: djangocms_lightbox2/models.py
+msgid "Altura objetivo por fila (Justified, px)."
+msgstr "Hauteur de ligne cible (Justified, px)."
+
+#: djangocms_lightbox2/models.py
+msgid "Tolerancia de ajuste de fila (0-1)."
+msgstr "Tolrance dajustement de ligne (01)."
+
+#: djangocms_lightbox2/models.py
+msgid "Límite de imágenes a mostrar (opcional)."
+msgstr "Limite d’images  afficher (optionnel)."
