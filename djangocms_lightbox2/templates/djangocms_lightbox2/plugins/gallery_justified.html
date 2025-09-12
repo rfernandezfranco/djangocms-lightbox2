@@ -1,0 +1,11 @@
+{% load static %}
+<div class="dclb2-justified" data-row-height="{{ gallery_row_height }}" data-tolerance="{{ gallery_tolerance }}" style="--dclb2-gutter: {{ gallery_gutter }}px;">
+  {% for it in items %}
+    <a class="dclb2-item" href="{{ it.href }}" data-lightbox="{{ group_name }}"{% if it.caption %} data-title="{{ it.caption }}"{% endif %}>
+      <img src="{{ it.thumb }}"{% if it.srcset %} srcset="{{ it.srcset }}" sizes="{{ sizes_attr }}"{% endif %} loading="lazy" decoding="async" alt="{{ it.alt }}">
+      {% if gallery_show_captions and it.caption %}
+        <span class="dclb2-caption">{{ it.caption }}</span>
+      {% endif %}
+    </a>
+  {% endfor %}
+</div>

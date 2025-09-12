@@ -1,0 +1,5 @@
+/* Justified layout base; rows will be sized via JS */
+.dclb2-justified { position: relative; }
+.dclb2-justified .dclb2-row { display: flex; gap: var(--dclb2-gutter); margin-bottom: var(--dclb2-gutter); }
+.dclb2-justified .dclb2-item { display: block; }
+.dclb2-justified .dclb2-item img { height: 100%; width: auto; display: block; }

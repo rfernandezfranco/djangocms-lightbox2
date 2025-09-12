@@ -1,0 +1,30 @@
+/* Filmstrip styles for Lightbox2 overlay */
+#lightbox .dclb2-filmstrip { 
+  padding: 8px 12px; 
+  border-top: 1px solid rgba(255,255,255,0.15); 
+  background: rgba(0,0,0,0.85);
+  -webkit-overflow-scrolling: touch;
+}
+#lightbox .dclb2-filmstrip .dclb2-strip { 
+  display: flex; 
+  gap: 8px; 
+  overflow-x: auto; 
+  max-width: 100%; 
+  padding-bottom: 4px;
+}
+#lightbox .dclb2-filmstrip .dclb2-thumb { 
+  border: 2px solid transparent; 
+  padding: 0; 
+  background: none; 
+  cursor: pointer; 
+  flex: 0 0 auto; 
+}
+#lightbox .dclb2-filmstrip .dclb2-thumb img { 
+  height: 56px; 
+  width: auto; 
+  display: block; 
+}
+#lightbox .dclb2-filmstrip .dclb2-thumb.active { 
+  border-color: #4da3ff; 
+}
+

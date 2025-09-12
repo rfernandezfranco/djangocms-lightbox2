@@ -1,0 +1,35 @@
+/* Base styles shared */
+.dclb2-gallery { width: 100%; }
+.dclb2-gallery .dclb2-item { display: block; color: inherit; text-decoration: none; }
+.dclb2-gallery .dclb2-item img { display: block; width: 100%; height: auto; }
+.dclb2-gallery .dclb2-caption { display: block; font-size: 0.9rem; line-height: 1.3; padding-top: 4px; }
+
+/* Grid layout */
+.dclb2-grid {
+  --dclb2-gutter: 8px;
+  --dclb2-cols-desktop: 4;
+  --dclb2-cols-tablet: 2;
+  --dclb2-cols-mobile: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--dclb2-cols-desktop), 1fr);
+  gap: var(--dclb2-gutter);
+}
+@media (max-width: 1024px) {
+  .dclb2-grid { grid-template-columns: repeat(var(--dclb2-cols-tablet), 1fr); }
+}
+@media (max-width: 640px) {
+  .dclb2-grid { grid-template-columns: repeat(var(--dclb2-cols-mobile), 1fr); }
+}
+
+/* Masonry layout (CSS columns) */
+.dclb2-masonry {
+  column-gap: var(--dclb2-gutter);
+  columns: 4; /* overridden via media queries below if needed */
+}
+.dclb2-masonry .dclb2-item { break-inside: avoid; -webkit-column-break-inside: avoid; display: inline-block; width: 100%; margin: 0 0 var(--dclb2-gutter); }
+
+/* We approximate columns count using the grid vars */
+@media (min-width: 1025px) { .dclb2-masonry { columns: var(--dclb2-cols-desktop, 4); } }
+@media (max-width: 1024px) { .dclb2-masonry { columns: var(--dclb2-cols-tablet, 2); } }
+@media (max-width: 640px)  { .dclb2-masonry { columns: var(--dclb2-cols-mobile, 1); } }
+

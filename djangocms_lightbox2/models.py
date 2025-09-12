@@ -66,6 +66,40 @@ class Lightbox2Gallery(CMSPlugin):
         help_text=_("Altura máxima de la imagen (px). Vacío usa el defecto de Lightbox2."),
     )
 
+    # Layout options
+    LAYOUT_GRID = "grid"
+    LAYOUT_MASONRY = "masonry"
+    LAYOUT_JUSTIFIED = "justified"
+    LAYOUT_CHOICES = (
+        (LAYOUT_GRID, _("Grid")),
+        (LAYOUT_MASONRY, _("Masonry")),
+        (LAYOUT_JUSTIFIED, _("Justified")),
+    )
+    layout = models.CharField(
+        max_length=12,
+        choices=LAYOUT_CHOICES,
+        default=LAYOUT_GRID,
+        help_text=_("Disposición de la galería en la página."),
+    )
+    columns_desktop = models.PositiveIntegerField(default=4, help_text=_("Columnas en desktop (Grid)."))
+    columns_tablet = models.PositiveIntegerField(default=2, help_text=_("Columnas en tablet (Grid)."))
+    columns_mobile = models.PositiveIntegerField(default=1, help_text=_("Columnas en móvil (Grid)."))
+    gutter = models.PositiveIntegerField(default=8, help_text=_("Espacio entre elementos (px)."))
+    show_captions = models.BooleanField(default=False, help_text=_("Mostrar captions bajo miniaturas."))
+    justified_row_height = models.PositiveIntegerField(
+        default=220,
+        help_text=_("Altura objetivo por fila (Justified, px)."),
+    )
+    justified_tolerance = models.FloatField(
+        default=0.25,
+        help_text=_("Tolerancia de ajuste de fila (0-1)."),
+    )
+    limit_items = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("Límite de imágenes a mostrar (opcional)."),
+    )
+
     def get_group(self):
         return self.group_name or f"gallery-{self.pk or 'new'}"
 
@@ -95,6 +129,36 @@ class Lightbox2Image(CMSPlugin):
         options = {
             "size": (self.thumbnail_width, self.thumbnail_height),
             "crop": True,
+        }
+        try:
+            thumbnailer = get_thumbnailer(self.image)
+            thumb = thumbnailer.get_thumbnail(options)
+            return thumb.url
+        except Exception:
+            return self.image.url
+
+    def get_scaled_by_height_url(self, target_height):
+        if not self.image:
+            return ""
+        options = {
+            "size": (9999, int(target_height or self.thumbnail_height)),
+            "crop": False,
+            "upscale": False,
+        }
+        try:
+            thumbnailer = get_thumbnailer(self.image)
+            thumb = thumbnailer.get_thumbnail(options)
+            return thumb.url
+        except Exception:
+            return self.image.url
+
+    def get_scaled_by_width_url(self, target_width):
+        if not self.image:
+            return ""
+        options = {
+            "size": (int(target_width or self.thumbnail_width), 9999),
+            "crop": False,
+            "upscale": False,
         }
         try:
             thumbnailer = get_thumbnailer(self.image)
