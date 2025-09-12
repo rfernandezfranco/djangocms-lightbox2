@@ -1,0 +1,82 @@
+# Portuguese translations for djangocms-lightbox2
+msgid ""
+msgstr ""
+"Project-Id-Version: djangocms-lightbox2 2.11.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-12 00:00+0000\n"
+"PO-Revision-Date: 2025-09-12 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: pt\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Lightbox2 Gallery"
+msgstr "Galeria Lightbox2"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Lightbox2 Image"
+msgstr "Imagem Lightbox2"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Opciones de Lightbox2"
+msgstr "Opções do Lightbox2"
+
+#: djangocms_lightbox2/models.py
+msgid "Nombre de grupo para 'data-lightbox'. Si está vacío, se usará 'gallery-<id>'."
+msgstr "Nome do grupo para 'data-lightbox'. Se vazio, será usado 'gallery-<id>'."
+
+#: djangocms_lightbox2/models.py
+msgid "Plantilla de etiqueta del contador. Ej: 'Imagen %1 de %2'. Dejar vacío para usar el valor por defecto."
+msgstr "Modelo do rótulo do contador. Ex: 'Imagem %1 de %2'. Deixe em branco para o padrão."
+
+#: djangocms_lightbox2/models.py
+msgid "Mostrar navegación siempre en dispositivos táctiles."
+msgstr "Mostrar navegação sempre em dispositivos touch."
+
+#: djangocms_lightbox2/models.py
+msgid "Duración del fundido de la superposición (ms)."
+msgstr "Duração do desvanecimento da sobreposição (ms)."
+
+#: djangocms_lightbox2/models.py
+msgid "Ajustar imágenes al viewport."
+msgstr "Ajustar imagens ao viewport."
+
+#: djangocms_lightbox2/models.py
+msgid "Duración del fundido de la imagen (ms)."
+msgstr "Duração do desvanecimento da imagem (ms)."
+
+#: djangocms_lightbox2/models.py
+msgid "Separación desde la parte superior (px)."
+msgstr "Distância a partir do topo (px)."
+
+#: djangocms_lightbox2/models.py
+msgid "Duración del cambio de tamaño (ms)."
+msgstr "Duração do redimensionamento (ms)."
+
+#: djangocms_lightbox2/models.py
+msgid "Mostrar etiqueta de número de imagen."
+msgstr "Mostrar rótulo do número da imagem."
+
+#: djangocms_lightbox2/models.py
+msgid "Permitir navegación circular (wrap around)."
+msgstr "Permitir navegação circular (wrap around)."
+
+#: djangocms_lightbox2/models.py
+msgid "Deshabilitar scroll del fondo cuando está abierto."
+msgstr "Desativar rolagem do fundo quando aberto."
+
+#: djangocms_lightbox2/models.py
+msgid "Ancho máximo de la imagen (px). Vacío usa el defecto de Lightbox2."
+msgstr "Largura máxima da imagem (px). Em branco usa o padrão do Lightbox2."
+
+#: djangocms_lightbox2/models.py
+msgid "Altura máxima de la imagen (px). Vacío usa el defecto de Lightbox2."
+msgstr "Altura máxima da imagem (px). Em branco usa o padrão do Lightbox2."
+

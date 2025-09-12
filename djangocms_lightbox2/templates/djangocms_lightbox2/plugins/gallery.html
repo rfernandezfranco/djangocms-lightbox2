@@ -1,0 +1,14 @@
+{% load cms_tags sekizai_tags static %}
+{% include "djangocms_lightbox2/includes/assets.html" %}
+<div class="dclb2-gallery" id="lb-gallery-{{ instance.pk }}">
+  {% for plugin in instance.child_plugin_instances %}
+    {% render_plugin plugin %}
+  {% endfor %}
+  {% if not instance.child_plugin_instances %}
+    <!-- Sin elementos. Añade plugins 'Lightbox2 Image' como hijos. -->
+  {% endif %}
+  <noscript>Habilita JavaScript para usar Lightbox2.</noscript>
+  <!-- Assets locales esperados en static/djangocms_lightbox2/lightbox2/ -->
+  <!-- {{ instance.get_group }} -->
+</div>
+

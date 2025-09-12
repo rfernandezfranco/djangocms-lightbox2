@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: djangocms-lightbox2 2.11.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-12 00:00+0000\n"
+"PO-Revision-Date: 2025-09-12 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: es\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Lightbox2 Gallery"
+msgstr "Galería Lightbox2"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Lightbox2 Image"
+msgstr "Imagen Lightbox2"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Opciones de Lightbox2"
+msgstr "Opciones de Lightbox2"
+
+#: djangocms_lightbox2/models.py
+msgid "Nombre de grupo para 'data-lightbox'. Si está vacío, se usará 'gallery-<id>'."
+msgstr "Nombre de grupo para 'data-lightbox'. Si está vacío, se usará 'gallery-<id>'."
+
+#: djangocms_lightbox2/models.py
+msgid "Plantilla de etiqueta del contador. Ej: 'Imagen %1 de %2'. Dejar vacío para usar el valor por defecto."
+msgstr "Plantilla de etiqueta del contador. Ej: 'Imagen %1 de %2'. Dejar vacío para usar el valor por defecto."
+
+#: djangocms_lightbox2/models.py
+msgid "Mostrar navegación siempre en dispositivos táctiles."
+msgstr "Mostrar navegación siempre en dispositivos táctiles."
+
+#: djangocms_lightbox2/models.py
+msgid "Duración del fundido de la superposición (ms)."
+msgstr "Duración del fundido de la superposición (ms)."
+
+#: djangocms_lightbox2/models.py
+msgid "Ajustar imágenes al viewport."
+msgstr "Ajustar imágenes al viewport."
+
+#: djangocms_lightbox2/models.py
+msgid "Duración del fundido de la imagen (ms)."
+msgstr "Duración del fundido de la imagen (ms)."
+
+#: djangocms_lightbox2/models.py
+msgid "Separación desde la parte superior (px)."
+msgstr "Separación desde la parte superior (px)."
+
+#: djangocms_lightbox2/models.py
+msgid "Duración del cambio de tamaño (ms)."
+msgstr "Duración del cambio de tamaño (ms)."
+
+#: djangocms_lightbox2/models.py
+msgid "Mostrar etiqueta de número de imagen."
+msgstr "Mostrar etiqueta de número de imagen."
+
+#: djangocms_lightbox2/models.py
+msgid "Permitir navegación circular (wrap around)."
+msgstr "Permitir navegación circular (wrap around)."
+
+#: djangocms_lightbox2/models.py
+msgid "Deshabilitar scroll del fondo cuando está abierto."
+msgstr "Deshabilitar scroll del fondo cuando está abierto."
+
+#: djangocms_lightbox2/models.py
+msgid "Ancho máximo de la imagen (px). Vacío usa el defecto de Lightbox2."
+msgstr "Ancho máximo de la imagen (px). Vacío usa el defecto de Lightbox2."
+
+#: djangocms_lightbox2/models.py
+msgid "Altura máxima de la imagen (px). Vacío usa el defecto de Lightbox2."
+msgstr "Altura máxima de la imagen (px). Vacío usa el defecto de Lightbox2."

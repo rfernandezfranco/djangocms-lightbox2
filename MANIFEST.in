@@ -1,0 +1,10 @@
+include README.md
+recursive-include djangocms_lightbox2/templates *
+recursive-include djangocms_lightbox2/static *
+recursive-include djangocms_lightbox2/migrations *.py
+recursive-include djangocms_lightbox2/locale *.po *.mo
+include djangocms_lightbox2/__init__.py
+include djangocms_lightbox2/apps.py
+include djangocms_lightbox2/conf.py
+include djangocms_lightbox2/models.py
+include djangocms_lightbox2/cms_plugins.py

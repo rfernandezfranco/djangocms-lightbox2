@@ -1,0 +1,34 @@
+{% load sekizai_tags static %}
+{% addtoblock "css" %}
+<link rel="stylesheet" href="{% static 'djangocms_lightbox2/lightbox2/css/lightbox.min.css' %}">
+{% endaddtoblock %}
+{% addtoblock "js" %}
+{% if use_bundled_jquery %}
+  <script src="{% static 'djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js' %}"></script>
+  {% if lb_options_json %}
+  <script>
+    try { window.lightbox && window.lightbox.option({{ lb_options_json|safe }}); } catch (e) { /* noop */ }
+  </script>
+  {% endif %}
+{% else %}
+  <script>
+    (function() {
+      if (window.jQuery) {
+        var s = document.createElement('script');
+        s.src = "{% static 'djangocms_lightbox2/lightbox2/js/lightbox.min.js' %}";
+        s.async = true;
+        {% if lb_options_json %}
+        s.onload = function() {
+          try { window.lightbox && window.lightbox.option({{ lb_options_json|safe }}); } catch (e) { /* noop */ }
+        };
+        {% endif %}
+        document.head.appendChild(s);
+      } else {
+        if (window.console && console.error) {
+          console.error('djangocms-lightbox2: jQuery no está cargado y use_bundled_jquery=False. Lightbox2 no se inicializará.');
+        }
+      }
+    })();
+  </script>
+{% endif %}
+{% endaddtoblock %}
