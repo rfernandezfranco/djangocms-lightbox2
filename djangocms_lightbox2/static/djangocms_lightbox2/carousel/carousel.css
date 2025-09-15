@@ -34,7 +34,14 @@
 .dclb2-item img { width: 100%; height: auto; display: block; }
 
 /* Overlay controls (fullscreen + download) */
-.dclb2-controls { position: absolute; top: 8px; right: 8px; display: flex; gap: 8px; z-index: 2; }
+.dclb2-controls {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  right: 15px;
+  bottom: 15px;
+}
 .dclb2-controls .dclb2-fullscreen,
 .dclb2-controls .dclb2-download { border: none; color: #0085ff; text-decoration: none; }
 .dclb2-controls .dclb2-fullscreen { background-image: url('../carousel/icons/fullscreen.svg'); }
