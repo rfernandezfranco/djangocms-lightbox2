@@ -132,12 +132,50 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
 
 
 @plugin_pool.register_plugin
+class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
+    """Carousel variant that uses the same items as the gallery."""
+
+    name = _("Lightbox2 Carousel")
+    render_template = "djangocms_lightbox2/plugins/gallery_carousel.html"
+    allow_children = True
+    child_classes = ["Lightbox2ImagePlugin"]
+
+    fieldsets = (
+        (None, {"fields": ("title", "group_name")}),
+        (
+            _("Opciones de Lightbox2"),
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "album_label",
+                    "always_show_nav_on_touch_devices",
+                    "fade_duration",
+                    "fit_images_in_viewport",
+                    "image_fade_duration",
+                    "position_from_top",
+                    "resize_duration",
+                    "show_image_number_label",
+                    "wrap_around",
+                    "disable_scrolling",
+                    "max_width",
+                    "max_height",
+                ),
+            },
+        ),
+    )
+
+    def render(self, context, instance, placeholder):
+        """Reuse the gallery rendering to build items list and options."""
+        return super().render(context, instance, placeholder)
+
+
+@plugin_pool.register_plugin
 class Lightbox2ImagePlugin(CMSPluginBase):
     model = Lightbox2Image
     name = _("Lightbox2 Image")
     render_template = "djangocms_lightbox2/plugins/image.html"
     require_parent = False
-    parent_classes = ["Lightbox2GalleryPlugin"]
+    parent_classes = ["Lightbox2GalleryPlugin", "Lightbox2CarouselPlugin"]
 
     fieldsets = (
         (None, {"fields": ("image", "caption", "alt_text")}),

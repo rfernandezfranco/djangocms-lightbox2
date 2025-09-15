@@ -1,0 +1,5 @@
+.dclb2-carousel-main a { display: none; }
+.dclb2-carousel-main a.active { display: block; }
+.dclb2-carousel-thumbs { display: flex; gap: 4px; flex-wrap: wrap; }
+.dclb2-carousel-thumbs .dclb2-thumb.active { outline: 2px solid #000; }
+

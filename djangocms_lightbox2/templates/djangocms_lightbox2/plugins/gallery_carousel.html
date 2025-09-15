@@ -1,0 +1,35 @@
+{% load cms_tags sekizai_tags static %}
+{% include "djangocms_lightbox2/includes/assets.html" %}
+
+{% addtoblock "css" %}
+  <link rel="stylesheet" href="{% static 'djangocms_lightbox2/carousel/carousel.css' %}">
+{% endaddtoblock %}
+
+<div class="dclb2-carousel" id="lb-carousel-{{ instance.pk }}">
+  {% if items %}
+    <div class="dclb2-carousel-main">
+      {% for item in items %}
+        <a href="{{ item.href }}" data-lightbox="{{ group_name }}"{% if item.caption %} data-title="{{ item.caption }}"{% endif %}
+           class="dclb2-item{% if forloop.first %} active{% endif %}">
+          <img src="{{ item.href }}" alt="{{ item.alt }}">
+        </a>
+      {% endfor %}
+      <button class="dclb2-prev" type="button" aria-label="Anterior">&#10094;</button>
+      <button class="dclb2-next" type="button" aria-label="Siguiente">&#10095;</button>
+    </div>
+    <div class="dclb2-carousel-thumbs">
+      {% for item in items %}
+        <button class="dclb2-thumb{% if forloop.first %} active{% endif %}" type="button" data-index="{{ forloop.counter0 }}">
+          <img src="{{ item.thumb }}" alt="{{ item.alt }}">
+        </button>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Sin elementos. Añade plugins 'Lightbox2 Image' como hijos. -->
+  {% endif %}
+  <noscript>Habilita JavaScript para usar Lightbox2.</noscript>
+</div>
+
+{% addtoblock "js" %}
+  <script src="{% static 'djangocms_lightbox2/carousel/carousel.js' %}"></script>
+{% endaddtoblock %}
