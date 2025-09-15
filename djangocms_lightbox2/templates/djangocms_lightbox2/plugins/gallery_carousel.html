@@ -14,14 +14,14 @@
             <img src="{{ item.href }}" alt="{{ item.alt }}">
           </a>
           <div class="dclb2-controls">
-            <button class="dclb2-fullscreen" type="button" aria-label="{% trans 'Open fullscreen' %}"></button>
-            <a class="dclb2-download" href="{{ item.href }}" download aria-label="{% trans 'Download image' %}"></a>
+            <button class="dclb2-btn dclb2-fullscreen" type="button" aria-label="{% trans 'Open fullscreen' %}"></button>
+            <a class="dclb2-btn dclb2-download" href="{{ item.href }}" download aria-label="{% trans 'Download image' %}"></a>
           </div>
         </div>
       {% endfor %}
     </div>
     <div class="dclb2-carousel-thumbs" aria-label="Thumbnails">
-      <button class="dclb2-thumbs-prev" type="button" aria-label="{% trans 'Previous' %}">&#10094;</button>
+      <button class="dclb2-btn dclb2-thumbs-prev" type="button" aria-label="{% trans 'Previous' %}"></button>
       <div class="dclb2-thumbs-strip" role="tablist">
         {% for item in items %}
           <button class="dclb2-thumb{% if forloop.first %} active{% endif %}"
@@ -34,7 +34,7 @@
           </button>
         {% endfor %}
       </div>
-      <button class="dclb2-thumbs-next" type="button" aria-label="{% trans 'Next' %}">&#10095;</button>
+      <button class="dclb2-btn dclb2-thumbs-next" type="button" aria-label="{% trans 'Next' %}"></button>
     </div>
   {% else %}
     <!-- No items. Add 'Lightbox2 Image' child plugins. -->

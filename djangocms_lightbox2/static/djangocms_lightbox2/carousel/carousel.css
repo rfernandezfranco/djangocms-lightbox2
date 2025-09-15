@@ -11,6 +11,23 @@
   --dclb2-thumb-gap: 8px;               /* gap between thumbs */
   --dclb2-thumbs-nav-size: 36px;        /* size of thumbs prev/next buttons */
 }
+
+/* Common button style for carousel controls */
+.dclb2-btn {
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  max-width: 44px;
+  height: 44px;
+  background-color: #fff;
+  border: 1px solid #0085ff;
+  border-radius: 5px;
+  background-size: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 .dclb2-carousel-main { position: relative; }
 .dclb2-slide { display: none; position: relative; }
 .dclb2-slide.is-active { display: block; }
@@ -20,7 +37,7 @@
 /* Overlay controls (fullscreen + download) */
 .dclb2-controls { position: absolute; top: 8px; right: 8px; display: flex; gap: 8px; z-index: 2; }
 .dclb2-controls .dclb2-fullscreen,
-.dclb2-controls .dclb2-download { width: var(--dclb2-control-size); height: var(--dclb2-control-size); border: none; background-color: var(--dclb2-control-bg); color: #fff; border-radius: var(--dclb2-control-radius); cursor: pointer; display: inline-block; text-decoration: none; background-repeat: no-repeat; background-position: center; background-size: var(--dclb2-icon-size) var(--dclb2-icon-size); }
+.dclb2-controls .dclb2-download { border: none; color: #0085ff; text-decoration: none; }
 .dclb2-controls .dclb2-fullscreen { background-image: url('../carousel/icons/fullscreen.svg'); }
 .dclb2-controls .dclb2-download { background-image: url('../carousel/icons/download.svg'); }
 
@@ -33,7 +50,7 @@
 /* Thumbnails row */
 .dclb2-carousel-thumbs { display: flex; gap: var(--dclb2-thumb-gap); align-items: center; margin-top: 8px; }
 .dclb2-thumbs-prev,
-.dclb2-thumbs-next { border: none; background-color: var(--dclb2-control-bg); color: #fff; width: var(--dclb2-thumbs-nav-size); height: var(--dclb2-thumbs-nav-size); border-radius: calc(var(--dclb2-thumbs-nav-size) / 2); cursor: pointer; display: inline-block; background-repeat: no-repeat; background-position: center; background-size: 16px 16px; }
+.dclb2-thumbs-next { border: none; color: #0085ff; background-color: #fff; }
 .dclb2-thumbs-prev { background-image: url('../carousel/icons/chevron-left.svg'); }
 .dclb2-thumbs-next { background-image: url('../carousel/icons/chevron-right.svg'); }
 .dclb2-thumbs-strip { display: flex; gap: var(--dclb2-thumb-gap); overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
