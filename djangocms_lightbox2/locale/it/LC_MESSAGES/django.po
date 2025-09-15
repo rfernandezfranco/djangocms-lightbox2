@@ -132,3 +132,23 @@ msgstr "Tolleranza di adattamento riga (0–1)."
 #: djangocms_lightbox2/models.py
 msgid "Límite de imágenes a mostrar (opcional)."
 msgstr "Limite di immagini da mostrare (opzionale)."
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Open fullscreen"
+msgstr "Apri a schermo intero"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Download image"
+msgstr "Scarica immagine"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Previous"
+msgstr "Precedente"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Next"
+msgstr "Successivo"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Enable JavaScript to use Lightbox2."
+msgstr "Abilita JavaScript per usare Lightbox2."

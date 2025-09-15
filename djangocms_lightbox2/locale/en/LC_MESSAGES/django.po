@@ -132,3 +132,23 @@ msgstr "Row adjustment tolerance (0–1)."
 #: djangocms_lightbox2/models.py
 msgid "Límite de imágenes a mostrar (opcional)."
 msgstr "Limit of images to display (optional)."
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Open fullscreen"
+msgstr "Open fullscreen"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Download image"
+msgstr "Download image"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Previous"
+msgstr "Previous"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Next"
+msgstr "Next"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Enable JavaScript to use Lightbox2."
+msgstr "Enable JavaScript to use Lightbox2."

@@ -1,5 +1,42 @@
-.dclb2-carousel-main a { display: none; }
-.dclb2-carousel-main a.active { display: block; }
-.dclb2-carousel-thumbs { display: flex; gap: 4px; flex-wrap: wrap; }
-.dclb2-carousel-thumbs .dclb2-thumb.active { outline: 2px solid #000; }
+.dclb2-carousel {
+  width: 100%;
+  /* Theme variables (override from project CSS if needed) */
+  --dclb2-control-size: 40px;           /* prev/next overlay and fullscreen/download size */
+  --dclb2-control-bg: rgba(0,0,0,0.6);  /* controls background */
+  --dclb2-control-radius: 6px;          /* controls border radius */
+  --dclb2-icon-size: 20px;              /* icon size for overlay controls */
+  --dclb2-accent: #4da3ff;              /* accent color for active states */
+  --dclb2-active-border: var(--dclb2-accent);
+  --dclb2-thumb-size: 88px;             /* square thumbnail size */
+  --dclb2-thumb-gap: 8px;               /* gap between thumbs */
+  --dclb2-thumbs-nav-size: 36px;        /* size of thumbs prev/next buttons */
+}
+.dclb2-carousel-main { position: relative; }
+.dclb2-slide { display: none; position: relative; }
+.dclb2-slide.is-active { display: block; }
+.dclb2-item { display: block; }
+.dclb2-item img { width: 100%; height: auto; display: block; }
 
+/* Overlay controls (fullscreen + download) */
+.dclb2-controls { position: absolute; top: 8px; right: 8px; display: flex; gap: 8px; z-index: 2; }
+.dclb2-controls .dclb2-fullscreen,
+.dclb2-controls .dclb2-download { width: var(--dclb2-control-size); height: var(--dclb2-control-size); border: none; background-color: var(--dclb2-control-bg); color: #fff; border-radius: var(--dclb2-control-radius); cursor: pointer; display: inline-block; text-decoration: none; background-repeat: no-repeat; background-position: center; background-size: var(--dclb2-icon-size) var(--dclb2-icon-size); }
+.dclb2-controls .dclb2-fullscreen { background-image: url('../carousel/icons/fullscreen.svg'); }
+.dclb2-controls .dclb2-download { background-image: url('../carousel/icons/download.svg'); }
+
+/* Prev/Next arrows */
+.dclb2-prev,
+.dclb2-next { position: absolute; top: 50%; transform: translateY(-50%); background-color: var(--dclb2-control-bg); color: #fff; border: none; width: var(--dclb2-control-size); height: var(--dclb2-control-size); cursor: pointer; border-radius: calc(var(--dclb2-control-size) / 2); display: inline-flex; align-items: center; justify-content: center; z-index: 2; }
+.dclb2-prev { left: 8px; }
+.dclb2-next { right: 8px; }
+
+/* Thumbnails row */
+.dclb2-carousel-thumbs { display: flex; gap: var(--dclb2-thumb-gap); align-items: center; margin-top: 8px; }
+.dclb2-thumbs-prev,
+.dclb2-thumbs-next { border: none; background-color: var(--dclb2-control-bg); color: #fff; width: var(--dclb2-thumbs-nav-size); height: var(--dclb2-thumbs-nav-size); border-radius: calc(var(--dclb2-thumbs-nav-size) / 2); cursor: pointer; display: inline-block; background-repeat: no-repeat; background-position: center; background-size: 16px 16px; }
+.dclb2-thumbs-prev { background-image: url('../carousel/icons/chevron-left.svg'); }
+.dclb2-thumbs-next { background-image: url('../carousel/icons/chevron-right.svg'); }
+.dclb2-thumbs-strip { display: flex; gap: var(--dclb2-thumb-gap); overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+.dclb2-thumb { border: 2px solid transparent; background: #eee center/cover no-repeat; padding: 0; cursor: pointer; flex: 0 0 auto; width: var(--dclb2-thumb-size); height: var(--dclb2-thumb-size); border-radius: 2px; }
+.dclb2-thumb img { display: none; }
+.dclb2-thumb.active { border-color: var(--dclb2-active-border); }

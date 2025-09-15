@@ -132,3 +132,23 @@ msgstr "Toleranz für Reihenanpassung (0–1)."
 #: djangocms_lightbox2/models.py
 msgid "Límite de imágenes a mostrar (opcional)."
 msgstr "Anzahl der anzuzeigenden Bilder begrenzen (optional)."
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Open fullscreen"
+msgstr "Im Vollbild öffnen"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Download image"
+msgstr "Bild herunterladen"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Previous"
+msgstr "Zurück"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Next"
+msgstr "Weiter"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Enable JavaScript to use Lightbox2."
+msgstr "Aktivieren Sie JavaScript, um Lightbox2 zu verwenden."

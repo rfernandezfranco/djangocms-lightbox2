@@ -132,3 +132,22 @@ msgstr "Tolrance dajustement de ligne (01)."
 #: djangocms_lightbox2/models.py
 msgid "Límite de imágenes a mostrar (opcional)."
 msgstr "Limite d’images  afficher (optionnel)."
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Open fullscreen"
+msgstr "Ouvrir en plein écran"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Download image"
+msgstr "Télécharger l’image"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Previous"
+msgstr "Précédent"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Next"
+msgstr "Suivant"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Enable JavaScript to use Lightbox2."
+msgstr "Activez JavaScript pour utiliser Lightbox2."

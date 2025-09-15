@@ -1,4 +1,4 @@
-{% load cms_tags sekizai_tags static %}
+{% load cms_tags sekizai_tags static i18n %}
 {% include "djangocms_lightbox2/includes/assets.html" %}
 
 {% addtoblock "css" %}
@@ -7,27 +7,39 @@
 
 <div class="dclb2-carousel" id="lb-carousel-{{ instance.pk }}">
   {% if items %}
-    <div class="dclb2-carousel-main">
+    <div class="dclb2-carousel-main" role="region" aria-label="Carousel">
       {% for item in items %}
-        <a href="{{ item.href }}" data-lightbox="{{ group_name }}"{% if item.caption %} data-title="{{ item.caption }}"{% endif %}
-           class="dclb2-item{% if forloop.first %} active{% endif %}">
-          <img src="{{ item.href }}" alt="{{ item.alt }}">
-        </a>
+        <div class="dclb2-slide{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.counter0 }}">
+          <a class="dclb2-item" href="{{ item.href }}" data-lightbox="{{ group_name }}"{% if item.caption %} data-title="{{ item.caption }}"{% endif %}>
+            <img src="{{ item.href }}" alt="{{ item.alt }}">
+          </a>
+          <div class="dclb2-controls">
+            <button class="dclb2-fullscreen" type="button" aria-label="{% trans 'Open fullscreen' %}"></button>
+            <a class="dclb2-download" href="{{ item.href }}" download aria-label="{% trans 'Download image' %}"></a>
+          </div>
+        </div>
       {% endfor %}
-      <button class="dclb2-prev" type="button" aria-label="Anterior">&#10094;</button>
-      <button class="dclb2-next" type="button" aria-label="Siguiente">&#10095;</button>
     </div>
-    <div class="dclb2-carousel-thumbs">
-      {% for item in items %}
-        <button class="dclb2-thumb{% if forloop.first %} active{% endif %}" type="button" data-index="{{ forloop.counter0 }}">
-          <img src="{{ item.thumb }}" alt="{{ item.alt }}">
-        </button>
-      {% endfor %}
+    <div class="dclb2-carousel-thumbs" aria-label="Thumbnails">
+      <button class="dclb2-thumbs-prev" type="button" aria-label="{% trans 'Previous' %}">&#10094;</button>
+      <div class="dclb2-thumbs-strip" role="tablist">
+        {% for item in items %}
+          <button class="dclb2-thumb{% if forloop.first %} active{% endif %}"
+                  type="button"
+                  data-index="{{ forloop.counter0 }}"
+                  role="tab"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  aria-label="{{ item.alt|default:item.caption }}"
+                  style="background-image:url('{{ item.thumb }}');">
+          </button>
+        {% endfor %}
+      </div>
+      <button class="dclb2-thumbs-next" type="button" aria-label="{% trans 'Next' %}">&#10095;</button>
     </div>
   {% else %}
-    <!-- Sin elementos. Añade plugins 'Lightbox2 Image' como hijos. -->
+    <!-- No items. Add 'Lightbox2 Image' child plugins. -->
   {% endif %}
-  <noscript>Habilita JavaScript para usar Lightbox2.</noscript>
+  <noscript>{% trans 'Enable JavaScript to use Lightbox2.' %}</noscript>
 </div>
 
 {% addtoblock "js" %}
