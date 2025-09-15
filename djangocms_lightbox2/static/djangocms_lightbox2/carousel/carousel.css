@@ -24,7 +24,6 @@
   background-color: #fff;
   border: 1px solid #0085ff;
   border-radius: 5px;
-  background-size: 11px;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -50,7 +49,7 @@
 /* Thumbnails row */
 .dclb2-carousel-thumbs { display: flex; gap: var(--dclb2-thumb-gap); align-items: center; margin-top: 8px; }
 .dclb2-thumbs-prev,
-.dclb2-thumbs-next { border: none; color: #0085ff; background-color: #fff; }
+.dclb2-thumbs-next { background-size: 11px; }
 .dclb2-thumbs-prev { background-image: url('../carousel/icons/chevron-left.svg'); }
 .dclb2-thumbs-next { background-image: url('../carousel/icons/chevron-right.svg'); }
 .dclb2-thumbs-strip { display: flex; gap: var(--dclb2-thumb-gap); overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
