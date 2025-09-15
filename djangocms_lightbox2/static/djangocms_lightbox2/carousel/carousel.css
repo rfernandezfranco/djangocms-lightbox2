@@ -72,6 +72,21 @@
 .dclb2-thumbs-prev { background-image: url('../carousel/icons/chevron-left.svg'); }
 .dclb2-thumbs-next { background-image: url('../carousel/icons/chevron-right.svg'); }
 .dclb2-thumbs-strip { display: flex; gap: var(--dclb2-thumb-gap); overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
-.dclb2-thumb { border: 2px solid transparent; background: #eee center/cover no-repeat; padding: 0; cursor: pointer; flex: 0 0 auto; width: var(--dclb2-thumb-size); height: var(--dclb2-thumb-size); border-radius: 2px; }
+.dclb2-thumb {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  opacity: 0.5;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 5px;
+  border: 2px solid #D5D5D5;
+  padding: 0;
+  flex: 0 0 auto;
+}
 .dclb2-thumb img { display: none; }
-.dclb2-thumb.active { border-color: var(--dclb2-active-border); }
+.dclb2-thumb.active {
+  border: 2px solid #0085ff;
+  opacity: 1.0;
+}
