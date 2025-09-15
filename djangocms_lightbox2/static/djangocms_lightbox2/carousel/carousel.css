@@ -54,7 +54,19 @@
 .dclb2-next { right: 8px; }
 
 /* Thumbnails row */
-.dclb2-carousel-thumbs { display: flex; gap: var(--dclb2-thumb-gap); align-items: center; margin-top: 8px; }
+.dclb2-carousel-thumbs {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid #d5d5d5;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
 .dclb2-thumbs-prev,
 .dclb2-thumbs-next { background-size: 11px; }
 .dclb2-thumbs-prev { background-image: url('../carousel/icons/chevron-left.svg'); }
