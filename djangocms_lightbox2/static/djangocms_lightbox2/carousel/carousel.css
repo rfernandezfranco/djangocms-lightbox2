@@ -1,5 +1,6 @@
 .dclb2-carousel {
   width: 100%;
+  padding: 10px;
   /* Theme variables (override from project CSS if needed) */
   --dclb2-control-size: 40px;           /* prev/next overlay and fullscreen/download size */
   --dclb2-control-bg: rgba(0,0,0,0.6);  /* controls background */
@@ -27,7 +28,12 @@
   background-position: center;
   background-repeat: no-repeat;
 }
-.dclb2-carousel-main { position: relative; }
+.dclb2-carousel-main {
+  position: relative;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  background-color: #F8F8F8;
+}
 .dclb2-slide { display: none; position: relative; }
 .dclb2-slide.is-active { display: block; }
 .dclb2-item { display: block; }
