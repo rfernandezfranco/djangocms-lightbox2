@@ -33,11 +33,12 @@
   border-radius: 8px 8px 0 0;
   overflow: hidden;
   background-color: #F8F8F8;
+  aspect-ratio: 16 / 9; /* fija relación ancho:alto */
 }
-.dclb2-slide { display: none; position: relative; }
+.dclb2-slide { display: none; position: relative; height: 100%; }
 .dclb2-slide.is-active { display: block; }
-.dclb2-item { display: block; }
-.dclb2-item img { width: 100%; height: auto; display: block; }
+.dclb2-item { display: block; height: 100%; }
+.dclb2-item img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 /* Overlay controls (fullscreen + download) */
 .dclb2-controls {
