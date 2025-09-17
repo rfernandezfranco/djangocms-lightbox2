@@ -1,0 +1,22 @@
+/* djangocms-lightbox2: overrides sin modificar el CSS vendor */
+
+/* Padding del contenedor de datos */
+#lightbox .lb-dataContainer {
+  padding: 10px;
+}
+
+/* Centrado vertical del número y tamaño de fuente */
+/* Mantenemos el layout, solo alineamos los elementos dentro de details */
+#lightbox .lb-data .lb-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#lightbox .lb-data .lb-number {
+  clear: none;          /* evita saltar debajo del caption */
+  padding-bottom: 0;    /* quita espacio extra inferior */
+  font-size: 20px;      /* tamaño solicitado */
+  line-height: 1.2;
+}
+
