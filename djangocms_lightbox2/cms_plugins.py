@@ -12,6 +12,7 @@ import json
 class Lightbox2GalleryPlugin(CMSPluginBase):
     model = Lightbox2Gallery
     name = _("Lightbox2 Gallery")
+    module = _("Lightbox2")
     render_template = "djangocms_lightbox2/plugins/gallery.html"
     allow_children = True
     child_classes = ["Lightbox2ImagePlugin"]
@@ -136,6 +137,7 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
     """Carousel variant that uses the same items as the gallery."""
 
     name = _("Lightbox2 Carousel")
+    module = _("Lightbox2")
     render_template = "djangocms_lightbox2/plugins/gallery_carousel.html"
     allow_children = True
     child_classes = ["Lightbox2ImagePlugin"]
@@ -173,6 +175,7 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
 class Lightbox2ImagePlugin(CMSPluginBase):
     model = Lightbox2Image
     name = _("Lightbox2 Image")
+    module = _("Lightbox2")
     render_template = "djangocms_lightbox2/plugins/image.html"
     require_parent = False
     parent_classes = ["Lightbox2GalleryPlugin", "Lightbox2CarouselPlugin"]
