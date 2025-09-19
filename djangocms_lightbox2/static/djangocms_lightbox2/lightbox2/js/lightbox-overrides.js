@@ -4,34 +4,6 @@
 
   var $ = window.jQuery;
 
-  function getToolbarHeight() {
-    var toolbar = document.getElementById('cms-toolbar');
-    if (!toolbar) {
-      return 0;
-    }
-    var height = toolbar.offsetHeight || 0;
-    if (!height) {
-      return 0;
-    }
-    if (toolbar.offsetParent === null) {
-      var expandedClass = 'cms-toolbar-expanded';
-      var html = document.documentElement;
-      var body = document.body;
-      if (!(html && html.classList && html.classList.contains(expandedClass)) &&
-          !(body && body.classList && body.classList.contains(expandedClass))) {
-        return 0;
-      }
-    }
-    return height;
-  }
-
-  function setToolbarHeightVar(height) {
-    var value = height > 0 ? height + 'px' : '0px';
-    if (document.documentElement && document.documentElement.style) {
-      document.documentElement.style.setProperty('--dclb2-toolbar-height', value);
-    }
-  }
-
   function clearOverlayInlineStyles(overlayEl) {
     if (!overlayEl || !overlayEl.style) {
       return;
@@ -42,19 +14,11 @@
     overlayEl.style.removeProperty('min-height');
   }
 
-  function updateOverlayState($overlay) {
+  function resetOverlayStyles($overlay) {
     if (!$overlay || !$overlay.length) {
       return;
     }
-    var overlayEl = $overlay[0];
-    clearOverlayInlineStyles(overlayEl);
-    var toolbarHeight = getToolbarHeight();
-    setToolbarHeightVar(toolbarHeight);
-    if (toolbarHeight > 0) {
-      overlayEl.classList.add('dclb2-toolbar-visible');
-    } else {
-      overlayEl.classList.remove('dclb2-toolbar-visible');
-    }
+    clearOverlayInlineStyles($overlay[0]);
   }
 
   function refreshOverlayIfVisible() {
@@ -65,7 +29,7 @@
     if (!$overlay.length || $overlay.css('display') === 'none') {
       return;
     }
-    updateOverlayState($overlay);
+    resetOverlayStyles($overlay);
   }
 
   function patchLightbox(instance) {
@@ -76,41 +40,18 @@
     if (proto.__djangocmsLightboxPatched) {
       return true;
     }
+    var originalSizeOverlay = proto.sizeOverlay;
     proto.sizeOverlay = function () {
+      if (typeof originalSizeOverlay === 'function') {
+        originalSizeOverlay.apply(this, arguments);
+      }
       var self = this;
       window.setTimeout(function () {
-        updateOverlayState(self.$overlay);
+        resetOverlayStyles(self.$overlay);
       }, 0);
     };
     proto.__djangocmsLightboxPatched = true;
     return true;
-  }
-
-  var observer;
-  function setupToolbarObserver() {
-    if (observer || !('MutationObserver' in window)) {
-      return;
-    }
-    observer = new MutationObserver(function (mutations) {
-      for (var i = 0; i < mutations.length; i += 1) {
-        if (mutations[i].attributeName === 'class') {
-          refreshOverlayIfVisible();
-          break;
-        }
-      }
-    });
-    if (document.documentElement) {
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['class']
-      });
-    }
-    if (document.body) {
-      observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['class']
-      });
-    }
   }
 
   var attempts = 0;
@@ -122,7 +63,6 @@
       } catch (err) {
         // noop: mantener compatibilidad si option no está disponible
       }
-      setupToolbarObserver();
       refreshOverlayIfVisible();
       return;
     }
