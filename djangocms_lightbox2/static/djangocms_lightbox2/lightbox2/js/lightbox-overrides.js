@@ -25,23 +25,36 @@
     return height;
   }
 
-  function applyOverlayCss($overlay) {
-    if (!$overlay || typeof $overlay.css !== 'function') {
+  function setToolbarHeightVar(height) {
+    var value = height > 0 ? height + 'px' : '0px';
+    if (document.documentElement && document.documentElement.style) {
+      document.documentElement.style.setProperty('--dclb2-toolbar-height', value);
+    }
+  }
+
+  function clearOverlayInlineStyles(overlayEl) {
+    if (!overlayEl || !overlayEl.style) {
       return;
     }
-    var toolbarHeight = getToolbarHeight();
-    var css = {
-      width: '100%',
-      minHeight: ''
-    };
-    if (toolbarHeight > 0) {
-      css.top = toolbarHeight + 'px';
-      css.height = 'calc(100% - ' + toolbarHeight + 'px)';
-    } else {
-      css.top = '0';
-      css.height = '100%';
+    overlayEl.style.removeProperty('width');
+    overlayEl.style.removeProperty('height');
+    overlayEl.style.removeProperty('top');
+    overlayEl.style.removeProperty('min-height');
+  }
+
+  function updateOverlayState($overlay) {
+    if (!$overlay || !$overlay.length) {
+      return;
     }
-    $overlay.css(css);
+    var overlayEl = $overlay[0];
+    clearOverlayInlineStyles(overlayEl);
+    var toolbarHeight = getToolbarHeight();
+    setToolbarHeightVar(toolbarHeight);
+    if (toolbarHeight > 0) {
+      overlayEl.classList.add('dclb2-toolbar-visible');
+    } else {
+      overlayEl.classList.remove('dclb2-toolbar-visible');
+    }
   }
 
   function refreshOverlayIfVisible() {
@@ -52,7 +65,7 @@
     if (!$overlay.length || $overlay.css('display') === 'none') {
       return;
     }
-    applyOverlayCss($overlay);
+    updateOverlayState($overlay);
   }
 
   function patchLightbox(instance) {
@@ -63,14 +76,10 @@
     if (proto.__djangocmsLightboxPatched) {
       return true;
     }
-    var originalSizeOverlay = proto.sizeOverlay;
     proto.sizeOverlay = function () {
-      if (typeof originalSizeOverlay === 'function') {
-        originalSizeOverlay.apply(this, arguments);
-      }
       var self = this;
       window.setTimeout(function () {
-        applyOverlayCss(self.$overlay);
+        updateOverlayState(self.$overlay);
       }, 0);
     };
     proto.__djangocmsLightboxPatched = true;
@@ -108,6 +117,11 @@
   function attemptPatch() {
     attempts += 1;
     if (window.lightbox && patchLightbox(window.lightbox)) {
+      try {
+        window.lightbox.option({ disableScrolling: true });
+      } catch (err) {
+        // noop: mantener compatibilidad si option no está disponible
+      }
       setupToolbarObserver();
       refreshOverlayIfVisible();
       return;

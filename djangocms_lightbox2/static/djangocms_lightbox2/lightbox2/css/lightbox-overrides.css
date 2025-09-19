@@ -1,14 +1,25 @@
 /* djangocms-lightbox2: overrides sin modificar el CSS vendor */
 
 /* Ajustes del overlay para ocupar el viewport sin fijar altura mínima. */
+:root {
+  --dclb2-toolbar-height: 0px;
+}
+
 #lightboxOverlay,
 .lightboxOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   min-height: auto;
+  display: block;
+}
+
+#lightboxOverlay.dclb2-toolbar-visible,
+.lightboxOverlay.dclb2-toolbar-visible {
+  top: var(--dclb2-toolbar-height, 0px);
+  height: calc(100vh - var(--dclb2-toolbar-height, 0px));
 }
 
 /* Padding del contenedor de datos */
