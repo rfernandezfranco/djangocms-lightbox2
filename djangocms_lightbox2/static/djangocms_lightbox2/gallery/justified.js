@@ -1,6 +1,42 @@
 /* Builds justified galleries while tolerating hidden containers and lazy images. */
+
 (function() {
   var containers = new Set();
+  var TABLET_BREAKPOINT = 1024;
+  var MOBILE_BREAKPOINT = 640;
+
+  function readPositiveNumber(value, fallback) {
+    var str = value;
+    if (str === undefined || str === null) {
+      str = '';
+    }
+    if (typeof str !== 'string') {
+      str = String(str);
+    }
+    str = str.trim();
+    if (!str) return fallback;
+    var n = parseFloat(str);
+    if (!isFinite(n) || n <= 0) return fallback;
+    return n;
+  }
+
+  function getColumnsConfig(container, styles) {
+    styles = styles || window.getComputedStyle(container);
+    var desktop = readPositiveNumber(container.getAttribute('data-cols-desktop'), readPositiveNumber(styles.getPropertyValue('--dclb2-cols-desktop'), 4));
+    var tablet = readPositiveNumber(container.getAttribute('data-cols-tablet'), readPositiveNumber(styles.getPropertyValue('--dclb2-cols-tablet'), desktop));
+    var mobile = readPositiveNumber(container.getAttribute('data-cols-mobile'), readPositiveNumber(styles.getPropertyValue('--dclb2-cols-mobile'), 1));
+    return {
+      desktop: Math.max(1, Math.round(desktop)),
+      tablet: Math.max(1, Math.round(tablet)),
+      mobile: Math.max(1, Math.round(mobile))
+    };
+  }
+
+  function pickColumnsForWidth(width, columns) {
+    if (width <= MOBILE_BREAKPOINT) return columns.mobile;
+    if (width <= TABLET_BREAKPOINT) return columns.tablet;
+    return columns.desktop;
+  }
 
   function scheduleBuild(container, delay) {
     if (!container || !container.isConnected) return;
@@ -99,14 +135,76 @@
       return;
     }
 
-    var rowHeight = parseInt(container.getAttribute('data-row-height') || '220', 10);
-    if (!rowHeight || rowHeight < 1) rowHeight = 220;
+    var styles = window.getComputedStyle(container);
+    var gutter = parseInt(styles.getPropertyValue('--dclb2-gutter') || '8', 10);
+    if (isNaN(gutter) || gutter < 0) gutter = 0;
+
+    var columnsConfig = getColumnsConfig(container, styles);
+    var targetColumns = pickColumnsForWidth(width, columnsConfig);
+    if (!targetColumns || targetColumns < 1) targetColumns = 1;
 
     var tolerance = parseFloat(container.getAttribute('data-tolerance') || '0.25');
-    if (isNaN(tolerance) || tolerance < 0) tolerance = 0.25;
+    if (!isFinite(tolerance) || tolerance < 0) tolerance = 0.25;
+    var clampedTolerance = Math.max(0, tolerance);
 
-    var gutter = parseInt(window.getComputedStyle(container).getPropertyValue('--dclb2-gutter') || '8', 10);
-    if (isNaN(gutter) || gutter < 0) gutter = 0;
+    var rowHeightAttr = parseFloat(container.getAttribute('data-row-height') || '220');
+    if (!isFinite(rowHeightAttr) || rowHeightAttr <= 0) rowHeightAttr = 220;
+
+    var allowAutoHeight = container.getAttribute('data-row-height-auto') !== 'false';
+    var manualRowHeight = allowAutoHeight ? null : rowHeightAttr;
+
+    var fallbackHeight = rowHeightAttr || 220;
+    var fallbackAspect = 1.5;
+    var totalAspectForAvg = 0;
+
+    items.forEach(function(item) {
+      var img = item.querySelector('img');
+      var w = img && (img.naturalWidth || img.width);
+      var h = img && (img.naturalHeight || img.height);
+      if (!isFinite(h) || h <= 0) {
+        h = fallbackHeight;
+      }
+      if (!isFinite(w) || w <= 0) {
+        w = h * fallbackAspect;
+      }
+      if (!isFinite(h) || h <= 0) {
+        h = fallbackHeight || 220;
+      }
+      totalAspectForAvg += w / h;
+    });
+
+    var avgAspect = totalAspectForAvg / items.length;
+    if (!isFinite(avgAspect) || avgAspect <= 0) {
+      avgAspect = fallbackAspect;
+    }
+
+    var desiredColumns = Math.max(1, targetColumns);
+    var gutterTotal = gutter * Math.max(0, desiredColumns - 1);
+    var widthForImages = Math.max(1, width - gutterTotal);
+    var autoRowHeight = widthForImages / (desiredColumns * avgAspect);
+
+    var baseRowHeight;
+    if (manualRowHeight && manualRowHeight > 0) {
+      baseRowHeight = manualRowHeight;
+    } else if (isFinite(autoRowHeight) && autoRowHeight > 0) {
+      baseRowHeight = autoRowHeight;
+    } else {
+      baseRowHeight = rowHeightAttr;
+    }
+
+    if (!isFinite(baseRowHeight) || baseRowHeight <= 0) {
+      baseRowHeight = 220;
+    }
+
+    var minHeight;
+    var maxHeight;
+    if (manualRowHeight && manualRowHeight > 0) {
+      minHeight = maxHeight = baseRowHeight;
+    } else {
+      var toleranceClamp = Math.min(clampedTolerance, 0.95);
+      minHeight = Math.max(1, baseRowHeight * (1 - toleranceClamp));
+      maxHeight = Math.max(minHeight, baseRowHeight * (1 + clampedTolerance));
+    }
 
     items.forEach(function(item) {
       if (item.parentNode) {
@@ -128,27 +226,34 @@
       if (!currentRow.length) return;
       var row = currentRow;
       currentRow = [];
+
       var rowEl = document.createElement('div');
       rowEl.className = 'dclb2-row';
 
       var totalAspect = 0;
       row.forEach(function(item) {
         var img = item.querySelector('img');
-        var w = img && (img.naturalWidth || img.width) || 1;
-        var h = img && (img.naturalHeight || img.height) || rowHeight;
+        var w = img && (img.naturalWidth || img.width);
+        var h = img && (img.naturalHeight || img.height);
+        if (!isFinite(h) || h <= 0) h = baseRowHeight;
+        if (!isFinite(w) || w <= 0) w = h * fallbackAspect;
         totalAspect += w / h;
       });
 
       var gapTotal = gutter * Math.max(0, row.length - 1);
-      var widthForImages = Math.max(1, availableWidth - gapTotal);
-      var targetHeight = rowHeight;
-      if (totalAspect > 0) {
-        targetHeight = widthForImages / totalAspect;
-      }
+      var widthForRow = Math.max(1, (container.clientWidth || availableWidth) - gapTotal);
+      var targetHeight = baseRowHeight;
 
-      var maxHeight = rowHeight * (1 + tolerance);
-      if (targetHeight > maxHeight) targetHeight = maxHeight;
-      if (targetHeight < 1) targetHeight = 1;
+      if (totalAspect > 0 && (!manualRowHeight || manualRowHeight <= 0)) {
+        targetHeight = widthForRow / totalAspect;
+        if (!isFinite(targetHeight) || targetHeight <= 0) {
+          targetHeight = baseRowHeight;
+        }
+        if (targetHeight > maxHeight) targetHeight = maxHeight;
+        if (targetHeight < minHeight) targetHeight = minHeight;
+      } else {
+        targetHeight = baseRowHeight;
+      }
 
       row.forEach(function(item) {
         item.style.height = targetHeight + 'px';
@@ -163,16 +268,18 @@
 
     items.forEach(function(item) {
       var img = item.querySelector('img');
-      var w = img && (img.naturalWidth || img.width) || 400;
-      var h = img && (img.naturalHeight || img.height) || rowHeight;
+      var w = img && (img.naturalWidth || img.width);
+      var h = img && (img.naturalHeight || img.height);
+      if (!isFinite(h) || h <= 0) h = baseRowHeight;
+      if (!isFinite(w) || w <= 0) w = h * fallbackAspect;
       var aspect = w / h;
 
       currentRow.push(item);
       currentAspect += aspect;
 
       var gapTotal = gutter * Math.max(0, currentRow.length - 1);
-      var expectedWidth = currentAspect * rowHeight + gapTotal;
-      if (expectedWidth >= availableWidth * (1 - tolerance)) {
+      var expectedWidth = currentAspect * baseRowHeight + gapTotal;
+      if (expectedWidth >= availableWidth * (1 - clampedTolerance)) {
         flushRow();
         currentAspect = 0;
         availableWidth = container.clientWidth || width;

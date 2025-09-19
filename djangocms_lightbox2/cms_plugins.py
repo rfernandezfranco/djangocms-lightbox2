@@ -106,6 +106,8 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
                     "alt": getattr(model_inst, "alt_text", "") or getattr(model_inst, "caption", ""),
                 }
             )
+        default_row_height = Lightbox2Gallery._meta.get_field("justified_row_height").default
+
         context.update(
             {
                 "gallery_layout": instance.layout,
@@ -117,6 +119,7 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
                     "mobile": instance.columns_mobile,
                 },
                 "gallery_row_height": instance.justified_row_height,
+                "gallery_row_height_auto": instance.justified_row_height == default_row_height,
                 "gallery_tolerance": instance.justified_tolerance,
                 "items": items,
                 "group_name": instance.get_group(),

@@ -1,5 +1,8 @@
 {% load static %}
-<div class="dclb2-justified" data-row-height="{{ gallery_row_height }}" data-tolerance="{{ gallery_tolerance }}" style="--dclb2-gutter: {{ gallery_gutter }}px;">
+<div class="dclb2-justified"
+     data-row-height="{{ gallery_row_height }}" data-row-height-auto="{{ gallery_row_height_auto|yesno:'true,false' }}" data-tolerance="{{ gallery_tolerance }}"
+     data-cols-desktop="{{ gallery_cols.desktop }}" data-cols-tablet="{{ gallery_cols.tablet }}" data-cols-mobile="{{ gallery_cols.mobile }}"
+     style="--dclb2-gutter: {{ gallery_gutter }}px; --dclb2-cols-desktop: {{ gallery_cols.desktop }}; --dclb2-cols-tablet: {{ gallery_cols.tablet }}; --dclb2-cols-mobile: {{ gallery_cols.mobile }};">
   {% for it in items %}
     <a class="dclb2-item" href="{{ it.href }}" data-lightbox="{{ group_name }}"{% if it.caption %} data-title="{{ it.caption }}"{% endif %}>
       <img src="{{ it.thumb }}"{% if it.srcset %} srcset="{{ it.srcset }}" sizes="{{ sizes_attr }}"{% endif %} loading="lazy" decoding="async" alt="{{ it.alt }}">
