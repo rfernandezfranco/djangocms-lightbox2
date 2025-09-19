@@ -1,5 +1,5 @@
 {% load static %}
-<div class="dclb2-masonry" style="--dclb2-gutter: {{ gallery_gutter }}px; --dclb2-col-width: 1fr;">
+<div class="dclb2-masonry" style="--dclb2-gutter: {{ gallery_gutter }}px; --dclb2-col-width: 1fr; --dclb2-cols-desktop: {{ gallery_cols.desktop }}; --dclb2-cols-tablet: {{ gallery_cols.tablet }}; --dclb2-cols-mobile: {{ gallery_cols.mobile }};">
   {% for it in items %}
     <a class="dclb2-item" href="{{ it.href }}" data-lightbox="{{ group_name }}"{% if it.caption %} data-title="{{ it.caption }}"{% endif %}>
       <img src="{{ it.thumb }}"{% if it.srcset %} srcset="{{ it.srcset }}" sizes="{{ sizes_attr }}"{% endif %} loading="lazy" decoding="async" alt="{{ it.alt }}">

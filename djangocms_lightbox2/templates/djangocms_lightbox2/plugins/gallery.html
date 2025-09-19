@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{% static 'djangocms_lightbox2/filmstrip/filmstrip.css' %}">
 {% endaddtoblock %}
 
-<div class="dclb2-gallery{% if gallery_layout != 'grid' %} dclb2-{{ gallery_layout }}{% endif %}" id="lb-gallery-{{ instance.pk }}"
+<div class="dclb2-gallery" id="lb-gallery-{{ instance.pk }}" data-layout="{{ gallery_layout }}"
      data-gutter="{{ gallery_gutter }}" data-cols-desktop="{{ gallery_cols.desktop }}"
      data-cols-tablet="{{ gallery_cols.tablet }}" data-cols-mobile="{{ gallery_cols.mobile }}"
      data-row-height="{{ gallery_row_height }}" data-tolerance="{{ gallery_tolerance }}">

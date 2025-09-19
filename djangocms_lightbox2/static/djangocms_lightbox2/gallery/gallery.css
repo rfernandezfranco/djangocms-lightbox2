@@ -23,13 +23,12 @@
 
 /* Masonry layout (CSS columns) */
 .dclb2-masonry {
-  column-gap: var(--dclb2-gutter);
-  columns: 4; /* overridden via media queries below if needed */
+  column-gap: var(--dclb2-gutter, 8px);
+  columns: var(--dclb2-cols-desktop, 4);
 }
-.dclb2-masonry .dclb2-item { break-inside: avoid; -webkit-column-break-inside: avoid; display: inline-block; width: 100%; margin: 0 0 var(--dclb2-gutter); }
+.dclb2-masonry .dclb2-item { break-inside: avoid; -webkit-column-break-inside: avoid; display: inline-block; width: 100%; margin: 0 0 var(--dclb2-gutter, 8px); }
 
 /* We approximate columns count using the grid vars */
 @media (min-width: 1025px) { .dclb2-masonry { columns: var(--dclb2-cols-desktop, 4); } }
 @media (max-width: 1024px) { .dclb2-masonry { columns: var(--dclb2-cols-tablet, 2); } }
 @media (max-width: 640px)  { .dclb2-masonry { columns: var(--dclb2-cols-mobile, 1); } }
-
