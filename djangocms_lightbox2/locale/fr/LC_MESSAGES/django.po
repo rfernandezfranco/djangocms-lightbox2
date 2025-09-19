@@ -151,3 +151,75 @@ msgstr "Suivant"
 #: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
 msgid "Enable JavaScript to use Lightbox2."
 msgstr "Activez JavaScript pour utiliser Lightbox2."
+
+#: djangocms_lightbox2/models.py
+msgid "Aspect ratio"
+msgstr "Rapport d'aspect"
+
+#: djangocms_lightbox2/models.py
+msgid "Aspect ratio for the main carousel area."
+msgstr "Rapport d'aspect de la zone principale du carrousel."
+
+#: djangocms_lightbox2/models.py
+msgid "Background color"
+msgstr "Couleur de fond"
+
+#: djangocms_lightbox2/models.py
+msgid "Background color applied to the main carousel area."
+msgstr "Couleur de fond appliquée à la zone principale du carrousel."
+
+#: djangocms_lightbox2/models.py
+msgid "CSS object-fit value used for images in the carousel."
+msgstr "Valeur CSS object-fit utilisée pour les images du carrousel."
+
+#: djangocms_lightbox2/models.py
+msgid "Object fit"
+msgstr "Object fit"
+
+#: djangocms_lightbox2/models.py
+msgid "Enter a valid hex color in the format #RRGGBB."
+msgstr "Saisissez une couleur hexadécimale valide au format #RRGGBB."
+
+#: djangocms_lightbox2/models.py
+msgid "16:9 (widescreen)"
+msgstr "16:9 (grand écran)"
+
+#: djangocms_lightbox2/models.py
+msgid "4:3 (standard)"
+msgstr "4:3 (standard)"
+
+#: djangocms_lightbox2/models.py
+msgid "1:1 (square)"
+msgstr "1:1 (carré)"
+
+#: djangocms_lightbox2/models.py
+msgid "3:2 (classic photo)"
+msgstr "3:2 (photo classique)"
+
+#: djangocms_lightbox2/models.py
+msgid "21:9 (cinematic)"
+msgstr "21:9 (cinémascope)"
+
+#: djangocms_lightbox2/models.py
+msgid "cover"
+msgstr "cover"
+
+#: djangocms_lightbox2/models.py
+msgid "contain"
+msgstr "contain"
+
+#: djangocms_lightbox2/models.py
+msgid "fill"
+msgstr "fill"
+
+#: djangocms_lightbox2/models.py
+msgid "none"
+msgstr "none"
+
+#: djangocms_lightbox2/models.py
+msgid "scale-down"
+msgstr "scale-down"
+
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Carousel appearance"
+msgstr "Apparence du carrousel"

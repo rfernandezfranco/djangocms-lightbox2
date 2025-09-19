@@ -33,12 +33,20 @@
   border-radius: 8px 8px 0 0;
   overflow: hidden;
   background-color: #F8F8F8;
+  background-color: var(--dclb2-main-bg, #F8F8F8);
   aspect-ratio: 4 / 3; /* fija relación ancho:alto */
+  aspect-ratio: var(--dclb2-main-aspect, 4 / 3);
 }
 .dclb2-slide { display: none; position: relative; height: 100%; }
 .dclb2-slide.is-active { display: block; }
 .dclb2-item { display: block; height: 100%; }
-.dclb2-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dclb2-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-fit: var(--dclb2-object-fit, cover);
+  display: block;
+}
 
 /* Overlay controls (fullscreen + download) */
 .dclb2-controls {

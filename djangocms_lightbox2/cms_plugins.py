@@ -1,11 +1,21 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
+from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from .models import Lightbox2Gallery, Lightbox2Image
 from . import conf
 from django.utils.safestring import mark_safe
 import json
+
+
+class Lightbox2CarouselForm(forms.ModelForm):
+    class Meta:
+        model = Lightbox2Gallery
+        fields = "__all__"
+        widgets = {
+            "carousel_background_color": forms.TextInput(attrs={"type": "color"}),
+        }
 
 
 @plugin_pool.register_plugin
@@ -144,6 +154,7 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
     render_template = "djangocms_lightbox2/plugins/gallery_carousel.html"
     allow_children = True
     child_classes = ["Lightbox2ImagePlugin"]
+    form = Lightbox2CarouselForm
 
     fieldsets = (
         (None, {"fields": ("title", "group_name")}),
@@ -167,11 +178,25 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
                 ),
             },
         ),
+        (
+            _("Carousel appearance"),
+            {
+                "fields": (
+                    "carousel_aspect_ratio",
+                    "carousel_background_color",
+                    "carousel_object_fit",
+                )
+            },
+        ),
     )
 
     def render(self, context, instance, placeholder):
         """Reuse the gallery rendering to build items list and options."""
-        return super().render(context, instance, placeholder)
+        context = super().render(context, instance, placeholder)
+        context["carousel_background_color"] = instance.carousel_background_color or "#F8F8F8"
+        context["carousel_aspect_ratio_css"] = instance.get_carousel_aspect_ratio_css()
+        context["carousel_object_fit"] = instance.carousel_object_fit or "cover"
+        return context
 
 
 @plugin_pool.register_plugin

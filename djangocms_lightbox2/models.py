@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from cms.models.pluginmodel import CMSPlugin
@@ -6,6 +7,31 @@ from easy_thumbnails.files import get_thumbnailer
 
 
 class Lightbox2Gallery(CMSPlugin):
+    CAROUSEL_ASPECT_RATIO_16_9 = "16-9"
+    CAROUSEL_ASPECT_RATIO_4_3 = "4-3"
+    CAROUSEL_ASPECT_RATIO_1_1 = "1-1"
+    CAROUSEL_ASPECT_RATIO_3_2 = "3-2"
+    CAROUSEL_ASPECT_RATIO_21_9 = "21-9"
+    CAROUSEL_ASPECT_RATIO_CHOICES = (
+        (CAROUSEL_ASPECT_RATIO_16_9, _("16:9 (widescreen)")),
+        (CAROUSEL_ASPECT_RATIO_4_3, _("4:3 (standard)")),
+        (CAROUSEL_ASPECT_RATIO_1_1, _("1:1 (square)")),
+        (CAROUSEL_ASPECT_RATIO_3_2, _("3:2 (classic photo)")),
+        (CAROUSEL_ASPECT_RATIO_21_9, _("21:9 (cinematic)")),
+    )
+
+    CAROUSEL_OBJECT_FIT_CHOICES = (
+        ("cover", _("cover")),
+        ("contain", _("contain")),
+        ("fill", _("fill")),
+        ("none", _("none")),
+        ("scale-down", _("scale-down")),
+    )
+
+    HEX_COLOR_VALIDATOR = RegexValidator(
+        regex=r"^#(?:[0-9a-fA-F]{3}){1,2}$",
+        message=_("Enter a valid hex color in the format #RRGGBB."),
+    )
     title = models.CharField(max_length=150, blank=True, default="")
     group_name = models.CharField(
         max_length=100,
@@ -65,6 +91,27 @@ class Lightbox2Gallery(CMSPlugin):
         blank=True,
         help_text=_("Altura máxima de la imagen (px). Vacío usa el defecto de Lightbox2."),
     )
+    carousel_aspect_ratio = models.CharField(
+        max_length=10,
+        choices=CAROUSEL_ASPECT_RATIO_CHOICES,
+        default=CAROUSEL_ASPECT_RATIO_4_3,
+        verbose_name=_("Aspect ratio"),
+        help_text=_("Aspect ratio for the main carousel area."),
+    )
+    carousel_background_color = models.CharField(
+        max_length=7,
+        default="#F8F8F8",
+        validators=[HEX_COLOR_VALIDATOR],
+        verbose_name=_("Background color"),
+        help_text=_("Background color applied to the main carousel area."),
+    )
+    carousel_object_fit = models.CharField(
+        max_length=10,
+        choices=CAROUSEL_OBJECT_FIT_CHOICES,
+        default="cover",
+        verbose_name=_("Object fit"),
+        help_text=_("CSS object-fit value used for images in the carousel."),
+    )
 
     # Layout options
     LAYOUT_GRID = "grid"
@@ -102,6 +149,16 @@ class Lightbox2Gallery(CMSPlugin):
 
     def get_group(self):
         return self.group_name or f"gallery-{self.pk or 'new'}"
+
+    def get_carousel_aspect_ratio_css(self):
+        mapping = {
+            self.CAROUSEL_ASPECT_RATIO_16_9: "16 / 9",
+            self.CAROUSEL_ASPECT_RATIO_4_3: "4 / 3",
+            self.CAROUSEL_ASPECT_RATIO_1_1: "1 / 1",
+            self.CAROUSEL_ASPECT_RATIO_3_2: "3 / 2",
+            self.CAROUSEL_ASPECT_RATIO_21_9: "21 / 9",
+        }
+        return mapping.get(self.carousel_aspect_ratio, mapping[self.CAROUSEL_ASPECT_RATIO_4_3])
 
     def copy_relations(self, oldinstance):
         self.group_name = oldinstance.group_name
