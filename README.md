@@ -11,7 +11,6 @@ Esta implementación se inspira en djangocms-light-gallery y proporciona un plug
 - Assets locales (CSS/JS/imagenes) servidos desde `static/` del proyecto.
 - Integración con `sekizai` para inyectar CSS/JS sin duplicados.
 - Layouts de galería: Grid, Masonry y Justified.
-- Filmstrip (cinta de miniaturas) dentro del lightbox, sincronizada con la imagen activa.
 - Deep-linking: abrir una imagen específica vía `#lb=<grupo>:<indice>` y actualizar la URL al navegar.
 - Rendimiento: miniaturas con `loading="lazy"`, `decoding="async"`, `srcset/sizes` básicos.
 - Experiencia móvil: gestos táctiles (swipe izquierda/derecha) en el overlay del lightbox.
@@ -92,11 +91,6 @@ Esta implementación se inspira en djangocms-light-gallery y proporciona un plug
 - Al navegar en el lightbox, la URL se actualiza manteniendo el estado actual.
 - El contador en el overlay muestra "i de N" sincronizado con la navegación.
 
-### Filmstrip (cinta de miniaturas)
-
-- Al abrir el lightbox, se muestra una tira de miniaturas debajo del área principal.
-- Clic en una miniatura salta a esa imagen. La miniatura activa se resalta y se centra automáticamente.
-
 ### Gestos táctiles
 
 - En dispositivos táctiles, desliza a izquierda/derecha para navegar entre imágenes dentro del overlay.
@@ -123,7 +117,7 @@ Rutas esperadas:
 
 Actualización desde versiones previas:
 - Ejecuta migraciones para incorporar los campos de layout: `python manage.py migrate` (incluye `0003_layout_fields`).
-- Vuelve a ejecutar `collectstatic` para incluir los nuevos assets de galería y filmstrip.
+- Vuelve a ejecutar `collectstatic` para incluir los nuevos assets de galería.
 
 ## Configuración
 
