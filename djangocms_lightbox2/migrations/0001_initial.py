@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                     models.CharField(
                         blank=True,
                         help_text=(
-                            "Nombre de grupo para 'data-lightbox'. Si está vacío, se usará 'gallery-<id>'."
+                            "Group name for 'data-lightbox'. If empty, 'gallery-<id>' will be used."
                         ),
                         max_length=100,
                     ),

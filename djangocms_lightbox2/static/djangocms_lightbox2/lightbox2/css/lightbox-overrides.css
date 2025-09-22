@@ -1,10 +1,10 @@
-/* djangocms-lightbox2: overrides sin modificar el CSS vendor */
+/* djangocms-lightbox2: overrides without touching vendor CSS */
 
 body {
   position: relative;
 }
 
-/* Ajustes del overlay para ocupar el viewport sin fijar altura mínima. */
+/* Adjust overlay to fill the viewport without forcing a minimum height. */
 .lightboxOverlay {
   width: 100%;
   height: 100vh;
@@ -12,13 +12,13 @@ body {
   display: block;
 }
 
-/* Padding del contenedor de datos */
+/* Data container padding */
 #lightbox .lb-dataContainer {
   padding: 10px;
 }
 
-/* Centrado vertical del número y tamaño de fuente */
-/* Mantenemos el layout, solo alineamos los elementos dentro de details */
+/* Center the counter vertically and adjust font size */
+/* Keep the layout intact while aligning elements inside details */
 #lightbox .lb-data .lb-details {
   display: flex;
   align-items: center;
@@ -26,8 +26,8 @@ body {
 }
 
 #lightbox .lb-data .lb-number {
-  clear: none;          /* evita saltar debajo del caption */
-  padding-bottom: 0;    /* quita espacio extra inferior */
-  font-size: 20px;      /* tamaño solicitado */
+  clear: none;          /* prevent jumping below the caption */
+  padding-bottom: 0;    /* remove extra bottom spacing */
+  font-size: 20px;      /* requested size */
   line-height: 1.2;
 }

@@ -1,4 +1,4 @@
-{% load cms_tags sekizai_tags static %}
+{% load cms_tags sekizai_tags static i18n %}
 {% include "djangocms_lightbox2/includes/assets.html" %}
 
 {% addtoblock "css" %}
@@ -23,9 +23,9 @@
       {% include 'djangocms_lightbox2/plugins/gallery_grid.html' %}
     {% endif %}
   {% else %}
-    <!-- Sin elementos. Añade plugins 'Lightbox2 Image' como hijos. -->
+    <!-- No items. Add 'Lightbox2 Image' child plugins. -->
   {% endif %}
-  <noscript>Habilita JavaScript para usar Lightbox2.</noscript>
+  <noscript>{% trans 'Enable JavaScript to use Lightbox2.' %}</noscript>
 </div>
 
 {% addtoblock "js" %}

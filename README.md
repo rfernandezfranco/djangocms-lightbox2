@@ -1,32 +1,32 @@
 # djangocms-lightbox2
 
-Plugin de Django CMS para integrar Lightbox2 (https://github.com/lokesh/lightbox2/).
+Django CMS plugin that integrates [Lightbox2](https://github.com/lokesh/lightbox2/).
 
-Esta implementación se inspira en djangocms-light-gallery y proporciona un plugin de galería con elementos de imagen como hijos, utilizando los atributos `data-lightbox` de Lightbox2.
+The project takes inspiration from *djangocms-light-gallery* and ships a gallery plugin with image children that rely on Lightbox2 `data-lightbox` attributes.
 
-## Características
+## Features
 
-- Plugin "Lightbox2 Gallery" que agrupa imágenes hijas.
-- Plugin "Lightbox2 Image" para cada elemento de la galería.
-- Assets locales (CSS/JS/imagenes) servidos desde `static/` del proyecto.
-- Integración con `sekizai` para inyectar CSS/JS sin duplicados.
-- Layouts de galería: Grid, Masonry y Justified.
-- Deep-linking: abrir una imagen específica vía `#lb=<grupo>:<indice>` y actualizar la URL al navegar.
-- Rendimiento: miniaturas con `loading="lazy"`, `decoding="async"`, `srcset/sizes` básicos.
-- Experiencia móvil: gestos táctiles (swipe izquierda/derecha) en el overlay del lightbox.
-- Accesibilidad mejorada: `role=dialog`, `aria-modal`, live region, focus trap y labels.
+- "Lightbox2 Gallery" plugin that groups image children.
+- "Lightbox2 Image" plugin for each gallery item.
+- Local assets (CSS/JS/images) served from the project's `static/` directory.
+- Integration with `sekizai` to inject CSS/JS just once per page.
+- Gallery layouts: Grid, Masonry, and Justified.
+- Deep linking: open a specific image via `#lb=<group>:<index>` and keep the URL in sync while browsing.
+- Performance tweaks: thumbnails use `loading="lazy"`, `decoding="async"`, and basic `srcset`/`sizes` attributes.
+- Mobile experience: swipe gestures on the overlay.
+- Accessibility improvements: `role="dialog"`, `aria-modal`, live region, focus trap, and proper labels.
 
-## Requisitos y compatibilidad
+## Requirements and compatibility
 
-- Django: 3.2 o 4.2 (probado en CI con ambas)
-- django CMS: 3.11, 4.x y 5.x (probado en CI con 3.11, 4.1 y 5.0)
-- Otras apps: `django-filer`, `easy-thumbnails`, `sekizai`, `django-treebeard`
+- Django: 3.2 or 4.2 (tested in CI on both).
+- django CMS: 3.11, 4.x, and 5.x (tested in CI with 3.11, 4.1, and 5.0).
+- Other apps: `django-filer`, `easy-thumbnails`, `sekizai`, `django-treebeard`.
 
-## Instalación
+## Installation
 
-1. Instala dependencias en tu proyecto Django (ejemplo rápido):
+1. Install dependencies in your Django project (quick example):
    - `pip install django djangocms django-filer easy-thumbnails`
-2. Añade a `INSTALLED_APPS` en `settings.py` de tu proyecto:
+2. Add the apps to `INSTALLED_APPS` inside your project's `settings.py`:
 
    ```python
    INSTALLED_APPS = [
@@ -39,18 +39,18 @@ Esta implementación se inspira en djangocms-light-gallery y proporciona un plug
        'treebeard',
        'sekizai',
        'djangocms_lightbox2',
-       ]
-       ```
+   ]
+   ```
 
-   Notas de compatibilidad:
-   - CMS 4/5: opcionalmente `djangocms-admin-style` para un admin estilizado.
-   - Asegúrate de incluir `sekizai` y renderizar los bloques en tu plantilla base.
+   Compatibility notes:
+   - CMS 4/5: optionally add `djangocms-admin-style` for the admin UI.
+   - Include `sekizai` and render the blocks in your base template.
 
-3. Ejecuta migraciones y collectstatic:
+3. Run migrations and collectstatic:
    - `python manage.py migrate`
    - `python manage.py collectstatic`
 
-4. Asegúrate de que tu plantilla base renderiza los bloques de `sekizai`:
+4. Make sure your base template renders the `sekizai` blocks:
 
    ```django
    {% load sekizai_tags %}
@@ -64,74 +64,73 @@ Esta implementación se inspira en djangocms-light-gallery y proporciona un plug
    </body>
    ```
 
-## Uso
+## Usage
 
-- Añade un plugin "Lightbox2 Gallery" en un placeholder.
-- Dentro de la galería, añade uno o más plugins "Lightbox2 Image" y selecciona imágenes de `django-filer`.
-- Opcionalmente, usa una sola imagen fuera de una galería; seguirá funcionando, creando su propio grupo de lightbox por instancia.
+- Add a "Lightbox2 Gallery" plugin to a placeholder.
+- Inside the gallery, add one or more "Lightbox2 Image" plugins and select images from `django-filer`.
+- You can also use a single image outside a gallery; it still works and creates its own lightbox group per instance.
 
-### Campos del plugin y layouts
+### Plugin fields and layouts
 
-- Galería:
-  - `layout`: selecciona Grid, Masonry o Justified.
-  - `columns_desktop/tablet/mobile` (Grid/Masonry): número de columnas por breakpoint.
-  - `gutter`: separación entre elementos (px).
-  - `show_captions`: muestra el caption debajo de cada miniatura.
-  - `justified_row_height` y `justified_tolerance` (Justified): alto objetivo por fila y tolerancia de ajuste.
-  - `limit_items`: limita la cantidad de imágenes renderizadas.
-  - Opciones de Lightbox2 por galería: `album_label`, `always_show_nav_on_touch_devices`, `fade_duration`, `fit_images_in_viewport`, `image_fade_duration`, `position_from_top`, `resize_duration`, `show_image_number_label`, `wrap_around`, `disable_scrolling`, `max_width`, `max_height`.
+- Gallery:
+  - `layout`: choose Grid, Masonry, or Justified.
+  - `columns_desktop/tablet/mobile` (Grid/Masonry): number of columns per breakpoint.
+  - `gutter`: spacing between items (px).
+  - `show_captions`: render the caption underneath each thumbnail.
+  - `justified_row_height` and `justified_tolerance` (Justified): target row height and tolerance.
+  - `limit_items`: limit how many images are rendered.
+  - Lightbox2 options per gallery: `album_label`, `always_show_nav_on_touch_devices`, `fade_duration`, `fit_images_in_viewport`, `image_fade_duration`, `position_from_top`, `resize_duration`, `show_image_number_label`, `wrap_around`, `disable_scrolling`, `max_width`, `max_height`.
 
-- Imagen:
-  - `caption` y `alt_text` para título/alternativo.
-  - `thumbnail_width` y `thumbnail_height` para generar miniaturas (según layout se usan tamaños derivados por alto o por ancho cuando aplica).
+- Image:
+  - `caption` and `alt_text` for title/alt text.
+  - `thumbnail_width` and `thumbnail_height` to generate thumbnails (depending on the layout, derived sizes are used by height or width).
 
-### Deep-linking y contador
+### Deep linking and counter
 
-- Puedes enlazar directamente a una imagen con `#lb=<grupo>:<indice>` (1-based), por ejemplo: `#lb=gallery-42:3`.
-- Al navegar en el lightbox, la URL se actualiza manteniendo el estado actual.
-- El contador en el overlay muestra "i de N" sincronizado con la navegación.
+- Link directly to an image using `#lb=<group>:<index>` (1-based), for example `#lb=gallery-42:3`.
+- While browsing the lightbox, the URL updates to reflect the current state.
+- The overlay counter displays "i of N" in sync with navigation.
 
-### Gestos táctiles
+### Touch gestures
 
-- En dispositivos táctiles, desliza a izquierda/derecha para navegar entre imágenes dentro del overlay.
+- On touch devices, swipe left/right to navigate between images within the overlay.
 
-### Rendimiento
+### Performance
 
-- Las miniaturas usan `loading="lazy"` y `decoding="async"`.
-- Se genera un `srcset` básico (480/960/1440w) y un atributo `sizes` acorde al layout para mejorar nitidez y tiempos de carga.
+- Thumbnails use `loading="lazy"` and `decoding="async"`.
+- A basic `srcset` (480/960/1440w) and matching `sizes` attribute improve sharpness and load times.
 
-## Assets locales
+## Local assets
 
-- Los templates incluyen los assets desde `static/djangocms_lightbox2/lightbox2/`.
-- Este repositorio incluye los archivos oficiales de Lightbox2 (CSS, JS e imágenes) de la versión 2.11.5 ya integrados en `static/`.
+- Templates include assets from `static/djangocms_lightbox2/lightbox2/`.
+- The repository bundles the official Lightbox2 files (CSS, JS, images) for version 2.11.5 under `static/`.
 
-Rutas esperadas:
+Expected paths:
 - CSS: `static/djangocms_lightbox2/lightbox2/css/lightbox.min.css`
-- JS:  `static/djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js`
+- JS: `static/djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js`
 - Img: `static/djangocms_lightbox2/lightbox2/images/{close.png,loading.gif,next.png,prev.png}`
 
-## Notas
+## Notes
 
-- Si necesitas opciones avanzadas de configuración de Lightbox2, adáptalas en `templates/djangocms_lightbox2/includes/assets.html` o añade un fichero JS de inicialización en `static/djangocms_lightbox2/js/`.
-- Si actualizas a una versión nueva de Lightbox2, recuerda reemplazar los archivos en `static/djangocms_lightbox2/lightbox2/` y mantener la correspondencia con la versión de Lightbox2 indicada en este paquete.
+- For advanced Lightbox2 configuration, adapt `templates/djangocms_lightbox2/includes/assets.html` or add an initialization file under `static/djangocms_lightbox2/js/`.
+- When upgrading Lightbox2, replace the files in `static/djangocms_lightbox2/lightbox2/` and keep the version reference in sync.
 
-Actualización desde versiones previas:
-- Ejecuta migraciones para incorporar los campos de layout: `python manage.py migrate` (incluye `0003_layout_fields`).
-- Vuelve a ejecutar `collectstatic` para incluir los nuevos assets de galería.
+Upgrade from previous releases:
+- Run migrations to include the layout fields: `python manage.py migrate` (this covers `0003_layout_fields`).
+- Run `collectstatic` again to include the updated gallery assets.
 
-## Configuración
+## Configuration
 
-- `DJANGOCMS_LIGHTBOX2_USE_BUNDLED_JQUERY` (por defecto: `True`)
-  - `True`: incluye `lightbox-plus-jquery.min.js` (contiene jQuery). Útil si tu proyecto no inyecta jQuery aparte.
-  - `False`: incluye `lightbox.min.js` (sin jQuery). Requiere que jQuery esté ya cargado en la página.
+- `DJANGOCMS_LIGHTBOX2_USE_BUNDLED_JQUERY` (default: `True`)
+  - `True`: include `lightbox-plus-jquery.min.js` (bundles jQuery). Useful when your project does not load jQuery separately.
+  - `False`: include `lightbox.min.js` (without jQuery). Requires jQuery to be loaded elsewhere.
 
 - `DJANGOCMS_LIGHTBOX2_OPTIONS` (dict)
-  - Permite sobreescribir opciones por defecto de Lightbox2 de forma global.
-  - Claves soportadas: `albumLabel`, `alwaysShowNavOnTouchDevices`, `fadeDuration`, `fitImagesInViewport`, `imageFadeDuration`, `positionFromTop`, `resizeDuration`, `showImageNumberLabel`, `wrapAround`, `disableScrolling`, `maxWidth`, `maxHeight`.
-
-
+  - Override Lightbox2 defaults globally.
+  - Supported keys: `albumLabel`, `alwaysShowNavOnTouchDevices`, `fadeDuration`, `fitImagesInViewport`, `imageFadeDuration`, `positionFromTop`, `resizeDuration`, `showImageNumberLabel`, `wrapAround`, `disableScrolling`, `maxWidth`, `maxHeight`.
 
 ## I18N
 
-- Recomendado para releases: compilar `.mo` en CI y publicarlos en la distribución (ya están incluidos por `MANIFEST.in`).
-- En desarrollo: puedes usar `django-admin compilemessages -l <lang>` o `msgfmt` de gettext.
+- For releases, compile `.mo` files in CI and include them in the distribution (already handled via `MANIFEST.in`).
+- During development, you can run `django-admin compilemessages -l <lang>` or use `msgfmt` from gettext.
+

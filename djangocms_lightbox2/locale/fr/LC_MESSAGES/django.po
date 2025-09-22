@@ -25,7 +25,7 @@ msgid "Thumbnail"
 msgstr "Vignette"
 
 #: djangocms_lightbox2/cms_plugins.py
-msgid "Opciones de Lightbox2"
+msgid "Lightbox2 options"
 msgstr "Options de Lightbox2"
 
 #: djangocms_lightbox2/cms_plugins.py
@@ -33,55 +33,55 @@ msgid "Layout"
 msgstr "Disposition"
 
 #: djangocms_lightbox2/models.py
-msgid "Nombre de grupo para 'data-lightbox'. Si está vacío, se usará 'gallery-<id>'."
+msgid "Group name for 'data-lightbox'. If empty, 'gallery-<id>' will be used."
 msgstr "Nom de groupe pour 'data-lightbox'. S'il est vide, 'gallery-<id>' sera utilisé."
 
 #: djangocms_lightbox2/models.py
-msgid "Plantilla de etiqueta del contador. Ej: 'Imagen %1 de %2'. Dejar vacío para usar el valor por defecto."
+msgid "Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."
 msgstr "Modele du libellel du compteur. Ex: 'Image %1 sur %2'. Laisser vide pour la valeur par dfaut."
 
 #: djangocms_lightbox2/models.py
-msgid "Mostrar navegación siempre en dispositivos táctiles."
+msgid "Always show navigation on touch devices."
 msgstr "Toujours afficher la navigation sur les appareils tactiles."
 
 #: djangocms_lightbox2/models.py
-msgid "Duración del fundido de la superposición (ms)."
+msgid "Overlay fade duration (ms)."
 msgstr "Duree de fondu du voile (ms)."
 
 #: djangocms_lightbox2/models.py
-msgid "Ajustar imágenes al viewport."
+msgid "Fit images to the viewport."
 msgstr "Ajuster les images au viewport."
 
 #: djangocms_lightbox2/models.py
-msgid "Duración del fundido de la imagen (ms)."
+msgid "Image fade duration (ms)."
 msgstr "Duree du fondu de l'image (ms)."
 
 #: djangocms_lightbox2/models.py
-msgid "Separación desde la parte superior (px)."
+msgid "Offset from the top (px)."
 msgstr "Distance depuis le haut (px)."
 
 #: djangocms_lightbox2/models.py
-msgid "Duración del cambio de tamaño (ms)."
+msgid "Resize duration (ms)."
 msgstr "Duree du redimensionnement (ms)."
 
 #: djangocms_lightbox2/models.py
-msgid "Mostrar etiqueta de número de imagen."
+msgid "Show image number label."
 msgstr "Afficher le libellel du numero d'image."
 
 #: djangocms_lightbox2/models.py
-msgid "Permitir navegación circular (wrap around)."
+msgid "Allow wrap-around navigation."
 msgstr "Autoriser la navigation en boucle (wrap around)."
 
 #: djangocms_lightbox2/models.py
-msgid "Deshabilitar scroll del fondo cuando está abierto."
+msgid "Disable background scrolling when open."
 msgstr "Dsactiver le dfilement de l'arribre-plan lorsqu'ouvert."
 
 #: djangocms_lightbox2/models.py
-msgid "Ancho máximo de la imagen (px). Vacío usa el defecto de Lightbox2."
+msgid "Maximum image width (px). Leave blank to use the Lightbox2 default."
 msgstr "Largeur maximale de l'image (px). Vide utilise la valeur par dfaut de Lightbox2."
 
 #: djangocms_lightbox2/models.py
-msgid "Altura máxima de la imagen (px). Vacío usa el defecto de Lightbox2."
+msgid "Maximum image height (px). Leave blank to use the Lightbox2 default."
 msgstr "Hauteur maximale de l'image (px). Vide utilise la valeur par dfaut de Lightbox2."
 
 # Layout options and related help_texts
@@ -98,39 +98,39 @@ msgid "Justified"
 msgstr "Justifie"
 
 #: djangocms_lightbox2/models.py
-msgid "Disposición de la galería en la página."
+msgid "Gallery layout on the page."
 msgstr "Disposition de la galerie sur la page."
 
 #: djangocms_lightbox2/models.py
-msgid "Columnas en desktop (Grid)."
+msgid "Columns on desktop (Grid)."
 msgstr "Colonnes sur desktop (Grille)."
 
 #: djangocms_lightbox2/models.py
-msgid "Columnas en tablet (Grid)."
+msgid "Columns on tablet (Grid)."
 msgstr "Colonnes sur tablette (Grille)."
 
 #: djangocms_lightbox2/models.py
-msgid "Columnas en móvil (Grid)."
+msgid "Columns on mobile (Grid)."
 msgstr "Colonnes sur mobile (Grille)."
 
 #: djangocms_lightbox2/models.py
-msgid "Espacio entre elementos (px)."
+msgid "Spacing between items (px)."
 msgstr "Espacement entre elments (px)."
 
 #: djangocms_lightbox2/models.py
-msgid "Mostrar captions bajo miniaturas."
+msgid "Show captions under thumbnails."
 msgstr "Afficher les legendes sous les vignettes."
 
 #: djangocms_lightbox2/models.py
-msgid "Altura objetivo por fila (Justified, px)."
+msgid "Target row height (Justified, px)."
 msgstr "Hauteur de ligne cible (Justified, px)."
 
 #: djangocms_lightbox2/models.py
-msgid "Tolerancia de ajuste de fila (0-1)."
+msgid "Row adjustment tolerance (0-1)."
 msgstr "Tolrance dajustement de ligne (01)."
 
 #: djangocms_lightbox2/models.py
-msgid "Límite de imágenes a mostrar (opcional)."
+msgid "Limit of images to display (optional)."
 msgstr "Limite d’images  afficher (optionnel)."
 #: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
 msgid "Open fullscreen"
@@ -223,3 +223,16 @@ msgstr "scale-down"
 #: djangocms_lightbox2/cms_plugins.py
 msgid "Carousel appearance"
 msgstr "Apparence du carrousel"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/image.html
+msgid "Select an image."
+msgstr "Sélectionnez une image."
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Carousel"
+msgstr "Carrousel"
+
+#: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
+msgid "Thumbnails"
+msgstr "Vignettes"
+

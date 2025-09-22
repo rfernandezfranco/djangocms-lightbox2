@@ -43,7 +43,7 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
             },
         ),
         (
-            _("Opciones de Lightbox2"),
+            _("Lightbox2 options"),
             {
                 "classes": ("collapse",),
                 "fields": (
@@ -159,7 +159,7 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
     fieldsets = (
         (None, {"fields": ("title", "group_name")}),
         (
-            _("Opciones de Lightbox2"),
+            _("Lightbox2 options"),
             {
                 "classes": ("collapse",),
                 "fields": (

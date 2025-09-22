@@ -1,4 +1,4 @@
-/* Ajustes de tamaño del overlay para integrarse con Django CMS. */
+/* Overlay sizing tweaks to integrate with Django CMS. */
 (function (window, document) {
   'use strict';
 
@@ -61,7 +61,7 @@
       try {
         window.lightbox.option({ disableScrolling: true });
       } catch (err) {
-        // noop: mantener compatibilidad si option no está disponible
+        // noop: keep compatibility when option is unavailable
       }
       refreshOverlayIfVisible();
       return;

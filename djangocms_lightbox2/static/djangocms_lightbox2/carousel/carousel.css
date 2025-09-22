@@ -34,7 +34,7 @@
   overflow: hidden;
   background-color: #F8F8F8;
   background-color: var(--dclb2-main-bg, #F8F8F8);
-  aspect-ratio: 4 / 3; /* fija relación ancho:alto */
+  aspect-ratio: 4 / 3; /* sets width:height ratio */
   aspect-ratio: var(--dclb2-main-aspect, 4 / 3);
 }
 .dclb2-slide { display: none; position: relative; height: 100%; }

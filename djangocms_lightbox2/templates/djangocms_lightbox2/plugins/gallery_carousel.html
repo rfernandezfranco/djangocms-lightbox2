@@ -9,7 +9,7 @@
   {% if items %}
     <div class="dclb2-carousel-main"
          role="region"
-         aria-label="Carousel"
+         aria-label="{% trans 'Carousel' %}"
          style="--dclb2-main-bg: {{ carousel_background_color|default:'#F8F8F8' }}; --dclb2-main-aspect: {{ carousel_aspect_ratio_css|default:'4 / 3' }}; --dclb2-object-fit: {{ carousel_object_fit|default:'cover' }};">
       {% for item in items %}
         <div class="dclb2-slide{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.counter0 }}">
@@ -23,7 +23,7 @@
         </div>
       {% endfor %}
     </div>
-    <div class="dclb2-carousel-thumbs" aria-label="Thumbnails">
+    <div class="dclb2-carousel-thumbs" aria-label="{% trans 'Thumbnails' %}">
       <button class="dclb2-btn dclb2-thumbs-prev" type="button" aria-label="{% trans 'Previous' %}"></button>
       <div class="dclb2-thumbs-strip" role="tablist">
         {% for item in items %}

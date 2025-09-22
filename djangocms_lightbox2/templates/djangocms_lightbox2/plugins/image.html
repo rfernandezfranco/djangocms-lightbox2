@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 {% if include_assets %}
   {% include "djangocms_lightbox2/includes/assets.html" %}
 {% endif %}
@@ -7,5 +7,5 @@
   <img src="{{ instance.get_thumbnail_url }}" alt="{{ instance.alt_text|default:instance.caption }}">
 </a>
 {% else %}
-<span class="dclb2-image-missing">Selecciona una imagen.</span>
+<span class="dclb2-image-missing">{% trans 'Select an image.' %}</span>
 {% endif %}

@@ -36,60 +36,62 @@ class Lightbox2Gallery(CMSPlugin):
     group_name = models.CharField(
         max_length=100,
         blank=True,
-        help_text=_("Nombre de grupo para 'data-lightbox'. Si está vacío, se usará 'gallery-<id>'."),
+        help_text=(
+            _("Group name for 'data-lightbox'. If empty, 'gallery-<id>' will be used.")
+        ),
     )
-    # Lightbox2 Options (por galería)
+    # Lightbox2 options (per gallery)
     album_label = models.CharField(
         max_length=100,
         blank=True,
         default="",
-        help_text=_("Plantilla de etiqueta del contador. Ej: 'Imagen %1 de %2'. Dejar vacío para usar el valor por defecto."),
+        help_text=_("Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."),
     )
     always_show_nav_on_touch_devices = models.BooleanField(
         default=False,
-        help_text=_("Mostrar navegación siempre en dispositivos táctiles."),
+        help_text=_("Always show navigation on touch devices."),
     )
     fade_duration = models.PositiveIntegerField(
         default=600,
-        help_text=_("Duración del fundido de la superposición (ms)."),
+        help_text=_("Overlay fade duration (ms)."),
     )
     fit_images_in_viewport = models.BooleanField(
         default=True,
-        help_text=_("Ajustar imágenes al viewport."),
+        help_text=_("Fit images to the viewport."),
     )
     image_fade_duration = models.PositiveIntegerField(
         default=600,
-        help_text=_("Duración del fundido de la imagen (ms)."),
+        help_text=_("Image fade duration (ms)."),
     )
     position_from_top = models.PositiveIntegerField(
         default=50,
-        help_text=_("Separación desde la parte superior (px)."),
+        help_text=_("Offset from the top (px)."),
     )
     resize_duration = models.PositiveIntegerField(
         default=700,
-        help_text=_("Duración del cambio de tamaño (ms)."),
+        help_text=_("Resize duration (ms)."),
     )
     show_image_number_label = models.BooleanField(
         default=True,
-        help_text=_("Mostrar etiqueta de número de imagen."),
+        help_text=_("Show image number label."),
     )
     wrap_around = models.BooleanField(
         default=False,
-        help_text=_("Permitir navegación circular (wrap around)."),
+        help_text=_("Allow wrap-around navigation."),
     )
     disable_scrolling = models.BooleanField(
         default=False,
-        help_text=_("Deshabilitar scroll del fondo cuando está abierto."),
+        help_text=_("Disable background scrolling when open."),
     )
     max_width = models.PositiveIntegerField(
         null=True,
         blank=True,
-        help_text=_("Ancho máximo de la imagen (px). Vacío usa el defecto de Lightbox2."),
+        help_text=_("Maximum image width (px). Leave blank to use the Lightbox2 default."),
     )
     max_height = models.PositiveIntegerField(
         null=True,
         blank=True,
-        help_text=_("Altura máxima de la imagen (px). Vacío usa el defecto de Lightbox2."),
+        help_text=_("Maximum image height (px). Leave blank to use the Lightbox2 default."),
     )
     carousel_aspect_ratio = models.CharField(
         max_length=10,
@@ -126,25 +128,25 @@ class Lightbox2Gallery(CMSPlugin):
         max_length=12,
         choices=LAYOUT_CHOICES,
         default=LAYOUT_GRID,
-        help_text=_("Disposición de la galería en la página."),
+        help_text=_("Gallery layout on the page."),
     )
-    columns_desktop = models.PositiveIntegerField(default=4, help_text=_("Columnas en desktop (Grid)."))
-    columns_tablet = models.PositiveIntegerField(default=2, help_text=_("Columnas en tablet (Grid)."))
-    columns_mobile = models.PositiveIntegerField(default=1, help_text=_("Columnas en móvil (Grid)."))
-    gutter = models.PositiveIntegerField(default=8, help_text=_("Espacio entre elementos (px)."))
-    show_captions = models.BooleanField(default=False, help_text=_("Mostrar captions bajo miniaturas."))
+    columns_desktop = models.PositiveIntegerField(default=4, help_text=_("Columns on desktop (Grid)."))
+    columns_tablet = models.PositiveIntegerField(default=2, help_text=_("Columns on tablet (Grid)."))
+    columns_mobile = models.PositiveIntegerField(default=1, help_text=_("Columns on mobile (Grid)."))
+    gutter = models.PositiveIntegerField(default=8, help_text=_("Spacing between items (px)."))
+    show_captions = models.BooleanField(default=False, help_text=_("Show captions under thumbnails."))
     justified_row_height = models.PositiveIntegerField(
         default=220,
-        help_text=_("Altura objetivo por fila (Justified, px)."),
+        help_text=_("Target row height (Justified, px)."),
     )
     justified_tolerance = models.FloatField(
         default=0.25,
-        help_text=_("Tolerancia de ajuste de fila (0-1)."),
+        help_text=_("Row adjustment tolerance (0-1)."),
     )
     limit_items = models.PositiveIntegerField(
         null=True,
         blank=True,
-        help_text=_("Límite de imágenes a mostrar (opcional)."),
+        help_text=_("Limit of images to display (optional)."),
     )
 
     def get_group(self):
