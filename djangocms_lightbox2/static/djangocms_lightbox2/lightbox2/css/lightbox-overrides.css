@@ -38,19 +38,17 @@ body {
   width: 50%;
   opacity: 1;
   transition: none;
-  background-repeat: no-repeat;
-  background-position: center;
   background-size: contain;
 }
 
 #lightbox .lb-nav a.lb-prev {
   margin-left: -74px;
-  background-image: url('../images/lb-prev.svg');
+  background: url('../images/lb-prev.svg') left center no-repeat;
 }
 
 #lightbox .lb-nav a.lb-next {
   margin-right: 74px;
-  background-image: url('../images/lb-next.svg');
+  background: url('../images/lb-next.svg') right center no-repeat;
 }
 
 #lightbox .lb-nav a.lb-prev:hover,
