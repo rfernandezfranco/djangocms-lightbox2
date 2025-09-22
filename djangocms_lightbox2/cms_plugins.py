@@ -159,6 +159,17 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
     fieldsets = (
         (None, {"fields": ("title", "group_name")}),
         (
+            _("Carousel appearance"),
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "carousel_aspect_ratio",
+                    "carousel_background_color",
+                    "carousel_object_fit",
+                )
+            },
+        ),
+        (
             _("Lightbox2 options"),
             {
                 "classes": ("collapse",),
@@ -176,16 +187,6 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
                     "max_width",
                     "max_height",
                 ),
-            },
-        ),
-        (
-            _("Carousel appearance"),
-            {
-                "fields": (
-                    "carousel_aspect_ratio",
-                    "carousel_background_color",
-                    "carousel_object_fit",
-                )
             },
         ),
     )
