@@ -47,7 +47,7 @@ body {
 }
 
 #lightbox .lb-nav a.lb-next {
-  margin-right: 74px;
+  margin-right: -74px;
   background: url('../images/lb-next.svg') right center no-repeat;
 }
 
