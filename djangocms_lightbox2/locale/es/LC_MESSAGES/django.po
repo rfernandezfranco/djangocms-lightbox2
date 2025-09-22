@@ -240,4 +240,7 @@ msgstr "Carrusel"
 #: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
 msgid "Thumbnails"
 msgstr "Miniaturas"
+#: djangocms_lightbox2/cms_plugins.py
+msgid "Gallery layout and items"
+msgstr "Disposición e ítems de la galería"
 

@@ -30,8 +30,9 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
     fieldsets = (
         (None, {"fields": ("title", "group_name")}),
         (
-            _("Layout"),
+            _("Gallery layout and items"),
             {
+                "classes": ("collapse",),
                 "fields": (
                     "layout",
                     "show_captions",
