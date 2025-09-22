@@ -3,9 +3,7 @@
 
 {% addtoblock "css" %}
   <link rel="stylesheet" href="{% static 'djangocms_lightbox2/gallery/gallery.css' %}">
-  {% if gallery_layout == 'justified' %}
-    <link rel="stylesheet" href="{% static 'djangocms_lightbox2/gallery/justified.css' %}">
-  {% endif %}
+  <link rel="stylesheet" href="{% static 'djangocms_lightbox2/gallery/justified.css' %}">
 {% endaddtoblock %}
 
 <div class="dclb2-gallery" id="lb-gallery-{{ instance.pk }}" data-layout="{{ gallery_layout }}"
@@ -29,7 +27,5 @@
 </div>
 
 {% addtoblock "js" %}
-  {% if gallery_layout == 'justified' %}
-    <script src="{% static 'djangocms_lightbox2/gallery/justified.js' %}"></script>
-  {% endif %}
+  <script src="{% static 'djangocms_lightbox2/gallery/justified.js' %}"></script>
 {% endaddtoblock %}

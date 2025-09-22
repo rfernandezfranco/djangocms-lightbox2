@@ -295,8 +295,11 @@
     container._dclb2JustifiedBuilding = false;
   }
 
-  function init() {
-    document.querySelectorAll('.dclb2-justified').forEach(function(container) {
+  function initWithin(root) {
+    if (!root || !root.querySelectorAll) {
+      return;
+    }
+    root.querySelectorAll('.dclb2-justified').forEach(function(container) {
       if (!container._dclb2JustifiedInit) {
         container._dclb2JustifiedInit = true;
         containers.add(container);
@@ -307,9 +310,44 @@
     });
   }
 
+  function init() {
+    initWithin(document);
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
+  }
+
+  if (typeof window !== 'undefined') {
+    window.dclb2JustifiedInit = init;
+  }
+
+  if (typeof MutationObserver === 'function') {
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (!node || node.nodeType !== 1) {
+            return;
+          }
+          if (node.matches && node.matches('.dclb2-justified')) {
+            initWithin(node);
+          } else if (node.querySelectorAll) {
+            initWithin(node);
+          }
+        });
+      });
+    });
+    var target = document.documentElement || document.body;
+    if (target) {
+      observer.observe(target, { childList: true, subtree: true });
+    }
+  }
+
+  if (typeof document !== 'undefined') {
+    ['cms-content-refresh', 'cms-structure-update'].forEach(function(evt) {
+      document.addEventListener(evt, init, false);
+    });
   }
 })();
