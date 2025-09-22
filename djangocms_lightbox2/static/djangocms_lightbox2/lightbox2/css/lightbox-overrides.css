@@ -31,3 +31,29 @@ body {
   font-size: 20px;      /* requested size */
   line-height: 1.2;
 }
+
+/* Custom prev/next buttons */
+#lightbox .lb-nav a.lb-prev,
+#lightbox .lb-nav a.lb-next {
+  width: 50%;
+  opacity: 1;
+  transition: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+#lightbox .lb-nav a.lb-prev {
+  margin-left: -74px;
+  background-image: url('../images/lb-prev.svg');
+}
+
+#lightbox .lb-nav a.lb-next {
+  margin-right: 74px;
+  background-image: url('../images/lb-next.svg');
+}
+
+#lightbox .lb-nav a.lb-prev:hover,
+#lightbox .lb-nav a.lb-next:hover {
+  opacity: 1;
+}
