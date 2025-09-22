@@ -54,7 +54,6 @@
       active.classList.add('active');
       try { active.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' }); } catch (e) {}
     }
-    setCounter();
     updateHash();
   }
 
@@ -223,18 +222,6 @@
     } catch (e) {
       // Fallback: blank out hash
       window.location.hash = '';
-    }
-  }
-
-  function setCounter() {
-    var lb = document.getElementById('lightbox');
-    if (!lb || !state.group) return;
-    var list = state.groups[state.group] || [];
-    var num = lb.querySelector('.lb-number');
-    if (num) {
-      var current = (state.index + 1);
-      var total = list.length || 0;
-      num.textContent = current + ' de ' + total;
     }
   }
 
