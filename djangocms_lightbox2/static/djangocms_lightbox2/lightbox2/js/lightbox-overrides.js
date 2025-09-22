@@ -58,11 +58,6 @@
   function attemptPatch() {
     attempts += 1;
     if (window.lightbox && patchLightbox(window.lightbox)) {
-      try {
-        window.lightbox.option({ disableScrolling: true });
-      } catch (err) {
-        // noop: keep compatibility when option is unavailable
-      }
       refreshOverlayIfVisible();
       return;
     }
