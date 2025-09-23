@@ -22,18 +22,15 @@
   min-width: 44px;
   max-width: 44px;
   height: 44px;
-  background-color: rgba(0, 0, 0, 0.6);
-  border: none;
+  background-color: #fff;
+  border: 1px solid #0085ff;
   border-radius: 5px;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: var(--dclb2-icon-size, 20px);
-  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 .dclb2-btn:hover,
 .dclb2-btn:focus-visible {
   background-color: #006cd8;
-  transform: translateY(-1px);
 }
 .dclb2-carousel-main {
   position: relative;
@@ -66,8 +63,12 @@
 }
 .dclb2-controls .dclb2-fullscreen,
 .dclb2-controls .dclb2-download { border: none; color: #0085ff; text-decoration: none; }
-.dclb2-controls .dclb2-fullscreen { background-image: url('../carousel/icons/fullscreen-hover.svg'); }
-.dclb2-controls .dclb2-download { background-image: url('../carousel/icons/download-hover.svg'); }
+.dclb2-controls .dclb2-fullscreen { background-image: url('../carousel/icons/fullscreen.svg'); }
+.dclb2-controls .dclb2-download { background-image: url('../carousel/icons/download.svg'); }
+.dclb2-controls .dclb2-fullscreen:hover,
+.dclb2-controls .dclb2-fullscreen:focus-visible { background-image: url('../carousel/icons/fullscreen-hover.svg'); background-color: #006cd8; }
+.dclb2-controls .dclb2-download:hover,
+.dclb2-controls .dclb2-download:focus-visible { background-image: url('../carousel/icons/download-hover.svg'); background-color: #006cd8; }
 
 /* Prev/Next arrows */
 .dclb2-prev,
@@ -90,9 +91,13 @@
   border-radius: 0 0 8px 8px;
 }
 .dclb2-thumbs-prev,
-.dclb2-thumbs-next { background-size: 18px; }
-.dclb2-thumbs-prev { background-image: url('../carousel/icons/chevron-left-hover.svg'); }
-.dclb2-thumbs-next { background-image: url('../carousel/icons/chevron-right-hover.svg'); }
+.dclb2-thumbs-next { background-size: 11px; }
+.dclb2-thumbs-prev { background-image: url('../carousel/icons/chevron-left.svg'); }
+.dclb2-thumbs-next { background-image: url('../carousel/icons/chevron-right.svg'); }
+.dclb2-thumbs-prev:hover,
+.dclb2-thumbs-prev:focus-visible { background-image: url('../carousel/icons/chevron-left-hover.svg'); background-color: #006cd8; }
+.dclb2-thumbs-next:hover,
+.dclb2-thumbs-next:focus-visible { background-image: url('../carousel/icons/chevron-right-hover.svg'); background-color: #006cd8; }
 .dclb2-thumbs-strip { display: flex; gap: var(--dclb2-thumb-gap); overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
 .dclb2-thumb {
   width: 60px;
