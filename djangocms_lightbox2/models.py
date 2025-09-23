@@ -1,9 +1,44 @@
+import logging
+
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from cms.models.pluginmodel import CMSPlugin
 from filer.fields.image import FilerImageField
 from easy_thumbnails.files import get_thumbnailer
+try:  # pragma: no cover - fallback when easy_thumbnails exceptions aren't available at import time
+    from easy_thumbnails import exceptions as thumbnail_exceptions
+except ImportError:  # pragma: no cover
+    thumbnail_exceptions = None
+
+
+logger = logging.getLogger(__name__)
+
+_EXPECTED_THUMBNAIL_ERRORS = [OSError]
+if thumbnail_exceptions:  # pragma: no branch - executed when dependency is installed
+    for _name in ("InvalidImageFormatError", "EasyThumbnailsError"):
+        _exc = getattr(thumbnail_exceptions, _name, None)
+        if _exc:
+            _EXPECTED_THUMBNAIL_ERRORS.append(_exc)
+EXPECTED_THUMBNAIL_ERRORS = tuple(_EXPECTED_THUMBNAIL_ERRORS)
+
+
+def _handle_thumbnail_exception(instance, exc, operation):
+    fallback = getattr(getattr(instance, "image", None), "url", "")
+    if isinstance(exc, EXPECTED_THUMBNAIL_ERRORS):
+        logger.warning(
+            "Lightbox2Image %s: %s failed (%s)",
+            instance.pk,
+            operation,
+            exc,
+        )
+    else:  # pragma: no cover - unexpected paths are hard to exercise
+        logger.exception(
+            "Lightbox2Image %s: unexpected error during %s",
+            instance.pk,
+            operation,
+        )
+    return fallback
 
 
 class Lightbox2Gallery(CMSPlugin):
@@ -203,8 +238,10 @@ class Lightbox2Image(CMSPlugin):
             thumbnailer = get_thumbnailer(self.image)
             thumb = thumbnailer.get_thumbnail(options)
             return thumb.url
-        except Exception:
-            return self.image.url
+        except EXPECTED_THUMBNAIL_ERRORS as exc:
+            return _handle_thumbnail_exception(self, exc, "thumbnail generation")
+        except Exception as exc:  # pragma: no cover - unexpected paths should be visible
+            return _handle_thumbnail_exception(self, exc, "thumbnail generation")
 
     def get_scaled_by_height_url(self, target_height):
         if not self.image:
@@ -218,8 +255,10 @@ class Lightbox2Image(CMSPlugin):
             thumbnailer = get_thumbnailer(self.image)
             thumb = thumbnailer.get_thumbnail(options)
             return thumb.url
-        except Exception:
-            return self.image.url
+        except EXPECTED_THUMBNAIL_ERRORS as exc:
+            return _handle_thumbnail_exception(self, exc, "height scaling")
+        except Exception as exc:  # pragma: no cover
+            return _handle_thumbnail_exception(self, exc, "height scaling")
 
     def get_scaled_by_width_url(self, target_width):
         if not self.image:
@@ -233,8 +272,10 @@ class Lightbox2Image(CMSPlugin):
             thumbnailer = get_thumbnailer(self.image)
             thumb = thumbnailer.get_thumbnail(options)
             return thumb.url
-        except Exception:
-            return self.image.url
+        except EXPECTED_THUMBNAIL_ERRORS as exc:
+            return _handle_thumbnail_exception(self, exc, "width scaling")
+        except Exception as exc:  # pragma: no cover
+            return _handle_thumbnail_exception(self, exc, "width scaling")
 
     def copy_relations(self, oldinstance):
         self.caption = oldinstance.caption

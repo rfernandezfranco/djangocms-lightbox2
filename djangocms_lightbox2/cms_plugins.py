@@ -72,49 +72,42 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
         options = conf.build_options_from_gallery(instance)
         context["lb_options_json"] = mark_safe(json.dumps(options))
         # Build items for rendering according to layout
-        children = getattr(instance, "child_plugin_instances", []) or []
+        images_qs = (
+            Lightbox2Image.objects.filter(parent=instance)
+            .select_related("image")
+            .order_by("position", "pk")
+        )
+        if instance.limit_items:
+            images_qs = images_qs[: instance.limit_items]
+
         items = []
-        count = 0
-        for child in children:
-            # child is a CMSPlugin instance; get model instance if needed
-            try:
-                model_inst = getattr(child, "get_plugin_instance", None)
-                if callable(model_inst):
-                    model_inst = model_inst()[0]
-            except Exception:
-                model_inst = child
-            # Only process our image model
-            if getattr(model_inst, "image", None) is None:
+        for image_plugin in images_qs:
+            if not getattr(image_plugin, "image", None):
                 continue
-            if instance.limit_items and count >= instance.limit_items:
-                break
-            count += 1
-            img_href = getattr(model_inst.image, "url", "") if getattr(model_inst, "image", None) else ""
+
+            img_href = getattr(image_plugin.image, "url", "")
             if instance.layout == instance.LAYOUT_JUSTIFIED:
-                thumb = model_inst.get_scaled_by_height_url(instance.justified_row_height)
+                thumb = image_plugin.get_scaled_by_height_url(instance.justified_row_height)
             elif instance.layout == instance.LAYOUT_MASONRY:
-                thumb = model_inst.get_scaled_by_width_url(model_inst.thumbnail_width)
+                thumb = image_plugin.get_scaled_by_width_url(image_plugin.thumbnail_width)
             else:
-                thumb = model_inst.get_thumbnail_url()
+                thumb = image_plugin.get_thumbnail_url()
 
             # Build a simple srcset for better sharpness on retina/responsive
-            try:
-                srcset_widths = [480, 960, 1440]
-                srcset_parts = []
-                for w in srcset_widths:
-                    url_w = model_inst.get_scaled_by_width_url(w)
-                    if url_w:
-                        srcset_parts.append(f"{url_w} {w}w")
-                srcset = ", ".join(srcset_parts) if srcset_parts else ""
-            except Exception:
-                srcset = ""
+            srcset_parts = []
+            for width in (480, 960, 1440):
+                url_w = image_plugin.get_scaled_by_width_url(width)
+                if url_w:
+                    srcset_parts.append(f"{url_w} {width}w")
+            srcset = ", ".join(srcset_parts) if srcset_parts else ""
+
             items.append(
                 {
                     "href": img_href,
                     "thumb": thumb,
                     "srcset": srcset,
-                    "caption": getattr(model_inst, "caption", ""),
-                    "alt": getattr(model_inst, "alt_text", "") or getattr(model_inst, "caption", ""),
+                    "caption": getattr(image_plugin, "caption", ""),
+                    "alt": getattr(image_plugin, "alt_text", "") or getattr(image_plugin, "caption", ""),
                 }
             )
         default_row_height = Lightbox2Gallery._meta.get_field("justified_row_height").default

@@ -1,7 +1,11 @@
+import base64
+
+from django.core.files.base import ContentFile
 from django.template import engines
 from sekizai.context import SekizaiContext
 from cms.api import add_plugin
 from cms.models.placeholdermodel import Placeholder
+from filer.models.imagemodels import Image as FilerImage
 from djangocms_lightbox2.cms_plugins import (
     Lightbox2GalleryPlugin,
     Lightbox2ImagePlugin,
@@ -17,6 +21,14 @@ def render_template(path, context):
 
 def make_context():
     return SekizaiContext({})
+
+
+def make_filer_image(filename="example.png"):
+    data = base64.b64decode(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAuMB9oNw3iYAAAAASUVORK5CYII="
+    )
+    file_obj = ContentFile(data, name=filename)
+    return FilerImage.objects.create(original_filename=filename, file=file_obj)
 
 
 def test_gallery_render_includes_assets_without_children(db):
@@ -62,16 +74,19 @@ def test_carousel_controls_toggle(db):
         show_fullscreen_button=True,
         show_download_button=False,
     )
+    image = make_filer_image()
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin,
+        language="en",
+        target=carousel_pl,
+        image=image,
+        alt_text="Example",
+    )
     instance, plugin_cls = carousel_pl.get_plugin_instance()
     plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
     ctx = make_context()
     ctx = plugin.render(ctx, instance, ph)
-    ctx["items"] = [{
-        "href": "/media/example.jpg",
-        "thumb": "/media/example-thumb.jpg",
-        "caption": "",
-        "alt": "Example",
-    }]
     html = render_template(plugin.render_template, ctx)
     assert "dclb2-fullscreen" in html
     assert "dclb2-download" not in html
@@ -87,15 +102,18 @@ def test_carousel_controls_can_be_hidden(db):
         show_fullscreen_button=False,
         show_download_button=False,
     )
+    image = make_filer_image("hidden.png")
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin,
+        language="en",
+        target=carousel_pl,
+        image=image,
+        alt_text="Example",
+    )
     instance, plugin_cls = carousel_pl.get_plugin_instance()
     plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
     ctx = make_context()
     ctx = plugin.render(ctx, instance, ph)
-    ctx["items"] = [{
-        "href": "/media/example.jpg",
-        "thumb": "/media/example-thumb.jpg",
-        "caption": "",
-        "alt": "Example",
-    }]
     html = render_template(plugin.render_template, ctx)
     assert "dclb2-controls" not in html
