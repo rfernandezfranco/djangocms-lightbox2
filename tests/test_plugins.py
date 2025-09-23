@@ -18,9 +18,11 @@ from djangocms_lightbox2.cms_plugins import (
 def render_template(path, context):
     template = engines["django"].get_template(path)
     if hasattr(context, "flatten"):
-        context = context.flatten()
-    request = context.get("request")
-    return template.render(context, request=request)
+        data = context.flatten()
+    else:
+        data = context
+    request = data.get("request")
+    return template.render(data, request=request)
 
 
 def make_context():
@@ -47,8 +49,8 @@ def test_gallery_render_includes_assets_without_children(db):
         language="en",
         title="Test",
     )
-    instance, plugin_cls = gallery_plugin.get_plugin_instance()
-    plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
+    instance, plugin = gallery_plugin.get_plugin_instance()
+    assert plugin is not None
     ctx = make_context()
     ctx = plugin.render(ctx, instance, ph)
     html = render_template(plugin.render_template, ctx)
@@ -61,8 +63,8 @@ def test_image_include_assets_only_when_standalone(db):
     ph = Placeholder.objects.create(slot="content")
     # Standalone image
     img_pl = add_plugin(ph, Lightbox2ImagePlugin.__name__, language="en")
-    instance, plugin_cls = img_pl.get_plugin_instance()
-    plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
+    instance, plugin = img_pl.get_plugin_instance()
+    assert plugin is not None
     ctx = make_context()
     ctx = plugin.render(ctx, instance, ph)
     assert ctx.get("include_assets") is True
@@ -80,8 +82,8 @@ def test_image_include_assets_only_when_standalone(db):
         language="en",
         target=gal_pl,
     )
-    child_instance, child_cls = child_img.get_plugin_instance()
-    child_plugin = child_cls(model=child_cls.model, admin_site=None)
+    child_instance, child_plugin = child_img.get_plugin_instance()
+    assert child_plugin is not None
     ctx2 = make_context()
     ctx2 = child_plugin.render(ctx2, child_instance, ph)
     assert ctx2.get("include_assets") is False
@@ -106,8 +108,8 @@ def test_carousel_controls_toggle(db):
         image=image,
         alt_text="Example",
     )
-    instance, plugin_cls = carousel_pl.get_plugin_instance()
-    plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
+    instance, plugin = carousel_pl.get_plugin_instance()
+    assert plugin is not None
     ctx = make_context()
     ctx = plugin.render(ctx, instance, ph)
     html = render_template(plugin.render_template, ctx)
@@ -134,8 +136,8 @@ def test_carousel_controls_can_be_hidden(db):
         image=image,
         alt_text="Example",
     )
-    instance, plugin_cls = carousel_pl.get_plugin_instance()
-    plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
+    instance, plugin = carousel_pl.get_plugin_instance()
+    assert plugin is not None
     ctx = make_context()
     ctx = plugin.render(ctx, instance, ph)
     html = render_template(plugin.render_template, ctx)

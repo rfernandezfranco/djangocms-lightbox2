@@ -12,12 +12,13 @@ def render_assets(use_bundled_jquery=True, lb_options=None):
     )
     django_engine = engines["django"]
     template = django_engine.from_string(tpl_src)
+    request = RequestFactory().get("/")
     context_data = {
         "use_bundled_jquery": use_bundled_jquery,
         "lb_options_json": lb_options,
+        "request": request,
     }
-    request = RequestFactory().get("/")
-    ctx = SekizaiContext(context_data, request=request)
+    ctx = SekizaiContext(context_data)
     return template.render(ctx.flatten(), request=request)
 
 
