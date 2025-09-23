@@ -70,4 +70,3 @@ def test_build_options_overrides_and_max_dimensions():
     assert opts["disableScrolling"] is True
     assert opts["maxWidth"] == 1024
     assert opts["maxHeight"] == 768
-

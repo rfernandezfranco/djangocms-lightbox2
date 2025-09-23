@@ -40,7 +40,7 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
                     ("columns_desktop", "columns_tablet", "columns_mobile"),
                     ("justified_row_height", "justified_tolerance"),
                     "limit_items",
-                )
+                ),
             },
         ),
         (
@@ -87,9 +87,13 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
 
             img_href = getattr(image_plugin.image, "url", "")
             if instance.layout == instance.LAYOUT_JUSTIFIED:
-                thumb = image_plugin.get_scaled_by_height_url(instance.justified_row_height)
+                thumb = image_plugin.get_scaled_by_height_url(
+                    instance.justified_row_height
+                )
             elif instance.layout == instance.LAYOUT_MASONRY:
-                thumb = image_plugin.get_scaled_by_width_url(image_plugin.thumbnail_width)
+                thumb = image_plugin.get_scaled_by_width_url(
+                    image_plugin.thumbnail_width
+                )
             else:
                 thumb = image_plugin.get_thumbnail_url()
 
@@ -107,10 +111,13 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
                     "thumb": thumb,
                     "srcset": srcset,
                     "caption": getattr(image_plugin, "caption", ""),
-                    "alt": getattr(image_plugin, "alt_text", "") or getattr(image_plugin, "caption", ""),
+                    "alt": getattr(image_plugin, "alt_text", "")
+                    or getattr(image_plugin, "caption", ""),
                 }
             )
-        default_row_height = Lightbox2Gallery._meta.get_field("justified_row_height").default
+        default_row_height = Lightbox2Gallery._meta.get_field(
+            "justified_row_height"
+        ).default
 
         context.update(
             {
@@ -123,7 +130,8 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
                     "mobile": instance.columns_mobile,
                 },
                 "gallery_row_height": instance.justified_row_height,
-                "gallery_row_height_auto": instance.justified_row_height == default_row_height,
+                "gallery_row_height_auto": instance.justified_row_height
+                == default_row_height,
                 "gallery_tolerance": instance.justified_tolerance,
                 "items": items,
                 "group_name": instance.get_group(),
@@ -161,7 +169,7 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
                     "carousel_background_color",
                     "carousel_object_fit",
                     ("show_fullscreen_button", "show_download_button"),
-                )
+                ),
             },
         ),
         (
@@ -189,7 +197,9 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
     def render(self, context, instance, placeholder):
         """Reuse the gallery rendering to build items list and options."""
         context = super().render(context, instance, placeholder)
-        context["carousel_background_color"] = instance.carousel_background_color or "#F8F8F8"
+        context["carousel_background_color"] = (
+            instance.carousel_background_color or "#F8F8F8"
+        )
         context["carousel_aspect_ratio_css"] = instance.get_carousel_aspect_ratio_css()
         context["carousel_object_fit"] = instance.carousel_object_fit or "cover"
         return context
@@ -213,7 +223,9 @@ class Lightbox2ImagePlugin(CMSPluginBase):
         context = super().render(context, instance, placeholder)
         include_assets = True
         try:
-            parent_instance = instance.parent and instance.parent.get_plugin_instance()[0]
+            parent_instance = (
+                instance.parent and instance.parent.get_plugin_instance()[0]
+            )
             from .models import Lightbox2Gallery  # local import to avoid circular
 
             if isinstance(parent_instance, Lightbox2Gallery):

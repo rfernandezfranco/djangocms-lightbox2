@@ -68,4 +68,3 @@ class Migration(migrations.Migration):
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
     ]
-

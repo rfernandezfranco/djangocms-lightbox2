@@ -34,8 +34,8 @@ class Migration(migrations.Migration):
                 max_length=7,
                 validators=[
                     validators.RegexValidator(
-                        '^#(?:[0-9a-fA-F]{3}){1,2}$',
-                        'Enter a valid hex color in the format #RRGGBB.',
+                        "^#(?:[0-9a-fA-F]{3}){1,2}$",
+                        "Enter a valid hex color in the format #RRGGBB.",
                     )
                 ],
             ),
@@ -57,4 +57,3 @@ class Migration(migrations.Migration):
             ),
         ),
     ]
-

@@ -29,7 +29,9 @@ def build_options_from_gallery(gallery_instance):
     opts = dict(DEFAULT_OPTIONS)
     if gallery_instance.album_label:
         opts["albumLabel"] = gallery_instance.album_label
-    opts["alwaysShowNavOnTouchDevices"] = gallery_instance.always_show_nav_on_touch_devices
+    opts["alwaysShowNavOnTouchDevices"] = (
+        gallery_instance.always_show_nav_on_touch_devices
+    )
     opts["fadeDuration"] = gallery_instance.fade_duration
     opts["fitImagesInViewport"] = gallery_instance.fit_images_in_viewport
     opts["imageFadeDuration"] = gallery_instance.image_fade_duration

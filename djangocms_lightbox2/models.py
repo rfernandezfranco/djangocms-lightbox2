@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from cms.models.pluginmodel import CMSPlugin
 from filer.fields.image import FilerImageField
 from easy_thumbnails.files import get_thumbnailer
+
 try:  # pragma: no cover - fallback when easy_thumbnails exceptions aren't available at import time
     from easy_thumbnails import exceptions as thumbnail_exceptions
 except ImportError:  # pragma: no cover
@@ -80,7 +81,9 @@ class Lightbox2Gallery(CMSPlugin):
         max_length=100,
         blank=True,
         default="",
-        help_text=_("Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."),
+        help_text=_(
+            "Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."
+        ),
     )
     always_show_nav_on_touch_devices = models.BooleanField(
         default=False,
@@ -121,12 +124,16 @@ class Lightbox2Gallery(CMSPlugin):
     max_width = models.PositiveIntegerField(
         null=True,
         blank=True,
-        help_text=_("Maximum image width (px). Leave blank to use the Lightbox2 default."),
+        help_text=_(
+            "Maximum image width (px). Leave blank to use the Lightbox2 default."
+        ),
     )
     max_height = models.PositiveIntegerField(
         null=True,
         blank=True,
-        help_text=_("Maximum image height (px). Leave blank to use the Lightbox2 default."),
+        help_text=_(
+            "Maximum image height (px). Leave blank to use the Lightbox2 default."
+        ),
     )
     carousel_aspect_ratio = models.CharField(
         max_length=10,
@@ -175,11 +182,21 @@ class Lightbox2Gallery(CMSPlugin):
         default=LAYOUT_GRID,
         help_text=_("Gallery layout on the page."),
     )
-    columns_desktop = models.PositiveIntegerField(default=4, help_text=_("Columns on desktop (Grid)."))
-    columns_tablet = models.PositiveIntegerField(default=2, help_text=_("Columns on tablet (Grid)."))
-    columns_mobile = models.PositiveIntegerField(default=1, help_text=_("Columns on mobile (Grid)."))
-    gutter = models.PositiveIntegerField(default=8, help_text=_("Spacing between items (px)."))
-    show_captions = models.BooleanField(default=False, help_text=_("Show captions under thumbnails."))
+    columns_desktop = models.PositiveIntegerField(
+        default=4, help_text=_("Columns on desktop (Grid).")
+    )
+    columns_tablet = models.PositiveIntegerField(
+        default=2, help_text=_("Columns on tablet (Grid).")
+    )
+    columns_mobile = models.PositiveIntegerField(
+        default=1, help_text=_("Columns on mobile (Grid).")
+    )
+    gutter = models.PositiveIntegerField(
+        default=8, help_text=_("Spacing between items (px).")
+    )
+    show_captions = models.BooleanField(
+        default=False, help_text=_("Show captions under thumbnails.")
+    )
     justified_row_height = models.PositiveIntegerField(
         default=220,
         help_text=_("Target row height (Justified, px)."),
@@ -205,7 +222,9 @@ class Lightbox2Gallery(CMSPlugin):
             self.CAROUSEL_ASPECT_RATIO_3_2: "3 / 2",
             self.CAROUSEL_ASPECT_RATIO_21_9: "21 / 9",
         }
-        return mapping.get(self.carousel_aspect_ratio, mapping[self.CAROUSEL_ASPECT_RATIO_4_3])
+        return mapping.get(
+            self.carousel_aspect_ratio, mapping[self.CAROUSEL_ASPECT_RATIO_4_3]
+        )
 
     def copy_relations(self, oldinstance):
         self.group_name = oldinstance.group_name
@@ -215,7 +234,9 @@ class Lightbox2Gallery(CMSPlugin):
 
 
 class Lightbox2Image(CMSPlugin):
-    image = FilerImageField(on_delete=models.CASCADE, related_name="+", null=True, blank=True)
+    image = FilerImageField(
+        on_delete=models.CASCADE, related_name="+", null=True, blank=True
+    )
     caption = models.CharField(max_length=255, blank=True, default="")
     alt_text = models.CharField(max_length=255, blank=True, default="")
     thumbnail_width = models.PositiveIntegerField(default=400)
@@ -240,7 +261,9 @@ class Lightbox2Image(CMSPlugin):
             return thumb.url
         except EXPECTED_THUMBNAIL_ERRORS as exc:
             return _handle_thumbnail_exception(self, exc, "thumbnail generation")
-        except Exception as exc:  # pragma: no cover - unexpected paths should be visible
+        except (
+            Exception
+        ) as exc:  # pragma: no cover - unexpected paths should be visible
             return _handle_thumbnail_exception(self, exc, "thumbnail generation")
 
     def get_scaled_by_height_url(self, target_height):

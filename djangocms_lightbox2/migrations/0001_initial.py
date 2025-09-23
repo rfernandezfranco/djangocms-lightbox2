@@ -14,15 +14,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Lightbox2Gallery",
             fields=[
-                ("cmsplugin_ptr", models.OneToOneField(
-                    auto_created=True,
-                    on_delete=django.db.models.deletion.CASCADE,
-                    parent_link=True,
-                    primary_key=True,
-                    related_name="djangocms_lightbox2_lightbox2gallery",
-                    serialize=False,
-                    to="cms.cmsplugin",
-                )),
+                (
+                    "cmsplugin_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        related_name="djangocms_lightbox2_lightbox2gallery",
+                        serialize=False,
+                        to="cms.cmsplugin",
+                    ),
+                ),
                 ("title", models.CharField(blank=True, default="", max_length=150)),
                 (
                     "group_name",
@@ -40,15 +43,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Lightbox2Image",
             fields=[
-                ("cmsplugin_ptr", models.OneToOneField(
-                    auto_created=True,
-                    on_delete=django.db.models.deletion.CASCADE,
-                    parent_link=True,
-                    primary_key=True,
-                    related_name="djangocms_lightbox2_lightbox2image",
-                    serialize=False,
-                    to="cms.cmsplugin",
-                )),
+                (
+                    "cmsplugin_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        related_name="djangocms_lightbox2_lightbox2image",
+                        serialize=False,
+                        to="cms.cmsplugin",
+                    ),
+                ),
                 ("caption", models.CharField(blank=True, default="", max_length=255)),
                 ("alt_text", models.CharField(blank=True, default="", max_length=255)),
                 ("thumbnail_width", models.PositiveIntegerField(default=400)),
