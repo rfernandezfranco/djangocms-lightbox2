@@ -1,12 +1,13 @@
+import json
+
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django import forms
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from .models import Lightbox2Gallery, Lightbox2Image
 from . import conf
-from django.utils.safestring import mark_safe
-import json
+from .models import Lightbox2Gallery, Lightbox2Image
 
 
 class Lightbox2CarouselForm(forms.ModelForm):

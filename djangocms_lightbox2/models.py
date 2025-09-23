@@ -1,11 +1,11 @@
 import logging
 
+from cms.models.pluginmodel import CMSPlugin
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from cms.models.pluginmodel import CMSPlugin
-from filer.fields.image import FilerImageField
 from easy_thumbnails.files import get_thumbnailer
+from filer.fields.image import FilerImageField
 
 try:  # pragma: no cover - fallback when easy_thumbnails exceptions aren't available at import time
     from easy_thumbnails import exceptions as thumbnail_exceptions

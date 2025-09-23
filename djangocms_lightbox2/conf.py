@@ -1,6 +1,5 @@
 from django.conf import settings
 
-
 # If True, include Lightbox2 bundle that already includes jQuery.
 # If False, include the standalone Lightbox2 JS (requires jQuery to be loaded elsewhere).
 USE_BUNDLED_JQUERY = getattr(settings, "DJANGOCMS_LIGHTBOX2_USE_BUNDLED_JQUERY", True)

@@ -1,15 +1,16 @@
 import base64
 
-from django.core.files.base import ContentFile
-from django.template import engines
-from sekizai.context import SekizaiContext
 from cms.api import add_plugin
 from cms.models.placeholdermodel import Placeholder
+from django.core.files.base import ContentFile
+from django.template import engines
 from filer.models.imagemodels import Image as FilerImage
+from sekizai.context import SekizaiContext
+
 from djangocms_lightbox2.cms_plugins import (
+    Lightbox2CarouselPlugin,
     Lightbox2GalleryPlugin,
     Lightbox2ImagePlugin,
-    Lightbox2CarouselPlugin,
 )
 
 
