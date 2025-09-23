@@ -165,6 +165,8 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
                 ),
             }
         )
+        # Ensure Lightbox assets are always included for gallery render
+        context["include_assets"] = True
         return context
 
 

@@ -16,13 +16,17 @@ from djangocms_lightbox2.cms_plugins import (
 
 
 def render_template(path, context):
-    template = engines["django"].get_template(path)
-    if hasattr(context, "flatten"):
-        data = context.flatten()
-    else:
-        data = context
-    request = data.get("request")
-    return template.render(data, request=request)
+    django_engine = engines["django"]
+    wrapper = django_engine.from_string(
+        """{% load sekizai_tags %}{% include '"""
+        + path
+        + """' %}{% render_block 'css' %}{% render_block 'js' %}"""
+    )
+    if hasattr(context, "get"):
+        request = context.get("request")
+        if request is not None:
+            context["request"] = request
+    return wrapper.template.render(context)
 
 
 def make_context():

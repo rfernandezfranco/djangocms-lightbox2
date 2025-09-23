@@ -16,10 +16,12 @@ def render_assets(use_bundled_jquery=True, lb_options=None):
     context_data = {
         "use_bundled_jquery": use_bundled_jquery,
         "lb_options_json": lb_options,
-        "request": request,
     }
     ctx = SekizaiContext(context_data)
-    return template.render(ctx.flatten(), request=request)
+    ctx["request"] = request
+    if hasattr(template, "template"):
+        return template.template.render(ctx)
+    return template.render(ctx, request=request)
 
 
 def test_assets_include_bundled_jquery_and_options():
