@@ -98,7 +98,15 @@
 .dclb2-thumbs-prev:focus-visible { background-image: url('../carousel/icons/chevron-left-hover.svg'); background-color: #006cd8; }
 .dclb2-thumbs-next:hover,
 .dclb2-thumbs-next:focus-visible { background-image: url('../carousel/icons/chevron-right-hover.svg'); background-color: #006cd8; }
-.dclb2-thumbs-strip { display: flex; gap: var(--dclb2-thumb-gap); overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+.dclb2-thumbs-strip {
+  display: flex;
+  gap: var(--dclb2-thumb-gap);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.dclb2-thumbs-strip::-webkit-scrollbar { display: none; }
 .dclb2-thumb {
   width: 60px;
   height: 60px;

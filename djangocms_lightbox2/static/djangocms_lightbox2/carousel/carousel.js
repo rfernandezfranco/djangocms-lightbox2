@@ -14,17 +14,18 @@
       index = (i + slides.length) % slides.length;
       slides[index].classList.add('is-active');
       if (thumbs[index]) {
-        thumbs[index].classList.add('active');
-        thumbs[index].setAttribute('aria-selected', 'true');
+        var thumbEl = thumbs[index];
+        thumbEl.classList.add('active');
+        thumbEl.setAttribute('aria-selected', 'true');
         try {
           if (strip && typeof strip.scrollLeft === 'number') {
-            var thumbEl = thumbs[index];
-            var left = thumbEl.offsetLeft - 16; // small padding
-            var right = left + thumbEl.offsetWidth + 32;
-            if (left < strip.scrollLeft) strip.scrollLeft = left;
-            else if (right > strip.scrollLeft + strip.clientWidth) strip.scrollLeft = right - strip.clientWidth;
-          } else {
-            thumbs[index].scrollIntoView({block:'nearest', inline:'center'});
+            var stripRect = strip.getBoundingClientRect();
+            var thumbRect = thumbEl.getBoundingClientRect();
+            if (thumbRect.left < stripRect.left || thumbRect.right > stripRect.right) {
+              thumbEl.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+            }
+          } else if (thumbEl.scrollIntoView) {
+            thumbEl.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
           }
         } catch(e){}
       }
