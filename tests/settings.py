@@ -53,3 +53,5 @@ DATABASES = {
 
 # CMS minimal templates (not used directly but required by cms)
 CMS_TEMPLATES = (("base.html", "Base"),)
+
+CMS_CONFIRM_VERSION4 = True
