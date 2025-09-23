@@ -177,6 +177,22 @@ msgid "Object fit"
 msgstr "Object fit"
 
 #: djangocms_lightbox2/models.py
+msgid "Show fullscreen button"
+msgstr "Afficher le bouton plein écran"
+
+#: djangocms_lightbox2/models.py
+msgid "Display the fullscreen control in the carousel overlay."
+msgstr "Afficher le contrôle plein écran dans la superposition du carrousel."
+
+#: djangocms_lightbox2/models.py
+msgid "Show download button"
+msgstr "Afficher le bouton de téléchargement"
+
+#: djangocms_lightbox2/models.py
+msgid "Display the download control in the carousel overlay."
+msgstr "Afficher le contrôle de téléchargement dans la superposition du carrousel."
+
+#: djangocms_lightbox2/models.py
 msgid "Enter a valid hex color in the format #RRGGBB."
 msgstr "Saisissez une couleur hexadécimale valide au format #RRGGBB."
 
@@ -238,4 +254,3 @@ msgstr "Vignettes"
 #: djangocms_lightbox2/cms_plugins.py
 msgid "Gallery layout and items"
 msgstr "Disposition et éléments de la galerie"
-

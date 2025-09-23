@@ -1,4 +1,3 @@
-import types
 from django.template import engines
 from sekizai.context import SekizaiContext
 from cms.api import add_plugin
@@ -6,6 +5,7 @@ from cms.models.placeholdermodel import Placeholder
 from djangocms_lightbox2.cms_plugins import (
     Lightbox2GalleryPlugin,
     Lightbox2ImagePlugin,
+    Lightbox2CarouselPlugin,
 )
 
 
@@ -51,3 +51,51 @@ def test_image_include_assets_only_when_standalone(db):
     ctx2 = child_plugin.render(ctx2, child_instance, ph)
     assert ctx2.get("include_assets") is False
 
+
+def test_carousel_controls_toggle(db):
+    ph = Placeholder.objects.create(slot="content")
+    carousel_pl = add_plugin(
+        ph,
+        Lightbox2CarouselPlugin,
+        language="en",
+        title="Carousel",
+        show_fullscreen_button=True,
+        show_download_button=False,
+    )
+    instance, plugin_cls = carousel_pl.get_plugin_instance()
+    plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
+    ctx = make_context()
+    ctx = plugin.render(ctx, instance, ph)
+    ctx["items"] = [{
+        "href": "/media/example.jpg",
+        "thumb": "/media/example-thumb.jpg",
+        "caption": "",
+        "alt": "Example",
+    }]
+    html = render_template(plugin.render_template, ctx)
+    assert "dclb2-fullscreen" in html
+    assert "dclb2-download" not in html
+
+
+def test_carousel_controls_can_be_hidden(db):
+    ph = Placeholder.objects.create(slot="content")
+    carousel_pl = add_plugin(
+        ph,
+        Lightbox2CarouselPlugin,
+        language="en",
+        title="Carousel",
+        show_fullscreen_button=False,
+        show_download_button=False,
+    )
+    instance, plugin_cls = carousel_pl.get_plugin_instance()
+    plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
+    ctx = make_context()
+    ctx = plugin.render(ctx, instance, ph)
+    ctx["items"] = [{
+        "href": "/media/example.jpg",
+        "thumb": "/media/example-thumb.jpg",
+        "caption": "",
+        "alt": "Example",
+    }]
+    html = render_template(plugin.render_template, ctx)
+    assert "dclb2-controls" not in html

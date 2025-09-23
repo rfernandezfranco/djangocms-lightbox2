@@ -167,6 +167,7 @@ class Lightbox2CarouselPlugin(Lightbox2GalleryPlugin):
                     "carousel_aspect_ratio",
                     "carousel_background_color",
                     "carousel_object_fit",
+                    ("show_fullscreen_button", "show_download_button"),
                 )
             },
         ),

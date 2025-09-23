@@ -16,10 +16,16 @@
           <a class="dclb2-item" href="{{ item.href }}" data-lightbox="{{ group_name }}"{% if item.caption %} data-title="{{ item.caption }}"{% endif %}>
             <img src="{{ item.href }}" alt="{{ item.alt }}">
           </a>
-          <div class="dclb2-controls">
-            <button class="dclb2-btn dclb2-fullscreen" type="button" aria-label="{% trans 'Open fullscreen' %}"></button>
-            <a class="dclb2-btn dclb2-download" href="{{ item.href }}" download aria-label="{% trans 'Download image' %}"></a>
-          </div>
+          {% if instance.show_fullscreen_button or instance.show_download_button %}
+            <div class="dclb2-controls">
+              {% if instance.show_fullscreen_button %}
+                <button class="dclb2-btn dclb2-fullscreen" type="button" aria-label="{% trans 'Open fullscreen' %}"></button>
+              {% endif %}
+              {% if instance.show_download_button %}
+                <a class="dclb2-btn dclb2-download" href="{{ item.href }}" download aria-label="{% trans 'Download image' %}"></a>
+              {% endif %}
+            </div>
+          {% endif %}
         </div>
       {% endfor %}
     </div>

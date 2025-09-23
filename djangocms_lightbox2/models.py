@@ -114,6 +114,16 @@ class Lightbox2Gallery(CMSPlugin):
         verbose_name=_("Object fit"),
         help_text=_("CSS object-fit value used for images in the carousel."),
     )
+    show_fullscreen_button = models.BooleanField(
+        default=True,
+        verbose_name=_("Show fullscreen button"),
+        help_text=_("Display the fullscreen control in the carousel overlay."),
+    )
+    show_download_button = models.BooleanField(
+        default=True,
+        verbose_name=_("Show download button"),
+        help_text=_("Display the download control in the carousel overlay."),
+    )
 
     # Layout options
     LAYOUT_GRID = "grid"
