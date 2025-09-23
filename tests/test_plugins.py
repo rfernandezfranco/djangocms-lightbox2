@@ -4,6 +4,7 @@ from cms.api import add_plugin
 from cms.models.placeholdermodel import Placeholder
 from django.core.files.base import ContentFile
 from django.template import engines
+from django.test import RequestFactory
 from filer.models.imagemodels import Image as FilerImage
 from sekizai.context import SekizaiContext
 
@@ -16,12 +17,14 @@ from djangocms_lightbox2.cms_plugins import (
 
 def render_template(path, context):
     template = engines["django"].get_template(path)
-    # context is already a dict/SekizaiContext
+    if hasattr(context, "flatten"):
+        context = context.flatten()
     return template.render(context)
 
 
 def make_context():
-    return SekizaiContext({})
+    request = RequestFactory().get("/")
+    return SekizaiContext({"request": request})
 
 
 def make_filer_image(filename="example.png"):
@@ -37,7 +40,12 @@ def make_filer_image(filename="example.png"):
 
 def test_gallery_render_includes_assets_without_children(db):
     ph = Placeholder.objects.create(slot="content")
-    gallery_plugin = add_plugin(ph, Lightbox2GalleryPlugin, language="en", title="Test")
+    gallery_plugin = add_plugin(
+        ph,
+        Lightbox2GalleryPlugin.__name__,
+        language="en",
+        title="Test",
+    )
     instance, plugin_cls = gallery_plugin.get_plugin_instance()
     plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
     ctx = make_context()
@@ -51,7 +59,7 @@ def test_gallery_render_includes_assets_without_children(db):
 def test_image_include_assets_only_when_standalone(db):
     ph = Placeholder.objects.create(slot="content")
     # Standalone image
-    img_pl = add_plugin(ph, Lightbox2ImagePlugin, language="en")
+    img_pl = add_plugin(ph, Lightbox2ImagePlugin.__name__, language="en")
     instance, plugin_cls = img_pl.get_plugin_instance()
     plugin = plugin_cls(model=plugin_cls.model, admin_site=None)
     ctx = make_context()
@@ -59,8 +67,18 @@ def test_image_include_assets_only_when_standalone(db):
     assert ctx.get("include_assets") is True
 
     # Child image: assets should be False
-    gal_pl = add_plugin(ph, Lightbox2GalleryPlugin, language="en", title="G")
-    child_img = add_plugin(ph, Lightbox2ImagePlugin, language="en", target=gal_pl)
+    gal_pl = add_plugin(
+        ph,
+        Lightbox2GalleryPlugin.__name__,
+        language="en",
+        title="G",
+    )
+    child_img = add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        target=gal_pl,
+    )
     child_instance, child_cls = child_img.get_plugin_instance()
     child_plugin = child_cls(model=child_cls.model, admin_site=None)
     ctx2 = make_context()
@@ -72,7 +90,7 @@ def test_carousel_controls_toggle(db):
     ph = Placeholder.objects.create(slot="content")
     carousel_pl = add_plugin(
         ph,
-        Lightbox2CarouselPlugin,
+        Lightbox2CarouselPlugin.__name__,
         language="en",
         title="Carousel",
         show_fullscreen_button=True,
@@ -81,7 +99,7 @@ def test_carousel_controls_toggle(db):
     image = make_filer_image()
     add_plugin(
         ph,
-        Lightbox2ImagePlugin,
+        Lightbox2ImagePlugin.__name__,
         language="en",
         target=carousel_pl,
         image=image,
@@ -100,7 +118,7 @@ def test_carousel_controls_can_be_hidden(db):
     ph = Placeholder.objects.create(slot="content")
     carousel_pl = add_plugin(
         ph,
-        Lightbox2CarouselPlugin,
+        Lightbox2CarouselPlugin.__name__,
         language="en",
         title="Carousel",
         show_fullscreen_button=False,
@@ -109,7 +127,7 @@ def test_carousel_controls_can_be_hidden(db):
     image = make_filer_image("hidden.png")
     add_plugin(
         ph,
-        Lightbox2ImagePlugin,
+        Lightbox2ImagePlugin.__name__,
         language="en",
         target=carousel_pl,
         image=image,
