@@ -19,7 +19,8 @@ def render_template(path, context):
     template = engines["django"].get_template(path)
     if hasattr(context, "flatten"):
         context = context.flatten()
-    return template.render(context)
+    request = context.get("request")
+    return template.render(context, request=request)
 
 
 def make_context():

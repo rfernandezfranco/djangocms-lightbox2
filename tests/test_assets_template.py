@@ -1,4 +1,5 @@
 from django.template import engines
+from django.test import RequestFactory
 from sekizai.context import SekizaiContext
 
 
@@ -11,13 +12,13 @@ def render_assets(use_bundled_jquery=True, lb_options=None):
     )
     django_engine = engines["django"]
     template = django_engine.from_string(tpl_src)
-    ctx = SekizaiContext(
-        {
-            "use_bundled_jquery": use_bundled_jquery,
-            "lb_options_json": lb_options,
-        }
-    )
-    return template.render(ctx)
+    context_data = {
+        "use_bundled_jquery": use_bundled_jquery,
+        "lb_options_json": lb_options,
+    }
+    request = RequestFactory().get("/")
+    ctx = SekizaiContext(context_data, request=request)
+    return template.render(ctx.flatten(), request=request)
 
 
 def test_assets_include_bundled_jquery_and_options():
