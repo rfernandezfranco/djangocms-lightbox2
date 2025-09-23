@@ -74,5 +74,7 @@ jobs:
             pytest pytest-django
 
       - name: Run tests
-        run: |
-          pytest -q
+        env:
+          DJANGO_SETTINGS_MODULE: tests.settings
+          PYTHONPATH: "${{ github.workspace }}:${{ github.workspace }}/tests"
+        run: pytest -q
