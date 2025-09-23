@@ -1,136 +1,140 @@
 # djangocms-lightbox2
 
-Django CMS plugin that integrates [Lightbox2](https://github.com/lokesh/lightbox2/).
+Lightweight collection of Django CMS plugins that ship [Lightbox2](https://github.com/lokesh/lightbox2/) with local assets and gallery helpers. The app provides gallery, carousel, and standalone image plugins that are ready to drop into any CMS placeholder.
 
-The project takes inspiration from *djangocms-light-gallery* and ships a gallery plugin with image children that rely on Lightbox2 `data-lightbox` attributes.
+## Highlights
 
-## Features
+- **Lightbox2 Gallery** plugin with grid, masonry, and justified layouts.
+- **Lightbox2 Carousel** plugin reusing the gallery model with extra carousel controls (aspect ratio, background, object-fit, button toggles).
+- **Lightbox2 Image** plugin for standalone usage or as a gallery/carousel child.
+- Bundled Lightbox2 2.11.5 assets (CSS/JS/images) and slim overrides that are injected via `sekizai` once per page.
+- Easy-thumbnails integration for per-image thumbnail generation and responsive helpers (basic `srcset` for retina displays).
+- Configurable Lightbox2 options per gallery (wrap-around, fade durations, max size, scroll locking, etc.), plus global overrides with Django settings.
 
-- "Lightbox2 Gallery" plugin that groups image children.
-- "Lightbox2 Image" plugin for each gallery item.
-- Local assets (CSS/JS/images) served from the project's `static/` directory.
-- Integration with `sekizai` to inject CSS/JS just once per page.
-- Gallery layouts: Grid, Masonry, and Justified.
-- Deep linking: open a specific image via `#lb=<group>:<index>` and keep the URL in sync while browsing.
-- Performance tweaks: thumbnails use `loading="lazy"`, `decoding="async"`, and basic `srcset`/`sizes` attributes.
-- Mobile experience: swipe gestures on the overlay.
-- Accessibility improvements: `role="dialog"`, `aria-modal`, live region, focus trap, and proper labels.
+## Compatibility
 
-## Requirements and compatibility
-
-- Django: 3.2 or 4.2 (tested in CI on both).
-- django CMS: 3.11, 4.x, and 5.x (tested in CI with 3.11, 4.1, and 5.0).
-- Other apps: `django-filer`, `easy-thumbnails`, `sekizai`, `django-treebeard`.
+- Django 3.2 and 4.2 (CI test matrix).
+- django CMS 3.11, 4.1, and 5.0 (CI matrix with version confirmation for CMS 4+).
+- Required companion apps: `django-filer`, `django-mptt`, `easy-thumbnails`, `django-sekizai`, and the CMS stack (`cms`, `menus`, `treebeard`).
 
 ## Installation
 
-1. Install dependencies in your Django project (quick example):
-   - `pip install django djangocms django-filer easy-thumbnails`
-2. Add the apps to `INSTALLED_APPS` inside your project's `settings.py`:
+1. Install the dependencies in your project virtualenv:
+
+   ```bash
+   pip install django-cms django-filer easy-thumbnails django-mptt django-sekizai djangocms-lightbox2
+   ```
+
+2. Register the applications in `INSTALLED_APPS` (order matters for the CMS stack):
 
    ```python
    INSTALLED_APPS = [
-       # ...
-       'easy_thumbnails',
-       'filer',
-       'mptt',
+       # Django contrib apps…
+       'django.contrib.admin',
+       'django.contrib.auth',
+       'django.contrib.contenttypes',
+       'django.contrib.sessions',
+       'django.contrib.messages',
+       'django.contrib.staticfiles',
+
+       # django CMS core
        'cms',
        'menus',
        'treebeard',
        'sekizai',
+
+       # filer stack
+       'easy_thumbnails',
+       'filer',
+       'mptt',
+
+       # this app
        'djangocms_lightbox2',
    ]
    ```
 
-   Compatibility notes:
-   - CMS 4/5: optionally add `djangocms-admin-style` for the admin UI.
-   - Include `sekizai` and render the blocks in your base template.
+   > Tip: on django CMS 4/5 you may also add `djangocms_admin_style` for themed admin forms.
 
-3. Run migrations and collectstatic:
-   - `python manage.py migrate`
-   - `python manage.py collectstatic`
+3. Apply migrations and collect the bundled static assets:
 
-4. Make sure your base template renders the `sekizai` blocks:
+   ```bash
+   python manage.py migrate
+   python manage.py collectstatic
+   ```
+
+4. Ensure your base template renders sekizai blocks so the assets land in the correct places:
 
    ```django
    {% load sekizai_tags %}
    <head>
-       {% render_block "css" %}
+     {% render_block "css" %}
    </head>
    <body>
-       {% cms_toolbar %}
-       {% placeholder "content" %}
-       {% render_block "js" %}
+     {% cms_toolbar %}
+     {% placeholder "content" %}
+     {% render_block "js" %}
    </body>
    ```
 
 ## Usage
 
-- Add a "Lightbox2 Gallery" plugin to a placeholder.
-- Inside the gallery, add one or more "Lightbox2 Image" plugins and select images from `django-filer`.
-- You can also use a single image outside a gallery; it still works and creates its own lightbox group per instance.
+1. **Gallery:** add “Lightbox2 Gallery” to a placeholder, choose a layout, and drop “Lightbox2 Image” children into it. The gallery will render a responsive thumbnail grid/masonry layout or a justified collage using the bundled JS helper.
+2. **Carousel:** add “Lightbox2 Carousel”. The plugin reuses the same children and options as the gallery but exposes carousel-specific settings (aspect ratio, background colour, object-fit, fullscreen/download toggles). It still renders a gallery view and reuses Lightbox2 for the overlay.
+3. **Standalone image:** drop “Lightbox2 Image” directly into a placeholder. When not parented by a gallery/carousel it still loads the required assets and builds its own Lightbox group.
 
-### Plugin fields and layouts
+## Plugin reference
 
-- Gallery:
-  - `layout`: choose Grid, Masonry, or Justified.
-  - `columns_desktop/tablet/mobile` (Grid/Masonry): number of columns per breakpoint.
-  - `gutter`: spacing between items (px).
-  - `show_captions`: render the caption underneath each thumbnail.
-  - `justified_row_height` and `justified_tolerance` (Justified): target row height and tolerance.
-  - `limit_items`: limit how many images are rendered.
-  - Lightbox2 options per gallery: `album_label`, `always_show_nav_on_touch_devices`, `fade_duration`, `fit_images_in_viewport`, `image_fade_duration`, `position_from_top`, `resize_duration`, `show_image_number_label`, `wrap_around`, `disable_scrolling`, `max_width`, `max_height`.
+### Gallery (`Lightbox2GalleryPlugin`)
 
-- Image:
-  - `caption` and `alt_text` for title/alt text.
-  - `thumbnail_width` and `thumbnail_height` to generate thumbnails (depending on the layout, derived sizes are used by height or width).
+- **Layout** – `grid`, `masonry`, or `justified`.
+- **Columns & gutter** – per-breakpoint column counts (`columns_desktop/tablet/mobile`) and `gutter` (px).
+- **Captions** – toggle inline captions below thumbnails.
+- **Justified options** – `justified_row_height`, `justified_tolerance` control the collage builder.
+- **Limit** – `limit_items` caps the number of child images rendered.
+- **Lightbox options** – per-gallery overrides for: album label, touch navigation, fade/resize durations, viewport fit, position from top, wrap-around, scroll locking, max width/height.
+- **Carousel appearance** (used when a carousel plugin subclasses the gallery): aspect ratio presets, background color (hex), object-fit, fullscreen/download buttons.
 
-### Deep linking and counter
+### Carousel (`Lightbox2CarouselPlugin`)
 
-- Link directly to an image using `#lb=<group>:<index>` (1-based), for example `#lb=gallery-42:3`.
-- While browsing the lightbox, the URL updates to reflect the current state.
-- The overlay counter displays "i of N" in sync with navigation.
+- Shares all gallery fields.
+- Adds `carousel_aspect_ratio`, `carousel_background_color`, `carousel_object_fit`, `show_fullscreen_button`, `show_download_button`.
+- Includes the gallery options and still outputs Lightbox-bound markup so thumbnails open the standard overlay.
 
-### Touch gestures
+### Image (`Lightbox2ImagePlugin`)
 
-- On touch devices, swipe left/right to navigate between images within the overlay.
+- Chooses the source image via `django-filer`.
+- Optional `caption` and `alt_text`.
+- `thumbnail_width` / `thumbnail_height` – used to build thumbnails for grid/masonry layouts; justified layout derives sizes from the configured row height.
+- When the image is standalone (no parent gallery), Lightbox assets are injected automatically and global defaults are used.
 
-### Performance
+## Assets and overrides
 
-- Thumbnails use `loading="lazy"` and `decoding="async"`.
-- A basic `srcset` (480/960/1440w) and matching `sizes` attribute improve sharpness and load times.
+- Static assets live under `static/djangocms_lightbox2/`.
+- `templates/djangocms_lightbox2/includes/assets.html` is included by gallery/image templates and pushes CSS/JS into sekizai blocks.
+- JavaScript helpers:
+  - `lightbox2/js/lightbox-plus-jquery.min.js` or `lightbox.min.js` (depending on the `USE_BUNDLED_JQUERY` setting).
+  - `lightbox2/js/lightbox-overrides.js` patches Lightbox sizing so it plays nicely with the CMS toolbar.
+  - `gallery/justified.js` arranges justified layouts responsively.
 
-## Local assets
+## Configuration knobs
 
-- Templates include assets from `static/djangocms_lightbox2/lightbox2/`.
-- The repository bundles the official Lightbox2 files (CSS, JS, images) for version 2.11.5 under `static/`.
+- `DJANGOCMS_LIGHTBOX2_USE_BUNDLED_JQUERY` (default `True`)
+  - `True`: serve `lightbox-plus-jquery.min.js` so Lightbox works without a site-wide jQuery.
+  - `False`: serve `lightbox.min.js` only; the host project must load jQuery.
+- `DJANGOCMS_LIGHTBOX2_OPTIONS`
+  - Dict merged into the default Lightbox2 options before per-gallery overrides are applied.
+- Per-gallery fields (see above) let editors fine-tune Lightbox behaviour without touching settings.
 
-Expected paths:
+## Development
+
+- Tests live in `tests/` and use `pytest`/`pytest-django` with `tests.settings` (remember to expose it via `DJANGO_SETTINGS_MODULE` and `PYTHONPATH`).
+- Formatting and import order are enforced with Black and isort; linting uses flake8. See `AGENTS.md` for the command overview run by CI.
+
+## Static bundle checksum
+
 - CSS: `static/djangocms_lightbox2/lightbox2/css/lightbox.min.css`
-- JS: `static/djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js`
-- Img: `static/djangocms_lightbox2/lightbox2/images/{close.png,loading.gif,next.png,prev.png}`
+- JS (bundled): `static/djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js`
+- JS (standalone): `static/djangocms_lightbox2/lightbox2/js/lightbox.min.js`
+- Images: `static/djangocms_lightbox2/lightbox2/images/{close.png, loading.gif, next.png, prev.png}`
 
-## Notes
-
-- For advanced Lightbox2 configuration, adapt `templates/djangocms_lightbox2/includes/assets.html` or add an initialization file under `static/djangocms_lightbox2/js/`.
-- When upgrading Lightbox2, replace the files in `static/djangocms_lightbox2/lightbox2/` and keep the version reference in sync.
-
-Upgrade from previous releases:
-- Run migrations to include the layout fields: `python manage.py migrate` (this covers `0003_layout_fields`).
-- Run `collectstatic` again to include the updated gallery assets.
-
-## Configuration
-
-- `DJANGOCMS_LIGHTBOX2_USE_BUNDLED_JQUERY` (default: `True`)
-  - `True`: include `lightbox-plus-jquery.min.js` (bundles jQuery). Useful when your project does not load jQuery separately.
-  - `False`: include `lightbox.min.js` (without jQuery). Requires jQuery to be loaded elsewhere.
-
-- `DJANGOCMS_LIGHTBOX2_OPTIONS` (dict)
-  - Override Lightbox2 defaults globally.
-  - Supported keys: `albumLabel`, `alwaysShowNavOnTouchDevices`, `fadeDuration`, `fitImagesInViewport`, `imageFadeDuration`, `positionFromTop`, `resizeDuration`, `showImageNumberLabel`, `wrapAround`, `disableScrolling`, `maxWidth`, `maxHeight`.
-
-## I18N
-
-- For releases, compile `.mo` files in CI and include them in the distribution (already handled via `MANIFEST.in`).
-- During development, you can run `django-admin compilemessages -l <lang>` or use `msgfmt` from gettext.
-
+Replace these files if you upgrade Lightbox2 upstream, and re-run `collectstatic` so deployments receive the updates.
