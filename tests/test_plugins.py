@@ -26,7 +26,10 @@ def make_context():
 
 def make_filer_image(filename="example.png"):
     data = base64.b64decode(
-        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAuMB9oNw3iYAAAAASUVORK5CYII="
+        (
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAuMB9o"
+            "Nw3iYAAAAASUVORK5CYII="
+        )
     )
     file_obj = ContentFile(data, name=filename)
     return FilerImage.objects.create(original_filename=filename, file=file_obj)

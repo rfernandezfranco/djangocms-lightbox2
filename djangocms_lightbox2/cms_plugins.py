@@ -10,6 +10,14 @@ from . import conf
 from .models import Lightbox2Gallery, Lightbox2Image
 
 
+def _grid_size_entry(columns, gutter, breakpoint=None):
+    """Build a responsive sizes entry for the gallery."""
+    base = f"calc(100vw/{columns} - {gutter}px)"
+    if breakpoint is None:
+        return base
+    return f"(max-width: {breakpoint}px) {base}"
+
+
 class Lightbox2CarouselForm(forms.ModelForm):
     class Meta:
         model = Lightbox2Gallery
@@ -137,9 +145,21 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
                 "items": items,
                 "group_name": instance.get_group(),
                 "sizes_attr": (
-                    f"(max-width: 640px) calc(100vw/{instance.columns_mobile} - {instance.gutter}px), "
-                    f"(max-width: 1024px) calc(100vw/{instance.columns_tablet} - {instance.gutter}px), "
-                    f"calc(100vw/{instance.columns_desktop} - {instance.gutter}px)"
+                    ", ".join(
+                        [
+                            _grid_size_entry(
+                                instance.columns_mobile,
+                                instance.gutter,
+                                breakpoint=640,
+                            ),
+                            _grid_size_entry(
+                                instance.columns_tablet,
+                                instance.gutter,
+                                breakpoint=1024,
+                            ),
+                            _grid_size_entry(instance.columns_desktop, instance.gutter),
+                        ]
+                    )
                     if instance.layout == instance.LAYOUT_GRID
                     else "100vw"
                 ),

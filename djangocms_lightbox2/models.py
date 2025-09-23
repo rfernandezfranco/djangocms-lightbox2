@@ -7,13 +7,25 @@ from django.utils.translation import gettext_lazy as _
 from easy_thumbnails.files import get_thumbnailer
 from filer.fields.image import FilerImageField
 
-try:  # pragma: no cover - fallback when easy_thumbnails exceptions aren't available at import time
+# Fallback when easy_thumbnails exceptions aren't available at import time
+try:  # pragma: no cover
     from easy_thumbnails import exceptions as thumbnail_exceptions
 except ImportError:  # pragma: no cover
     thumbnail_exceptions = None
 
 
 logger = logging.getLogger(__name__)
+
+# fmt: off
+GROUP_NAME_HELP = _(
+    "Group name for 'data-lightbox'. "
+    "If empty, 'gallery-<id>' will be used."
+)
+ALBUM_LABEL_HELP = _(
+    "Counter label template. Example: 'Image %1 of %2'. "
+    "Leave blank to use the default value."
+)
+# fmt: on
 
 _EXPECTED_THUMBNAIL_ERRORS = [OSError]
 if thumbnail_exceptions:  # pragma: no branch - executed when dependency is installed
@@ -72,18 +84,14 @@ class Lightbox2Gallery(CMSPlugin):
     group_name = models.CharField(
         max_length=100,
         blank=True,
-        help_text=(
-            _("Group name for 'data-lightbox'. If empty, 'gallery-<id>' will be used.")
-        ),
+        help_text=GROUP_NAME_HELP,
     )
     # Lightbox2 options (per gallery)
     album_label = models.CharField(
         max_length=100,
         blank=True,
         default="",
-        help_text=_(
-            "Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."
-        ),
+        help_text=ALBUM_LABEL_HELP,
     )
     always_show_nav_on_touch_devices = models.BooleanField(
         default=False,
