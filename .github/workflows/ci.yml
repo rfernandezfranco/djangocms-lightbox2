@@ -69,6 +69,7 @@ jobs:
             "Django${{ matrix.django }}" \
             "django-cms${{ matrix.cms }}" \
             django-filer \
+            django-mptt \
             easy-thumbnails \
             django-sekizai \
             pytest pytest-django

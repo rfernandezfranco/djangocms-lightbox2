@@ -25,6 +25,7 @@ dependencies = [
   "Django>=3.2",
   "django-cms>=3.9",
   "django-filer>=2.0",
+  "django-mptt>=0.14",
   "easy-thumbnails>=2.8",
 ]
 
