@@ -2,15 +2,16 @@
   width: 100%;
   padding: 10px;
   /* Theme variables (override from project CSS if needed) */
-  --dclb2-control-size: 40px;           /* prev/next overlay and fullscreen/download size */
+  --dclb2-control-size: 40px;           /* overlay prev/next and control diameter */
   --dclb2-control-bg: rgba(0,0,0,0.6);  /* controls background */
-  --dclb2-control-radius: 6px;          /* controls border radius */
+  --dclb2-control-radius: 6px;          /* button border radius */
   --dclb2-icon-size: 20px;              /* icon size for overlay controls */
-  --dclb2-accent: #4da3ff;              /* accent color for active states */
-  --dclb2-active-border: var(--dclb2-accent);
-  --dclb2-thumb-size: 88px;             /* square thumbnail size */
-  --dclb2-thumb-gap: 8px;               /* gap between thumbs */
-  --dclb2-thumbs-nav-size: 36px;        /* size of thumbs prev/next buttons */
+  --dclb2-accent: #0085ff;              /* primary accent color */
+  --dclb2-accent-hover: #006cd8;        /* hover/focus accent color */
+  --dclb2-active-border: var(--dclb2-accent); /* active state border color */
+  --dclb2-thumb-size: 60px;             /* square thumbnail size */
+  --dclb2-thumb-gap: 8px;               /* gap between thumbnails */
+  --dclb2-thumbs-nav-size: 44px;        /* size of thumbs prev/next buttons */
 }
 
 /* Common button style for carousel controls */
@@ -23,14 +24,17 @@
   max-width: 44px;
   height: 44px;
   background-color: #fff;
-  border: 1px solid #0085ff;
-  border-radius: 5px;
+  border: 1px solid var(--dclb2-accent, #0085ff);
+  border-radius: var(--dclb2-control-radius, 5px);
+  color: var(--dclb2-accent, #0085ff);
   background-position: center;
   background-repeat: no-repeat;
+  background-size: var(--dclb2-icon-size, 20px);
 }
 .dclb2-btn:hover,
 .dclb2-btn:focus-visible {
-  background-color: #006cd8;
+  background-color: var(--dclb2-accent-hover, #006cd8);
+  color: #fff;
 }
 .dclb2-carousel-main {
   position: relative;
@@ -62,13 +66,13 @@
   bottom: 15px;
 }
 .dclb2-controls .dclb2-fullscreen,
-.dclb2-controls .dclb2-download { border: none; color: #0085ff; text-decoration: none; }
+.dclb2-controls .dclb2-download { border: none; color: var(--dclb2-accent, #0085ff); text-decoration: none; }
 .dclb2-controls .dclb2-fullscreen { background-image: url('../carousel/icons/fullscreen.svg'); }
 .dclb2-controls .dclb2-download { background-image: url('../carousel/icons/download.svg'); }
 .dclb2-controls .dclb2-fullscreen:hover,
-.dclb2-controls .dclb2-fullscreen:focus-visible { background-image: url('../carousel/icons/fullscreen-hover.svg'); background-color: #006cd8; }
+.dclb2-controls .dclb2-fullscreen:focus-visible { background-image: url('../carousel/icons/fullscreen-hover.svg'); background-color: var(--dclb2-accent-hover, #006cd8); }
 .dclb2-controls .dclb2-download:hover,
-.dclb2-controls .dclb2-download:focus-visible { background-image: url('../carousel/icons/download-hover.svg'); background-color: #006cd8; }
+.dclb2-controls .dclb2-download:focus-visible { background-image: url('../carousel/icons/download-hover.svg'); background-color: var(--dclb2-accent-hover, #006cd8); }
 
 /* Prev/Next arrows */
 .dclb2-prev,
@@ -91,13 +95,17 @@
   border-radius: 0 0 8px 8px;
 }
 .dclb2-thumbs-prev,
-.dclb2-thumbs-next { background-size: 11px; }
+.dclb2-thumbs-next {
+  width: var(--dclb2-thumbs-nav-size, 44px);
+  height: var(--dclb2-thumbs-nav-size, 44px);
+  background-size: 11px;
+}
 .dclb2-thumbs-prev { background-image: url('../carousel/icons/chevron-left.svg'); }
 .dclb2-thumbs-next { background-image: url('../carousel/icons/chevron-right.svg'); }
 .dclb2-thumbs-prev:hover,
-.dclb2-thumbs-prev:focus-visible { background-image: url('../carousel/icons/chevron-left-hover.svg'); background-color: #006cd8; }
+.dclb2-thumbs-prev:focus-visible { background-image: url('../carousel/icons/chevron-left-hover.svg'); background-color: var(--dclb2-accent-hover, #006cd8); }
 .dclb2-thumbs-next:hover,
-.dclb2-thumbs-next:focus-visible { background-image: url('../carousel/icons/chevron-right-hover.svg'); background-color: #006cd8; }
+.dclb2-thumbs-next:focus-visible { background-image: url('../carousel/icons/chevron-right-hover.svg'); background-color: var(--dclb2-accent-hover, #006cd8); }
 .dclb2-thumbs-strip {
   display: flex;
   gap: var(--dclb2-thumb-gap);
@@ -108,20 +116,20 @@
 }
 .dclb2-thumbs-strip::-webkit-scrollbar { display: none; }
 .dclb2-thumb {
-  width: 60px;
-  height: 60px;
+  width: var(--dclb2-thumb-size, 60px);
+  height: var(--dclb2-thumb-size, 60px);
   cursor: pointer;
   opacity: 0.5;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  border-radius: 5px;
+  border-radius: var(--dclb2-control-radius, 5px);
   border: 2px solid #D5D5D5;
   padding: 0;
-  flex: 0 0 auto;
+  flex: 0 0 var(--dclb2-thumb-size, 60px);
 }
 .dclb2-thumb img { display: none; }
 .dclb2-thumb.active {
-  border: 2px solid #0085ff;
+  border-color: var(--dclb2-active-border, var(--dclb2-accent, #0085ff));
   opacity: 1.0;
 }
