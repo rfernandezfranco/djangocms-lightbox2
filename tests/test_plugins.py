@@ -3,7 +3,7 @@ import base64
 from cms.api import add_plugin
 from cms.models.placeholdermodel import Placeholder
 from django.core.files.base import ContentFile
-from django.template import engines
+from django.template import Context, engines
 from django.test import RequestFactory
 from filer.models.imagemodels import Image as FilerImage
 from sekizai.context import SekizaiContext
@@ -43,6 +43,16 @@ def make_filer_image(filename="example.png"):
     )
     file_obj = ContentFile(data, name=filename)
     return FilerImage.objects.create(original_filename=filename, file=file_obj)
+
+
+
+def test_assets_template_fallback_without_sekizai():
+    template = engines["django"].get_template("djangocms_lightbox2/includes/assets.html")
+    ctx = Context({"include_assets": True, "use_bundled_jquery": True, "lb_options_json": ''})
+    output = template.render(ctx)
+    assert 'lightbox.min.css' in output
+    assert 'lightbox-plus-jquery.min.js' in output
+
 
 
 def test_gallery_render_includes_assets_without_children(db):

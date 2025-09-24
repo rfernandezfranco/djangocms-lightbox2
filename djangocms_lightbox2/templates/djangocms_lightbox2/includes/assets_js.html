@@ -1,0 +1,30 @@
+{% load static %}
+{% if use_bundled_jquery %}
+  <script src="{% static 'djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js' %}"></script>
+  {% if lb_options_json %}
+  <script>
+    try { window.lightbox && window.lightbox.option({{ lb_options_json|safe }}); } catch (e) { /* noop */ }
+  </script>
+  {% endif %}
+{% else %}
+  <script>
+    (function() {
+      if (window.jQuery) {
+        var s = document.createElement('script');
+        s.src = "{% static 'djangocms_lightbox2/lightbox2/js/lightbox.min.js' %}";
+        s.async = true;
+        {% if lb_options_json %}
+        s.onload = function() {
+          try { window.lightbox && window.lightbox.option({{ lb_options_json|safe }}); } catch (e) { /* noop */ }
+        };
+        {% endif %}
+        document.head.appendChild(s);
+      } else {
+        if (window.console && console.error) {
+          console.error('djangocms-lightbox2: jQuery is not loaded and use_bundled_jquery=False. Lightbox2 will not initialize.');
+        }
+      }
+    })();
+  </script>
+{% endif %}
+<script src="{% static 'djangocms_lightbox2/lightbox2/js/lightbox-overrides.js' %}"></script>
