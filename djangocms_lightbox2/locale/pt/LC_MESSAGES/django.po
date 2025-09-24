@@ -34,11 +34,16 @@ msgstr "Layout"
 
 #: djangocms_lightbox2/models.py
 msgid "Group name for 'data-lightbox'. If empty, 'gallery-<id>' will be used."
-msgstr "Nome do grupo para 'data-lightbox'. Se vazio, será usado 'gallery-<id>'."
+msgstr ""
+"Nome do grupo para 'data-lightbox'. Se vazio, será usado 'gallery-<id>'."
 
 #: djangocms_lightbox2/models.py
-msgid "Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."
-msgstr "Modelo do rótulo do contador. Ex: 'Imagem %1 de %2'. Deixe em branco para o padrão."
+msgid ""
+"Counter label template. Example: 'Image %1 of %2'. Leave blank to use the "
+"default value."
+msgstr ""
+"Modelo do rótulo do contador. Ex: 'Imagem %1 de %2'. Deixe em branco para o "
+"padrão."
 
 #: djangocms_lightbox2/models.py
 msgid "Always show navigation on touch devices."
@@ -252,6 +257,11 @@ msgstr "Carrossel"
 #: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
 msgid "Thumbnails"
 msgstr "Miniaturas"
+
 #: djangocms_lightbox2/cms_plugins.py
 msgid "Gallery layout and items"
 msgstr "Layout e itens da galeria"
+
+#: djangocms_lightbox2/cms_plugins.py:176
+msgid "Lightbox2 Carousel"
+msgstr "Carrossel Lightbox2"

@@ -34,11 +34,17 @@ msgstr "Disposition"
 
 #: djangocms_lightbox2/models.py
 msgid "Group name for 'data-lightbox'. If empty, 'gallery-<id>' will be used."
-msgstr "Nom de groupe pour 'data-lightbox'. S'il est vide, 'gallery-<id>' sera utilisé."
+msgstr ""
+"Nom de groupe pour 'data-lightbox'. S'il est vide, 'gallery-<id>' sera "
+"utilisé."
 
 #: djangocms_lightbox2/models.py
-msgid "Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."
-msgstr "Modele du libellel du compteur. Ex: 'Image %1 sur %2'. Laisser vide pour la valeur par dfaut."
+msgid ""
+"Counter label template. Example: 'Image %1 of %2'. Leave blank to use the "
+"default value."
+msgstr ""
+"Modele du libellel du compteur. Ex: 'Image %1 sur %2'. Laisser vide pour "
+"la valeur par dfaut."
 
 #: djangocms_lightbox2/models.py
 msgid "Always show navigation on touch devices."
@@ -78,11 +84,15 @@ msgstr "Dsactiver le dfilement de l'arribre-plan lorsqu'ouvert."
 
 #: djangocms_lightbox2/models.py
 msgid "Maximum image width (px). Leave blank to use the Lightbox2 default."
-msgstr "Largeur maximale de l'image (px). Vide utilise la valeur par dfaut de Lightbox2."
+msgstr ""
+"Largeur maximale de l'image (px). Vide utilise la valeur par dfaut de "
+"Lightbox2."
 
 #: djangocms_lightbox2/models.py
 msgid "Maximum image height (px). Leave blank to use the Lightbox2 default."
-msgstr "Hauteur maximale de l'image (px). Vide utilise la valeur par dfaut de Lightbox2."
+msgstr ""
+"Hauteur maximale de l'image (px). Vide utilise la valeur par dfaut de "
+"Lightbox2."
 
 # Layout options and related help_texts
 #: djangocms_lightbox2/models.py
@@ -132,6 +142,7 @@ msgstr "Tolrance dajustement de ligne (01)."
 #: djangocms_lightbox2/models.py
 msgid "Limit of images to display (optional)."
 msgstr "Limite d’images  afficher (optionnel)."
+
 #: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
 msgid "Open fullscreen"
 msgstr "Ouvrir en plein écran"
@@ -190,7 +201,8 @@ msgstr "Afficher le bouton de téléchargement"
 
 #: djangocms_lightbox2/models.py
 msgid "Display the download control in the carousel overlay."
-msgstr "Afficher le contrôle de téléchargement dans la superposition du carrousel."
+msgstr ""
+"Afficher le contrôle de téléchargement dans la superposition du carrousel."
 
 #: djangocms_lightbox2/models.py
 msgid "Enter a valid hex color in the format #RRGGBB."
@@ -251,6 +263,11 @@ msgstr "Carrousel"
 #: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
 msgid "Thumbnails"
 msgstr "Vignettes"
+
 #: djangocms_lightbox2/cms_plugins.py
 msgid "Gallery layout and items"
 msgstr "Disposition et éléments de la galerie"
+
+#: djangocms_lightbox2/cms_plugins.py:176
+msgid "Lightbox2 Carousel"
+msgstr "Carrousel Lightbox2"

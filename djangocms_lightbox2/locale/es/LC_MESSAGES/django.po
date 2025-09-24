@@ -38,11 +38,17 @@ msgstr "Disposición"
 
 #: djangocms_lightbox2/models.py
 msgid "Group name for 'data-lightbox'. If empty, 'gallery-<id>' will be used."
-msgstr "Nombre de grupo para 'data-lightbox'. Si está vacío, se usará 'gallery-<id>'."
+msgstr ""
+"Nombre de grupo para 'data-lightbox'. Si está vacío, se usará "
+"'gallery-<id>'."
 
 #: djangocms_lightbox2/models.py
-msgid "Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."
-msgstr "Plantilla de etiqueta del contador. Ej: 'Imagen %1 de %2'. Dejar vacío para usar el valor por defecto."
+msgid ""
+"Counter label template. Example: 'Image %1 of %2'. Leave blank to use the "
+"default value."
+msgstr ""
+"Plantilla de etiqueta del contador. Ej: 'Imagen %1 de %2'. Dejar vacío para "
+"usar el valor por defecto."
 
 #: djangocms_lightbox2/models.py
 msgid "Always show navigation on touch devices."
@@ -187,7 +193,8 @@ msgstr "Mostrar botón de pantalla completa"
 
 #: djangocms_lightbox2/models.py
 msgid "Display the fullscreen control in the carousel overlay."
-msgstr "Mostrar el control de pantalla completa en la superposición del carrusel."
+msgstr ""
+"Mostrar el control de pantalla completa en la superposición del carrusel."
 
 #: djangocms_lightbox2/models.py
 msgid "Show download button"
@@ -256,6 +263,11 @@ msgstr "Carrusel"
 #: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
 msgid "Thumbnails"
 msgstr "Miniaturas"
+
 #: djangocms_lightbox2/cms_plugins.py
 msgid "Gallery layout and items"
 msgstr "Disposición e ítems de la galería"
+
+#: djangocms_lightbox2/cms_plugins.py:176
+msgid "Lightbox2 Carousel"
+msgstr "Carrusel Lightbox2"

@@ -34,11 +34,16 @@ msgstr "Layout"
 
 #: djangocms_lightbox2/models.py
 msgid "Group name for 'data-lightbox'. If empty, 'gallery-<id>' will be used."
-msgstr "Nome del gruppo per 'data-lightbox'. Se vuoto, verrà usato 'gallery-<id>'."
+msgstr ""
+"Nome del gruppo per 'data-lightbox'. Se vuoto, verrà usato 'gallery-<id>'."
 
 #: djangocms_lightbox2/models.py
-msgid "Counter label template. Example: 'Image %1 of %2'. Leave blank to use the default value."
-msgstr "Modello dell'etichetta contatore. Es: 'Immagine %1 di %2'. Lascia vuoto per il valore predefinito."
+msgid ""
+"Counter label template. Example: 'Image %1 of %2'. Leave blank to use the "
+"default value."
+msgstr ""
+"Modello dell'etichetta contatore. Es: 'Immagine %1 di %2'. Lascia vuoto per "
+"il valore predefinito."
 
 #: djangocms_lightbox2/models.py
 msgid "Always show navigation on touch devices."
@@ -78,11 +83,15 @@ msgstr "Disabilita lo scrolling dello sfondo quando aperto."
 
 #: djangocms_lightbox2/models.py
 msgid "Maximum image width (px). Leave blank to use the Lightbox2 default."
-msgstr "Larghezza massima dell'immagine (px). Vuoto usa il valore predefinito di Lightbox2."
+msgstr ""
+"Larghezza massima dell'immagine (px). Vuoto usa il valore predefinito di "
+"Lightbox2."
 
 #: djangocms_lightbox2/models.py
 msgid "Maximum image height (px). Leave blank to use the Lightbox2 default."
-msgstr "Altezza massima dell'immagine (px). Vuoto usa il valore predefinito di Lightbox2."
+msgstr ""
+"Altezza massima dell'immagine (px). Vuoto usa il valore predefinito di "
+"Lightbox2."
 
 # Layout options and related help_texts
 #: djangocms_lightbox2/models.py
@@ -183,7 +192,8 @@ msgstr "Mostra pulsante schermo intero"
 
 #: djangocms_lightbox2/models.py
 msgid "Display the fullscreen control in the carousel overlay."
-msgstr "Mostra il controllo schermo intero nella sovrapposizione del carosello."
+msgstr ""
+"Mostra il controllo schermo intero nella sovrapposizione del carosello."
 
 #: djangocms_lightbox2/models.py
 msgid "Show download button"
@@ -252,6 +262,11 @@ msgstr "Carosello"
 #: djangocms_lightbox2/templates/djangocms_lightbox2/plugins/gallery_carousel.html
 msgid "Thumbnails"
 msgstr "Miniature"
+
 #: djangocms_lightbox2/cms_plugins.py
 msgid "Gallery layout and items"
 msgstr "Layout e elementi della galleria"
+
+#: djangocms_lightbox2/cms_plugins.py:176
+msgid "Lightbox2 Carousel"
+msgstr "Lightbox2 Carousel"
