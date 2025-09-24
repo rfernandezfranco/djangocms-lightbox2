@@ -123,8 +123,15 @@
     container._dclb2JustifiedBuilding = true;
 
     var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    var width = viewportWidth || container.clientWidth;
-    if (width <= 0) {
+    var containerWidth = container.clientWidth;
+    if ((!containerWidth || containerWidth <= 0) && typeof container.getBoundingClientRect === 'function') {
+      var rect = container.getBoundingClientRect();
+      if (rect && rect.width) {
+        containerWidth = rect.width;
+      }
+    }
+    var width = containerWidth > 0 ? containerWidth : viewportWidth;
+    if (!width || width <= 0) {
       container._dclb2JustifiedBuilding = false;
       scheduleBuild(container, 250);
       return;
