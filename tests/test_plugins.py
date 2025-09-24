@@ -6,7 +6,6 @@ from cms.models.placeholdermodel import Placeholder
 from django.core.files.base import ContentFile
 from django.template import Context, engines
 from django.test import RequestFactory
-
 from filer.models.imagemodels import Image as FilerImage
 from sekizai.context import SekizaiContext
 
@@ -47,20 +46,22 @@ def make_filer_image(filename="example.png"):
     return FilerImage.objects.create(original_filename=filename, file=file_obj)
 
 
-
 def test_assets_template_fallback_without_sekizai():
-    template = engines["django"].get_template("djangocms_lightbox2/includes/assets.html")
-    ctx = Context({"include_assets": True, "use_bundled_jquery": True, "lb_options_json": ''})
+    template = engines["django"].get_template(
+        "djangocms_lightbox2/includes/assets.html"
+    )
+    ctx = Context(
+        {"include_assets": True, "use_bundled_jquery": True, "lb_options_json": ""}
+    )
     output = template.render(ctx)
-    assert 'lightbox.min.css' in output
-    assert 'lightbox-plus-jquery.min.js' in output
-
-
-
+    assert "lightbox.min.css" in output
+    assert "lightbox-plus-jquery.min.js" in output
 
 
 def test_gallery_template_handles_missing_sekizai():
-    template = engines["django"].get_template("djangocms_lightbox2/plugins/gallery.html")
+    template = engines["django"].get_template(
+        "djangocms_lightbox2/plugins/gallery.html"
+    )
     ctx = Context(
         {
             "instance": SimpleNamespace(pk=1),
@@ -80,15 +81,19 @@ def test_gallery_template_handles_missing_sekizai():
         }
     )
     output = template.render(ctx)
-    assert 'gallery.css' in output
-    assert 'justified.js' in output
+    assert "gallery.css" in output
+    assert "justified.js" in output
 
 
 def test_carousel_template_handles_missing_sekizai():
-    template = engines["django"].get_template("djangocms_lightbox2/plugins/gallery_carousel.html")
+    template = engines["django"].get_template(
+        "djangocms_lightbox2/plugins/gallery_carousel.html"
+    )
     ctx = Context(
         {
-            "instance": SimpleNamespace(pk=1, show_fullscreen_button=False, show_download_button=False),
+            "instance": SimpleNamespace(
+                pk=1, show_fullscreen_button=False, show_download_button=False
+            ),
             "items": [],
             "group_name": "group",
             "carousel_background_color": "#fff",
@@ -100,8 +105,8 @@ def test_carousel_template_handles_missing_sekizai():
         }
     )
     output = template.render(ctx)
-    assert 'carousel.css' in output
-    assert 'carousel.js' in output
+    assert "carousel.css" in output
+    assert "carousel.js" in output
 
 
 def test_gallery_render_includes_assets_without_children(db):
