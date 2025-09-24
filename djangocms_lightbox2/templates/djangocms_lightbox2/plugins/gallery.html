@@ -1,10 +1,15 @@
 {% load cms_tags sekizai_tags static i18n %}
 {% include "djangocms_lightbox2/includes/assets.html" %}
 
-{% addtoblock "css" %}
+{% if sekizai %}
+  {% addtoblock "css" %}
+    <link rel="stylesheet" href="{% static 'djangocms_lightbox2/gallery/gallery.css' %}">
+    <link rel="stylesheet" href="{% static 'djangocms_lightbox2/gallery/justified.css' %}">
+  {% endaddtoblock %}
+{% else %}
   <link rel="stylesheet" href="{% static 'djangocms_lightbox2/gallery/gallery.css' %}">
   <link rel="stylesheet" href="{% static 'djangocms_lightbox2/gallery/justified.css' %}">
-{% endaddtoblock %}
+{% endif %}
 
 <div class="dclb2-gallery" id="lb-gallery-{{ instance.pk }}" data-layout="{{ gallery_layout }}"
      data-gutter="{{ gallery_gutter }}" data-cols-desktop="{{ gallery_cols.desktop }}"
@@ -26,6 +31,10 @@
   <noscript>{% trans 'Enable JavaScript to use Lightbox2.' %}</noscript>
 </div>
 
-{% addtoblock "js" %}
+{% if sekizai %}
+  {% addtoblock "js" %}
+    <script src="{% static 'djangocms_lightbox2/gallery/justified.js' %}"></script>
+  {% endaddtoblock %}
+{% else %}
   <script src="{% static 'djangocms_lightbox2/gallery/justified.js' %}"></script>
-{% endaddtoblock %}
+{% endif %}

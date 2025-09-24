@@ -1,9 +1,13 @@
 {% load cms_tags sekizai_tags static i18n %}
 {% include "djangocms_lightbox2/includes/assets.html" %}
 
-{% addtoblock "css" %}
+{% if sekizai %}
+  {% addtoblock "css" %}
+    <link rel="stylesheet" href="{% static 'djangocms_lightbox2/carousel/carousel.css' %}">
+  {% endaddtoblock %}
+{% else %}
   <link rel="stylesheet" href="{% static 'djangocms_lightbox2/carousel/carousel.css' %}">
-{% endaddtoblock %}
+{% endif %}
 
 <div class="dclb2-carousel" id="lb-carousel-{{ instance.pk }}">
   {% if items %}
@@ -51,6 +55,10 @@
   <noscript>{% trans 'Enable JavaScript to use Lightbox2.' %}</noscript>
 </div>
 
-{% addtoblock "js" %}
+{% if sekizai %}
+  {% addtoblock "js" %}
+    <script src="{% static 'djangocms_lightbox2/carousel/carousel.js' %}"></script>
+  {% endaddtoblock %}
+{% else %}
   <script src="{% static 'djangocms_lightbox2/carousel/carousel.js' %}"></script>
-{% endaddtoblock %}
+{% endif %}
