@@ -122,7 +122,8 @@
 
     container._dclb2JustifiedBuilding = true;
 
-    var width = container.clientWidth;
+    var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    var width = viewportWidth || container.clientWidth;
     if (width <= 0) {
       container._dclb2JustifiedBuilding = false;
       scheduleBuild(container, 250);
@@ -140,7 +141,7 @@
     if (isNaN(gutter) || gutter < 0) gutter = 0;
 
     var columnsConfig = getColumnsConfig(container, styles);
-    var targetColumns = pickColumnsForWidth(width, columnsConfig);
+    var targetColumns = pickColumnsForWidth(viewportWidth || width, columnsConfig);
     if (!targetColumns || targetColumns < 1) targetColumns = 1;
 
     var tolerance = parseFloat(container.getAttribute('data-tolerance') || '0.25');

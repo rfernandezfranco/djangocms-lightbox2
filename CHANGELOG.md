@@ -3,6 +3,7 @@
 This project follows Keep a Changelog and Semantic Versioning for plugin releases.
 
 ## [Unreleased]
+- Use viewport width for justified galleries so column breakpoints follow the page layout.
 - Ensure Lightbox assets and plugin templates render when Sekizai context data is unavailable (search indexing, admin previews).
 - Harmonised carousel CSS variables by plugging theme tokens into controls/thumbs and dropping unused masonry inline var.
 
