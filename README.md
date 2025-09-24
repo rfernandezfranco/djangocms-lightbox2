@@ -6,7 +6,7 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 
 - **Lightbox2 Gallery** plugin with grid, masonry, and justified layouts.
 - **Lightbox2 Carousel** plugin reusing the gallery model with extra carousel controls (aspect ratio, background, object-fit, button toggles).
-- **Lightbox2 Image** plugin for standalone usage or as a gallery/carousel child.
+- **Lightbox2 Image** plugin supplying gallery/carousel items with Lightbox-ready metadata.
 - Bundled Lightbox2 2.11.5 assets (CSS/JS/images) and slim overrides that are injected via `sekizai` once per page.
 - Easy-thumbnails integration for per-image thumbnail generation and responsive helpers (basic `srcset` for retina displays).
 - Configurable Lightbox2 options per gallery (wrap-around, fade durations, max size, scroll locking, etc.), plus global overrides with Django settings.
@@ -80,7 +80,7 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 
 1. **Gallery:** add “Lightbox2 Gallery” to a placeholder, choose a layout, and drop “Lightbox2 Image” children into it. The gallery will render a responsive thumbnail grid/masonry layout or a justified collage using the bundled JS helper.
 2. **Carousel:** add “Lightbox2 Carousel”. The plugin reuses the same children and options as the gallery but exposes carousel-specific settings (aspect ratio, background colour, object-fit, fullscreen/download toggles). It still renders a gallery view and reuses Lightbox2 for the overlay.
-3. **Standalone image:** drop “Lightbox2 Image” directly into a placeholder. When not parented by a gallery/carousel it still loads the required assets and builds its own Lightbox group.
+3. **Image items:** inside a gallery or carousel, add “Lightbox2 Image” children to populate the thumbnails and Lightbox overlay. The plugin is designed for child usage and cannot be dropped directly on a placeholder.
 
 ## Plugin reference
 
