@@ -26,6 +26,8 @@ pip-wheel-metadata/
 *.sqlite3
 media/
 staticfiles/
+filer_public/
+filer_public_thumbnails/
 
 # Configuración local y credenciales
 .env
