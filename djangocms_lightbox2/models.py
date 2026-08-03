@@ -1,7 +1,7 @@
 import logging
 
 from cms.models.pluginmodel import CMSPlugin
-from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from easy_thumbnails.files import get_thumbnailer
@@ -34,6 +34,15 @@ if thumbnail_exceptions:  # pragma: no branch - executed when dependency is inst
         if _exc:
             _EXPECTED_THUMBNAIL_ERRORS.append(_exc)
 EXPECTED_THUMBNAIL_ERRORS = tuple(_EXPECTED_THUMBNAIL_ERRORS)
+
+MAX_LIGHTBOX_DURATION = 10000
+MAX_POSITION_FROM_TOP = 2000
+MAX_LIGHTBOX_DIMENSION = 10000
+MAX_COLUMNS = 12
+MAX_GUTTER = 200
+MAX_JUSTIFIED_ROW_HEIGHT = 2000
+MAX_LIMIT_ITEMS = 1000
+MAX_THUMBNAIL_DIMENSION = 4096
 
 
 def _handle_thumbnail_exception(instance, exc, operation):
@@ -99,6 +108,7 @@ class Lightbox2Gallery(CMSPlugin):
     )
     fade_duration = models.PositiveIntegerField(
         default=600,
+        validators=[MinValueValidator(0), MaxValueValidator(MAX_LIGHTBOX_DURATION)],
         help_text=_("Overlay fade duration (ms)."),
     )
     fit_images_in_viewport = models.BooleanField(
@@ -107,14 +117,17 @@ class Lightbox2Gallery(CMSPlugin):
     )
     image_fade_duration = models.PositiveIntegerField(
         default=600,
+        validators=[MinValueValidator(0), MaxValueValidator(MAX_LIGHTBOX_DURATION)],
         help_text=_("Image fade duration (ms)."),
     )
     position_from_top = models.PositiveIntegerField(
         default=50,
+        validators=[MinValueValidator(0), MaxValueValidator(MAX_POSITION_FROM_TOP)],
         help_text=_("Offset from the top (px)."),
     )
     resize_duration = models.PositiveIntegerField(
         default=700,
+        validators=[MinValueValidator(0), MaxValueValidator(MAX_LIGHTBOX_DURATION)],
         help_text=_("Resize duration (ms)."),
     )
     show_image_number_label = models.BooleanField(
@@ -132,6 +145,7 @@ class Lightbox2Gallery(CMSPlugin):
     max_width = models.PositiveIntegerField(
         null=True,
         blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_LIGHTBOX_DIMENSION)],
         help_text=_(
             "Maximum image width (px). Leave blank to use the Lightbox2 default."
         ),
@@ -139,6 +153,7 @@ class Lightbox2Gallery(CMSPlugin):
     max_height = models.PositiveIntegerField(
         null=True,
         blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_LIGHTBOX_DIMENSION)],
         help_text=_(
             "Maximum image height (px). Leave blank to use the Lightbox2 default."
         ),
@@ -191,32 +206,43 @@ class Lightbox2Gallery(CMSPlugin):
         help_text=_("Gallery layout on the page."),
     )
     columns_desktop = models.PositiveIntegerField(
-        default=4, help_text=_("Columns on desktop (Grid).")
+        default=4,
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_COLUMNS)],
+        help_text=_("Columns on desktop (Grid, 1-12)."),
     )
     columns_tablet = models.PositiveIntegerField(
-        default=2, help_text=_("Columns on tablet (Grid).")
+        default=2,
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_COLUMNS)],
+        help_text=_("Columns on tablet (Grid, 1-12)."),
     )
     columns_mobile = models.PositiveIntegerField(
-        default=1, help_text=_("Columns on mobile (Grid).")
+        default=1,
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_COLUMNS)],
+        help_text=_("Columns on mobile (Grid, 1-12)."),
     )
     gutter = models.PositiveIntegerField(
-        default=8, help_text=_("Spacing between items (px).")
+        default=8,
+        validators=[MinValueValidator(0), MaxValueValidator(MAX_GUTTER)],
+        help_text=_("Spacing between items (px, 0-200)."),
     )
     show_captions = models.BooleanField(
         default=False, help_text=_("Show captions under thumbnails.")
     )
     justified_row_height = models.PositiveIntegerField(
         default=220,
-        help_text=_("Target row height (Justified, px)."),
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_JUSTIFIED_ROW_HEIGHT)],
+        help_text=_("Target row height (Justified, px, 1-2000)."),
     )
     justified_tolerance = models.FloatField(
         default=0.25,
+        validators=[MinValueValidator(0), MaxValueValidator(1)],
         help_text=_("Row adjustment tolerance (0-1)."),
     )
     limit_items = models.PositiveIntegerField(
         null=True,
         blank=True,
-        help_text=_("Limit of images to display (optional)."),
+        validators=[MinValueValidator(0), MaxValueValidator(MAX_LIMIT_ITEMS)],
+        help_text=_("Limit of images to display (0-1000; blank for all)."),
     )
 
     def get_group(self):
@@ -247,8 +273,14 @@ class Lightbox2Image(CMSPlugin):
     )
     caption = models.CharField(max_length=255, blank=True, default="")
     alt_text = models.CharField(max_length=255, blank=True, default="")
-    thumbnail_width = models.PositiveIntegerField(default=400)
-    thumbnail_height = models.PositiveIntegerField(default=300)
+    thumbnail_width = models.PositiveIntegerField(
+        default=400,
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_THUMBNAIL_DIMENSION)],
+    )
+    thumbnail_height = models.PositiveIntegerField(
+        default=300,
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_THUMBNAIL_DIMENSION)],
+    )
 
     def get_group(self):
         parent = self.parent and self.parent.get_plugin_instance()[0]

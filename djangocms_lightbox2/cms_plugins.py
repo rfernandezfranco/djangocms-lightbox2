@@ -84,7 +84,7 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
             .select_related("image")
             .order_by("position", "pk")
         )
-        if instance.limit_items:
+        if instance.limit_items is not None:
             images_qs = images_qs[: instance.limit_items]
 
         items = []

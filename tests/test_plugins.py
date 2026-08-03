@@ -194,6 +194,32 @@ def test_galleries_render_distinct_lightbox_options(db):
     assert f'data-dclb2-options-id="{second_id}"' in second_html
 
 
+def test_gallery_limit_zero_renders_no_items(db):
+    ph = Placeholder.objects.create(slot="content")
+    gallery_plugin = add_plugin(
+        ph,
+        Lightbox2GalleryPlugin.__name__,
+        language="en",
+        title="Empty",
+        limit_items=0,
+    )
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        target=gallery_plugin,
+        image=make_filer_image("limited.png"),
+    )
+    instance, plugin = gallery_plugin.get_plugin_instance()
+
+    html = render_template(
+        plugin.render_template,
+        plugin.render(make_context(), instance, ph),
+    )
+
+    assert "dclb2-item" not in html
+
+
 def test_image_include_assets_only_when_standalone(db):
     ph = Placeholder.objects.create(slot="content")
     # Standalone image
