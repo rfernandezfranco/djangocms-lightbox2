@@ -7,7 +7,7 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 - **Lightbox2 Gallery** plugin with grid, masonry, and justified layouts.
 - **Lightbox2 Carousel** plugin reusing the gallery model with extra carousel controls (aspect ratio, background, object-fit, button toggles).
 - **Lightbox2 Image** plugin supplying gallery/carousel items with Lightbox-ready metadata.
-- Bundled Lightbox2 2.11.5 assets (CSS/JS/images) and slim overrides that are injected via `sekizai` once per page.
+- Bundled Lightbox2 2.11.5 assets (CSS/JS/source maps/images) and slim overrides that are injected via `sekizai` once per page.
 - Easy-thumbnails integration for per-image thumbnail generation and responsive helpers (basic `srcset` for retina displays).
 - Configurable Lightbox2 options per gallery (wrap-around, fade durations, max size, scroll locking, etc.), plus global overrides with Django settings.
 
@@ -113,6 +113,7 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 - `templates/djangocms_lightbox2/includes/assets.html` is included by gallery/image templates and pushes CSS/JS into sekizai blocks.
 - JavaScript helpers:
   - `lightbox2/js/lightbox-plus-jquery.min.js` or `lightbox.min.js` (depending on the `USE_BUNDLED_JQUERY` setting).
+  - `lightbox2/js/lightbox-plus-jquery.min.map` and `lightbox.min.map` are kept next to the minified bundles for browser debugging.
   - `lightbox2/js/lightbox-overrides.js` patches Lightbox sizing so it plays nicely with the CMS toolbar.
   - `gallery/justified.js` arranges justified layouts responsively.
 
@@ -134,7 +135,9 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 
 - CSS: `static/djangocms_lightbox2/lightbox2/css/lightbox.min.css`
 - JS (bundled): `static/djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js`
+- JS source map (bundled): `static/djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.map`
 - JS (standalone): `static/djangocms_lightbox2/lightbox2/js/lightbox.min.js`
+- JS source map (standalone): `static/djangocms_lightbox2/lightbox2/js/lightbox.min.map`
 - Images: `static/djangocms_lightbox2/lightbox2/images/{close.png, loading.gif, next.png, prev.png}`
 
 Replace these files if you upgrade Lightbox2 upstream, and re-run `collectstatic` so deployments receive the updates.
