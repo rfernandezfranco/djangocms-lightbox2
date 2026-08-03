@@ -2,6 +2,7 @@
 
 (function() {
   var containers = new Set();
+  var resizeFallbackHandler = null;
   var TABLET_BREAKPOINT = 1024;
   var MOBILE_BREAKPOINT = 640;
 
@@ -39,7 +40,11 @@
   }
 
   function scheduleBuild(container, delay) {
-    if (!container || !container.isConnected) return;
+    if (!container) return;
+    if (!container.isConnected) {
+      destroyContainer(container);
+      return;
+    }
     if (container._dclb2JustifiedScheduled) return;
 
     container._dclb2JustifiedScheduled = true;
@@ -70,12 +75,59 @@
       var handler = function() {
         scheduleBuild(container, 0);
       };
+      img._dclb2JustifiedHandler = handler;
       img.addEventListener('load', handler);
       img.addEventListener('error', handler);
       if (img.complete && img.naturalWidth) {
         scheduleBuild(container, 0);
       }
     });
+  }
+
+  function stopResizeFallback() {
+    if (!resizeFallbackHandler || containers.size) return;
+    window.removeEventListener('resize', resizeFallbackHandler);
+    resizeFallbackHandler = null;
+    window._dclb2JustifiedResizeFallbackBound = false;
+  }
+
+  function destroyContainer(container) {
+    if (!container) return;
+
+    if (container._dclb2JustifiedTimer !== null &&
+        container._dclb2JustifiedTimer !== undefined) {
+      window.clearTimeout(container._dclb2JustifiedTimer);
+    }
+    if (container._dclb2JustifiedRaf !== null &&
+        container._dclb2JustifiedRaf !== undefined &&
+        typeof window.cancelAnimationFrame === 'function') {
+      window.cancelAnimationFrame(container._dclb2JustifiedRaf);
+    }
+
+    container.querySelectorAll('img').forEach(function(img) {
+      if (!img._dclb2JustifiedHandler) return;
+      img.removeEventListener('load', img._dclb2JustifiedHandler);
+      img.removeEventListener('error', img._dclb2JustifiedHandler);
+      img._dclb2JustifiedHandler = null;
+      img._dclb2JustifiedBound = false;
+    });
+
+    if (container._dclb2JustifiedResizeObserver) {
+      container._dclb2JustifiedResizeObserver.disconnect();
+      container._dclb2JustifiedResizeObserver = null;
+    }
+    if (container._dclb2JustifiedIntersectionObserver) {
+      container._dclb2JustifiedIntersectionObserver.disconnect();
+      container._dclb2JustifiedIntersectionObserver = null;
+    }
+
+    container._dclb2JustifiedScheduled = false;
+    container._dclb2JustifiedTimer = null;
+    container._dclb2JustifiedRaf = null;
+    container._dclb2JustifiedObserved = false;
+    container._dclb2JustifiedInit = false;
+    containers.delete(container);
+    stopResizeFallback();
   }
 
   function observeContainer(container) {
@@ -96,11 +148,12 @@
       ro.observe(container);
       container._dclb2JustifiedResizeObserver = ro;
     } else if (!window._dclb2JustifiedResizeFallbackBound) {
-      window.addEventListener('resize', function() {
+      resizeFallbackHandler = function() {
         containers.forEach(function(c) {
           scheduleBuild(c, 0);
         });
-      });
+      };
+      window.addEventListener('resize', resizeFallbackHandler);
       window._dclb2JustifiedResizeFallbackBound = true;
     }
 
@@ -118,7 +171,11 @@
   }
 
   function buildJustified(container) {
-    if (!container || !container.isConnected) return;
+    if (!container) return;
+    if (!container.isConnected) {
+      destroyContainer(container);
+      return;
+    }
 
     container._dclb2JustifiedBuilding = true;
 
@@ -303,11 +360,18 @@
     container._dclb2JustifiedBuilding = false;
   }
 
-  function initWithin(root) {
+  function forEachContainer(root, callback) {
     if (!root || !root.querySelectorAll) {
       return;
     }
-    root.querySelectorAll('.dclb2-justified').forEach(function(container) {
+    if (root.matches && root.matches('.dclb2-justified')) {
+      callback(root);
+    }
+    root.querySelectorAll('.dclb2-justified').forEach(callback);
+  }
+
+  function initWithin(root) {
+    forEachContainer(root, function(container) {
       if (!container._dclb2JustifiedInit) {
         container._dclb2JustifiedInit = true;
         containers.add(container);
@@ -318,7 +382,20 @@
     });
   }
 
+  function destroyWithin(root) {
+    forEachContainer(root, destroyContainer);
+  }
+
+  function cleanupDetachedContainers() {
+    containers.forEach(function(container) {
+      if (!container.isConnected) {
+        destroyContainer(container);
+      }
+    });
+  }
+
   function init() {
+    cleanupDetachedContainers();
     initWithin(document);
   }
 
@@ -330,20 +407,23 @@
 
   if (typeof window !== 'undefined') {
     window.dclb2JustifiedInit = init;
+    window.dclb2JustifiedDestroy = destroyWithin;
   }
 
   if (typeof MutationObserver === 'function') {
     var observer = new MutationObserver(function(mutations) {
+      cleanupDetachedContainers();
       mutations.forEach(function(mutation) {
+        mutation.removedNodes.forEach(function(node) {
+          if (node && node.nodeType === 1) {
+            destroyWithin(node);
+          }
+        });
         mutation.addedNodes.forEach(function(node) {
           if (!node || node.nodeType !== 1) {
             return;
           }
-          if (node.matches && node.matches('.dclb2-justified')) {
-            initWithin(node);
-          } else if (node.querySelectorAll) {
-            initWithin(node);
-          }
+          initWithin(node);
         });
       });
     });
