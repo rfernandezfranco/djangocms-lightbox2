@@ -9,9 +9,9 @@ mirror_from_github:
     - apk add --no-cache git ca-certificates
     - awk 'BEGIN{c=0}/-----BEGIN CERTIFICATE-----/{c++} {print > ("/usr/local/share/ca-certificates/gitlab-" c ".crt")}' "$GITLAB_CA_PEM"
     - update-ca-certificates
-    - git clone --mirror "https://x-access-token:${GITHUB_TOKEN}@github.com/rfernandezfranco/djangocms-lightbox2.git" repo.git
+    # GITHUB_TOKEN and GITLAB_PUSH_TOKEN must be masked and protected CI variables.
+    - git -c credential.helper='!f() { echo username=x-access-token; echo password="$GITHUB_TOKEN"; }; f' clone --mirror "https://github.com/rfernandezfranco/djangocms-lightbox2.git" repo.git
     - cd repo.git
-    - git remote set-url --push origin "${CI_SERVER_URL/https:\/\//https:\/\/oauth2:${GITLAB_PUSH_TOKEN}@}/${CI_PROJECT_PATH}.git"
-    - git push --mirror
+    - git -c credential.helper='!f() { echo username=oauth2; echo password="$GITLAB_PUSH_TOKEN"; }; f' push --mirror "${CI_SERVER_URL}/${CI_PROJECT_PATH}.git"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'

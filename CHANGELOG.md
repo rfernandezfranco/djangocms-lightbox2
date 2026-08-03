@@ -13,6 +13,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Release observers, timers and image handlers when justified galleries leave the DOM.
 - Validate gallery, Lightbox and thumbnail dimensions before rendering or generating assets.
 - Propagate unexpected thumbnail and plugin-parent errors instead of hiding programming failures.
+- Pin CI actions and tooling, audit Python dependencies, and keep mirror tokens out of repository URLs.
 
 
 ### Minor Changes
