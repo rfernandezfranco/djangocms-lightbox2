@@ -40,6 +40,7 @@ def test_build_options_defaults_match():
         assert opts[k] == v
     assert "maxWidth" not in opts
     assert "maxHeight" not in opts
+    assert opts["sanitizeTitle"] is True
 
 
 def test_build_options_overrides_and_max_dimensions():

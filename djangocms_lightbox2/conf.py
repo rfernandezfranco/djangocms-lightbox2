@@ -16,6 +16,8 @@ DEFAULT_OPTIONS = {
     "showImageNumberLabel": True,
     "wrapAround": False,
     "disableScrolling": False,
+    # Captions are rendered as text by Lightbox2, never as HTML.
+    "sanitizeTitle": True,
     # maxWidth / maxHeight undefined by default; omit when None
 }
 

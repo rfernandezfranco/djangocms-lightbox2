@@ -8,6 +8,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Harmonised carousel CSS variables by plugging theme tokens into controls/thumbs and dropping unused masonry inline var.
 - Added Lightbox2 source maps next to the minified JavaScript bundles for browser debugging.
 - Prevent stored XSS in inline Lightbox2 options by serializing them with Django's `json_script` filter.
+- Render Lightbox captions as text instead of HTML to prevent stored XSS payloads.
 
 
 ### Minor Changes
