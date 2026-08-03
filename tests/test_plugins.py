@@ -50,7 +50,7 @@ def test_assets_template_fallback_without_sekizai():
     template = engines["django"].get_template(
         "djangocms_lightbox2/includes/assets.html"
     )
-    ctx = {"include_assets": True, "use_bundled_jquery": True, "lb_options_json": ""}
+    ctx = {"include_assets": True, "use_bundled_jquery": True, "lb_options": ""}
     output = template.render(ctx)
     assert "lightbox.min.css" in output
     assert "lightbox-plus-jquery.min.js" in output
@@ -74,7 +74,7 @@ def test_gallery_template_handles_missing_sekizai():
         "gallery_show_captions": False,
         "include_assets": True,
         "use_bundled_jquery": True,
-        "lb_options_json": "",
+        "lb_options": "",
     }
     output = template.render(ctx)
     assert "gallery.css" in output
@@ -96,7 +96,7 @@ def test_carousel_template_handles_missing_sekizai():
         "carousel_object_fit": "cover",
         "include_assets": True,
         "use_bundled_jquery": True,
-        "lb_options_json": "",
+        "lb_options": "",
     }
     output = template.render(ctx)
     assert "carousel.css" in output
@@ -119,6 +119,26 @@ def test_gallery_render_includes_assets_without_children(db):
     assert "lightbox2/css/lightbox.min.css" in html
     # By default we use bundled jquery
     assert "lightbox2/js/lightbox-plus-jquery.min.js" in html
+
+
+def test_gallery_options_escape_script_content(db):
+    ph = Placeholder.objects.create(slot="content")
+    payload = "</script><script>window.pwned = true</script>"
+    gallery_plugin = add_plugin(
+        ph,
+        Lightbox2GalleryPlugin.__name__,
+        language="en",
+        title="Test",
+        album_label=payload,
+    )
+    instance, plugin = gallery_plugin.get_plugin_instance()
+    ctx = plugin.render(make_context(), instance, ph)
+
+    html = render_template(plugin.render_template, ctx)
+
+    assert payload not in html
+    assert r"\u003C/script\u003E" in html
+    assert "window.pwned = true" in html
 
 
 def test_image_include_assets_only_when_standalone(db):

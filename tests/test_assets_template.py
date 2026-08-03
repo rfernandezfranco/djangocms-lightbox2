@@ -15,7 +15,8 @@ def render_assets(use_bundled_jquery=True, lb_options=None):
     request = RequestFactory().get("/")
     context_data = {
         "use_bundled_jquery": use_bundled_jquery,
-        "lb_options_json": lb_options,
+        "lb_options": lb_options,
+        "lb_options_id": "dclb2-options-test",
     }
     ctx = SekizaiContext(context_data)
     ctx["request"] = request
@@ -25,13 +26,25 @@ def render_assets(use_bundled_jquery=True, lb_options=None):
 
 
 def test_assets_include_bundled_jquery_and_options():
-    out = render_assets(True, '{"resizeDuration": 123}')
+    out = render_assets(True, {"resizeDuration": 123})
     assert "lightbox-plus-jquery.min.js" in out
-    assert 'window.lightbox && window.lightbox.option({"resizeDuration": 123})' in out
+    assert '"resizeDuration": 123' in out
+    assert "window.lightbox && window.lightbox.option(options)" in out
 
 
 def test_assets_include_standalone_and_options_with_jquery_check():
-    out = render_assets(False, '{"fadeDuration": 321}')
+    out = render_assets(False, {"fadeDuration": 321})
     assert "lightbox.min.js" in out
     assert "window.jQuery" in out
-    assert 'window.lightbox && window.lightbox.option({"fadeDuration": 321})' in out
+    assert '"fadeDuration": 321' in out
+    assert "window.lightbox && window.lightbox.option(options)" in out
+
+
+def test_assets_escape_script_content_in_lightbox_options():
+    payload = "</script><script>window.pwned = true</script>"
+
+    out = render_assets(True, {"albumLabel": payload})
+
+    assert payload not in out
+    assert r"\u003C/script\u003E" in out
+    assert "window.pwned = true" in out
