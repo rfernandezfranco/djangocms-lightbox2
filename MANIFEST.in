@@ -1,4 +1,5 @@
 include README.md
+include LICENSE
 recursive-include djangocms_lightbox2/templates *
 recursive-include djangocms_lightbox2/static *
 recursive-include djangocms_lightbox2/migrations *.py

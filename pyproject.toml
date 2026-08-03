@@ -27,6 +27,21 @@ dependencies = [
   "django-filer>=2.0",
   "django-mptt>=0.14",
   "easy-thumbnails>=2.8",
+  "django-sekizai>=2.2",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest==8.3.5",
+  "pytest-django==4.11.1",
+]
+lint = [
+  "black==24.10.0",
+  "isort==5.13.2",
+  "flake8==7.1.1",
+]
+audit = [
+  "pip-audit==2.7.3",
 ]
 
 
