@@ -88,7 +88,7 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 
 - **Layout** – `grid`, `masonry`, or `justified`.
 - **Columns & gutter** – per-breakpoint column counts (`columns_desktop/tablet/mobile`) and `gutter` (px).
-- **Captions** – toggle inline captions below thumbnails.
+- **Captions** – toggle inline captions below thumbnails; captions are rendered as plain text.
 - **Justified options** – `justified_row_height`, `justified_tolerance` control the collage builder.
 - **Limit** – `limit_items` accepts `0–1000`; leave it blank for all child images, or use `0` to render none.
 - **Validated dimensions** – grid columns accept `1–12`, justified tolerance `0–1`, and thumbnail/lightbox dimensions are bounded to prevent invalid or excessively expensive configurations.

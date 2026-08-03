@@ -1,8 +1,9 @@
-Place here Lightbox2 images:
+Bundled Lightbox2 runtime images:
 - close.png
 - loading.gif
 - next.png
 - prev.png
 
-These are required by the real Lightbox2 CSS/JS. This repo ships placeholders only.
-
+These files are referenced by the bundled Lightbox2 CSS/JS and are included in
+the package as the runtime assets for the overlay controls. They are not
+placeholders.
