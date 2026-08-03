@@ -1,9 +1,6 @@
-import json
-
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django import forms
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from . import conf
@@ -79,7 +76,8 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
         context["use_bundled_jquery"] = conf.USE_BUNDLED_JQUERY
         # Build Lightbox2 options from instance + defaults
         options = conf.build_options_from_gallery(instance)
-        context["lb_options_json"] = mark_safe(json.dumps(options))
+        context["lb_options"] = options
+        context["lb_options_id"] = f"dclb2-options-{instance.pk}"
         # Build items for rendering according to layout
         images_qs = (
             Lightbox2Image.objects.filter(parent=instance)
@@ -259,5 +257,6 @@ class Lightbox2ImagePlugin(CMSPluginBase):
         context["use_bundled_jquery"] = conf.USE_BUNDLED_JQUERY
         # For standalone images, use global default options
         if include_assets:
-            context["lb_options_json"] = mark_safe(json.dumps(conf.DEFAULT_OPTIONS))
+            context["lb_options"] = conf.DEFAULT_OPTIONS
+            context["lb_options_id"] = f"dclb2-options-{instance.pk}"
         return context

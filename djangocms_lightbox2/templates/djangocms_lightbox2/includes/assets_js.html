@@ -1,9 +1,16 @@
 {% load static %}
+{% if lb_options %}
+  {{ lb_options|json_script:lb_options_id }}
+{% endif %}
 {% if use_bundled_jquery %}
   <script src="{% static 'djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js' %}"></script>
-  {% if lb_options_json %}
+  {% if lb_options %}
   <script>
-    try { window.lightbox && window.lightbox.option({{ lb_options_json|safe }}); } catch (e) { /* noop */ }
+    try {
+      var optionsElement = document.getElementById("{{ lb_options_id }}");
+      var options = JSON.parse(optionsElement.textContent);
+      window.lightbox && window.lightbox.option(options);
+    } catch (e) { /* noop */ }
   </script>
   {% endif %}
 {% else %}
@@ -13,9 +20,13 @@
         var s = document.createElement('script');
         s.src = "{% static 'djangocms_lightbox2/lightbox2/js/lightbox.min.js' %}";
         s.async = true;
-        {% if lb_options_json %}
+        {% if lb_options %}
         s.onload = function() {
-          try { window.lightbox && window.lightbox.option({{ lb_options_json|safe }}); } catch (e) { /* noop */ }
+          try {
+            var optionsElement = document.getElementById("{{ lb_options_id }}");
+            var options = JSON.parse(optionsElement.textContent);
+            window.lightbox && window.lightbox.option(options);
+          } catch (e) { /* noop */ }
         };
         {% endif %}
         document.head.appendChild(s);
