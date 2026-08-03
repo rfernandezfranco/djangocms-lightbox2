@@ -1,0 +1,50 @@
+# Documentación de trabajo local
+docs/
+
+# Cachés y resultados de herramientas Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Entornos virtuales locales
+.venv/
+venv/
+env/
+ENV/
+
+# Artefactos de empaquetado y compilación
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Archivos locales generados por Django
+*.sqlite3
+media/
+staticfiles/
+
+# Configuración local y credenciales
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json
+secrets*.json
+secrets*.yaml
+secrets*.yml
+
+# Logs y archivos temporales
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
