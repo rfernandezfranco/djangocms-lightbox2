@@ -47,19 +47,12 @@ MAX_THUMBNAIL_DIMENSION = 4096
 
 def _handle_thumbnail_exception(instance, exc, operation):
     fallback = getattr(getattr(instance, "image", None), "url", "")
-    if isinstance(exc, EXPECTED_THUMBNAIL_ERRORS):
-        logger.warning(
-            "Lightbox2Image %s: %s failed (%s)",
-            instance.pk,
-            operation,
-            exc,
-        )
-    else:  # pragma: no cover - unexpected paths are hard to exercise
-        logger.exception(
-            "Lightbox2Image %s: unexpected error during %s",
-            instance.pk,
-            operation,
-        )
+    logger.warning(
+        "Lightbox2Image %s: %s failed (%s)",
+        instance.pk,
+        operation,
+        exc,
+    )
     return fallback
 
 
@@ -301,10 +294,6 @@ class Lightbox2Image(CMSPlugin):
             return thumb.url
         except EXPECTED_THUMBNAIL_ERRORS as exc:
             return _handle_thumbnail_exception(self, exc, "thumbnail generation")
-        except (
-            Exception
-        ) as exc:  # pragma: no cover - unexpected paths should be visible
-            return _handle_thumbnail_exception(self, exc, "thumbnail generation")
 
     def get_scaled_by_height_url(self, target_height):
         if not self.image:
@@ -320,8 +309,6 @@ class Lightbox2Image(CMSPlugin):
             return thumb.url
         except EXPECTED_THUMBNAIL_ERRORS as exc:
             return _handle_thumbnail_exception(self, exc, "height scaling")
-        except Exception as exc:  # pragma: no cover
-            return _handle_thumbnail_exception(self, exc, "height scaling")
 
     def get_scaled_by_width_url(self, target_width):
         if not self.image:
@@ -336,8 +323,6 @@ class Lightbox2Image(CMSPlugin):
             thumb = thumbnailer.get_thumbnail(options)
             return thumb.url
         except EXPECTED_THUMBNAIL_ERRORS as exc:
-            return _handle_thumbnail_exception(self, exc, "width scaling")
-        except Exception as exc:  # pragma: no cover
             return _handle_thumbnail_exception(self, exc, "width scaling")
 
     def copy_relations(self, oldinstance):

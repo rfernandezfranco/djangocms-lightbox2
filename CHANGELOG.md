@@ -12,6 +12,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Apply Lightbox2 options per gallery when its album opens instead of changing a global configuration at page load.
 - Release observers, timers and image handlers when justified galleries leave the DOM.
 - Validate gallery, Lightbox and thumbnail dimensions before rendering or generating assets.
+- Propagate unexpected thumbnail and plugin-parent errors instead of hiding programming failures.
 
 
 ### Minor Changes

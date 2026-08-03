@@ -1,6 +1,7 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django import forms
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 
 from . import conf
@@ -251,7 +252,7 @@ class Lightbox2ImagePlugin(CMSPluginBase):
 
             if isinstance(parent_instance, Lightbox2Gallery):
                 include_assets = False
-        except Exception:
+        except ObjectDoesNotExist:
             include_assets = True
         context["include_assets"] = include_assets
         context["use_bundled_jquery"] = conf.USE_BUNDLED_JQUERY

@@ -1,6 +1,8 @@
 import base64
 from types import SimpleNamespace
+from unittest.mock import patch
 
+import pytest
 from cms.api import add_plugin
 from cms.models.placeholdermodel import Placeholder
 from django.core.files.base import ContentFile
@@ -218,6 +220,29 @@ def test_gallery_limit_zero_renders_no_items(db):
     )
 
     assert "dclb2-item" not in html
+
+
+def test_expected_thumbnail_error_uses_fallback(db):
+    image = make_filer_image("fallback.png")
+    plugin = Lightbox2ImagePlugin.model(image=image)
+
+    with patch(
+        "djangocms_lightbox2.models.get_thumbnailer",
+        side_effect=OSError("broken image"),
+    ):
+        assert plugin.get_thumbnail_url() == image.url
+
+
+def test_unexpected_thumbnail_error_is_propagated(db):
+    image = make_filer_image("unexpected.png")
+    plugin = Lightbox2ImagePlugin.model(image=image)
+
+    with patch(
+        "djangocms_lightbox2.models.get_thumbnailer",
+        side_effect=RuntimeError("unexpected failure"),
+    ):
+        with pytest.raises(RuntimeError, match="unexpected failure"):
+            plugin.get_thumbnail_url()
 
 
 def test_image_include_assets_only_when_standalone(db):
