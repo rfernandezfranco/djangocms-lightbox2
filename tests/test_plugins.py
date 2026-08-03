@@ -141,6 +141,59 @@ def test_gallery_options_escape_script_content(db):
     assert "window.pwned = true" in html
 
 
+def test_galleries_render_distinct_lightbox_options(db):
+    ph = Placeholder.objects.create(slot="content")
+    first = add_plugin(
+        ph,
+        Lightbox2GalleryPlugin.__name__,
+        language="en",
+        title="First",
+        fade_duration=100,
+    )
+    second = add_plugin(
+        ph,
+        Lightbox2GalleryPlugin.__name__,
+        language="en",
+        title="Second",
+        fade_duration=900,
+    )
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        target=first,
+        image=make_filer_image("first.png"),
+    )
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        target=second,
+        image=make_filer_image("second.png"),
+    )
+    first_instance, first_plugin = first.get_plugin_instance()
+    second_instance, second_plugin = second.get_plugin_instance()
+
+    first_html = render_template(
+        first_plugin.render_template,
+        first_plugin.render(make_context(), first_instance, ph),
+    )
+    second_html = render_template(
+        second_plugin.render_template,
+        second_plugin.render(make_context(), second_instance, ph),
+    )
+
+    first_id = f"dclb2-options-{first_instance.pk}"
+    second_id = f"dclb2-options-{second_instance.pk}"
+    assert first_id != second_id
+    assert f'id="{first_id}"' in first_html
+    assert '"fadeDuration": 100' in first_html
+    assert f'data-dclb2-options-id="{first_id}"' in first_html
+    assert f'id="{second_id}"' in second_html
+    assert '"fadeDuration": 900' in second_html
+    assert f'data-dclb2-options-id="{second_id}"' in second_html
+
+
 def test_image_include_assets_only_when_standalone(db):
     ph = Placeholder.objects.create(slot="content")
     # Standalone image

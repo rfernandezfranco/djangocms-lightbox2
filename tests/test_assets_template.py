@@ -29,7 +29,7 @@ def test_assets_include_bundled_jquery_and_options():
     out = render_assets(True, {"resizeDuration": 123})
     assert "lightbox-plus-jquery.min.js" in out
     assert '"resizeDuration": 123' in out
-    assert "window.lightbox && window.lightbox.option(options)" in out
+    assert "window.lightbox && window.lightbox.option(options)" not in out
 
 
 def test_assets_include_standalone_and_options_with_jquery_check():
@@ -37,7 +37,7 @@ def test_assets_include_standalone_and_options_with_jquery_check():
     assert "lightbox.min.js" in out
     assert "window.jQuery" in out
     assert '"fadeDuration": 321' in out
-    assert "window.lightbox && window.lightbox.option(options)" in out
+    assert "window.lightbox && window.lightbox.option(options)" not in out
 
 
 def test_assets_escape_script_content_in_lightbox_options():

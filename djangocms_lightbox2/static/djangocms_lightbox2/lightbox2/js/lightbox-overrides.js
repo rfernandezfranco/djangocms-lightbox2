@@ -21,6 +21,25 @@
     clearOverlayInlineStyles($overlay[0]);
   }
 
+  function getOptionsForElement(element) {
+    if (!element || !element.getAttribute) {
+      return null;
+    }
+    var optionsId = element.getAttribute('data-dclb2-options-id');
+    if (!optionsId || !document.getElementById) {
+      return null;
+    }
+    var optionsElement = document.getElementById(optionsId);
+    if (!optionsElement) {
+      return null;
+    }
+    try {
+      return JSON.parse(optionsElement.textContent || optionsElement.innerText || '{}');
+    } catch (e) {
+      return null;
+    }
+  }
+
   function refreshOverlayIfVisible() {
     if (!$) {
       return;
@@ -49,6 +68,17 @@
       window.setTimeout(function () {
         resetOverlayStyles(self.$overlay);
       }, 0);
+    };
+
+    var originalStart = proto.start;
+    proto.start = function (element) {
+      var options = getOptionsForElement(element && element[0] ? element[0] : element);
+      if (options && typeof this.option === 'function') {
+        this.option(options);
+      }
+      if (typeof originalStart === 'function') {
+        return originalStart.apply(this, arguments);
+      }
     };
     proto.__djangocmsLightboxPatched = true;
     return true;

@@ -17,7 +17,7 @@
          style="--dclb2-main-bg: {{ carousel_background_color|default:'#F8F8F8' }}; --dclb2-main-aspect: {{ carousel_aspect_ratio_css|default:'4 / 3' }}; --dclb2-object-fit: {{ carousel_object_fit|default:'cover' }};">
       {% for item in items %}
         <div class="dclb2-slide{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.counter0 }}">
-          <a class="dclb2-item" href="{{ item.href }}" data-lightbox="{{ group_name }}"{% if item.caption %} data-title="{{ item.caption }}"{% endif %}>
+          <a class="dclb2-item" href="{{ item.href }}" data-lightbox="{{ group_name }}" data-dclb2-options-id="{{ lb_options_id }}"{% if item.caption %} data-title="{{ item.caption }}"{% endif %}>
             <img src="{{ item.href }}" alt="{{ item.alt }}">
           </a>
           {% if instance.show_fullscreen_button or instance.show_download_button %}

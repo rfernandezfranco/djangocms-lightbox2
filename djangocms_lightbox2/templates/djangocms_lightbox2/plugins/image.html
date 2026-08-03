@@ -3,7 +3,7 @@
   {% include "djangocms_lightbox2/includes/assets.html" %}
 {% endif %}
 {% if instance.image %}
-<a href="{{ instance.image.url }}" data-lightbox="{{ instance.get_group }}"{% if instance.caption %} data-title="{{ instance.caption }}"{% endif %}>
+<a href="{{ instance.image.url }}" data-lightbox="{{ instance.get_group }}" data-dclb2-options-id="{{ lb_options_id|default:'' }}"{% if instance.caption %} data-title="{{ instance.caption }}"{% endif %}>
   <img src="{{ instance.get_thumbnail_url }}" alt="{{ instance.alt_text|default:instance.caption }}">
 </a>
 {% else %}

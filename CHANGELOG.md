@@ -9,6 +9,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Added Lightbox2 source maps next to the minified JavaScript bundles for browser debugging.
 - Prevent stored XSS in inline Lightbox2 options by serializing them with Django's `json_script` filter.
 - Render Lightbox captions as text instead of HTML to prevent stored XSS payloads.
+- Apply Lightbox2 options per gallery when its album opens instead of changing a global configuration at page load.
 
 
 ### Minor Changes
