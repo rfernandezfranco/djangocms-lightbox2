@@ -41,6 +41,13 @@ This project relies on a small set of automation "agents"—CLI tools and CI job
   python -m pip install pytest pytest-django django-mptt
   python -m pytest -q
   ```
+- **JavaScript smoke tests:**
+  ```bash
+  node --check tests/test_lightbox_overrides.js
+  node --check tests/test_justified_lifecycle.js
+  node tests/test_lightbox_overrides.js
+  node tests/test_justified_lifecycle.js
+  ```
 - **CI matrix:** `tests` job installs the matrix-defined Django/django CMS pairs (3.2/3.11, 4.2/4.1, 4.2/5.0), plus: `django-filer`, `django-mptt`, `easy-thumbnails`, `django-sekizai`.
 - **Special settings:**
   - `tests/settings.py` registers the CMS stack, toggles `CMS_CONFIRM_VERSION4 = True`, and uses an in-memory SQLite DB.
@@ -52,6 +59,7 @@ This project relies on a small set of automation "agents"—CLI tools and CI job
 - **Jobs:**
   1. `lint` – runs Black/isort/flake8 with Python 3.10.
   2. `tests` – executes the matrix described above after installing gettext.
+  3. JavaScript smoke tests – validates Lightbox option isolation and justified-gallery cleanup.
 - **Environment setup:** `DJANGO_SETTINGS_MODULE` and `PYTHONPATH` are exported in the test job so pytest-django finds `tests.settings`.
 - **Failure triage:**
   - Formatting failures → re-run Black/isort locally.

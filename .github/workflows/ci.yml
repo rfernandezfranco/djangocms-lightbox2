@@ -30,6 +30,13 @@ jobs:
       - name: Run flake8
         run: flake8 .
 
+      - name: Run JavaScript smoke tests
+        run: |
+          node --check tests/test_lightbox_overrides.js
+          node --check tests/test_justified_lifecycle.js
+          node tests/test_lightbox_overrides.js
+          node tests/test_justified_lifecycle.js
+
   tests:
     runs-on: ubuntu-latest
     strategy:

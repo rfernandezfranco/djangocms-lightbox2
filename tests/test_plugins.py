@@ -143,6 +143,36 @@ def test_gallery_options_escape_script_content(db):
     assert "window.pwned = true" in html
 
 
+def test_caption_is_escaped_in_gallery_markup(db):
+    ph = Placeholder.objects.create(slot="content")
+    payload = '<img src=x onerror="window.pwned = true">'
+    gallery_plugin = add_plugin(
+        ph,
+        Lightbox2GalleryPlugin.__name__,
+        language="en",
+        title="Captions",
+        show_captions=True,
+    )
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        target=gallery_plugin,
+        image=make_filer_image("caption.png"),
+        caption=payload,
+    )
+    instance, plugin = gallery_plugin.get_plugin_instance()
+
+    html = render_template(
+        plugin.render_template,
+        plugin.render(make_context(), instance, ph),
+    )
+
+    assert payload not in html
+    assert "&lt;img" in html
+    assert "<img src=x onerror=" not in html
+
+
 def test_galleries_render_distinct_lightbox_options(db):
     ph = Placeholder.objects.create(slot="content")
     first = add_plugin(
