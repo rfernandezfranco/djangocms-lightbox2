@@ -171,6 +171,82 @@ def test_caption_is_escaped_in_gallery_markup(db):
     assert payload not in html
     assert "&lt;img" in html
     assert "<img src=x onerror=" not in html
+    assert 'data-alt="&lt;img' in html
+
+
+@pytest.mark.parametrize(
+    ("plugin_class", "layout"),
+    [
+        (Lightbox2GalleryPlugin, "grid"),
+        (Lightbox2GalleryPlugin, "masonry"),
+        (Lightbox2GalleryPlugin, "justified"),
+        (Lightbox2CarouselPlugin, None),
+    ],
+)
+def test_gallery_lightbox_anchors_include_alt_text(db, plugin_class, layout):
+    ph = Placeholder.objects.create(slot="content")
+    plugin_kwargs = {"title": "Alt text", "layout": layout} if layout else {}
+    gallery_plugin = add_plugin(
+        ph,
+        plugin_class.__name__,
+        language="en",
+        **plugin_kwargs,
+    )
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        target=gallery_plugin,
+        image=make_filer_image("explicit-alt.png"),
+        alt_text="Explicit alt",
+        caption="Ignored caption",
+    )
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        target=gallery_plugin,
+        image=make_filer_image("fallback-alt.png"),
+        caption="Fallback caption",
+    )
+    instance, plugin = gallery_plugin.get_plugin_instance()
+
+    html = render_template(
+        plugin.render_template,
+        plugin.render(make_context(), instance, ph),
+    )
+
+    assert 'data-alt="Explicit alt"' in html
+    assert 'data-alt="Fallback caption"' in html
+
+
+@pytest.mark.parametrize(
+    ("alt_text", "caption", "expected"),
+    [
+        ("Explicit alt", "Ignored caption", "Explicit alt"),
+        ("", "Fallback caption", "Fallback caption"),
+    ],
+)
+def test_standalone_image_lightbox_anchor_includes_alt_text(
+    db, alt_text, caption, expected
+):
+    ph = Placeholder.objects.create(slot="content")
+    image_plugin = add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        image=make_filer_image("standalone-alt.png"),
+        alt_text=alt_text,
+        caption=caption,
+    )
+    instance, plugin = image_plugin.get_plugin_instance()
+
+    html = render_template(
+        plugin.render_template,
+        plugin.render(make_context(), instance, ph),
+    )
+
+    assert f'data-alt="{expected}"' in html
 
 
 def test_galleries_render_distinct_lightbox_options(db):
