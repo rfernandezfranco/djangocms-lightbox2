@@ -105,13 +105,17 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
             else:
                 thumb = image_plugin.get_thumbnail_url()
 
-            # Build a simple srcset for better sharpness on retina/responsive
-            srcset_parts = []
-            for width in (480, 960, 1440):
-                url_w = image_plugin.get_scaled_by_width_url(width)
-                if url_w:
-                    srcset_parts.append(f"{url_w} {width}w")
-            srcset = ", ".join(srcset_parts) if srcset_parts else ""
+            # The carousel renders the full image in its main slide and only
+            # uses the thumbnail as a background for the thumb strip. It does
+            # not render srcset, so avoid generating three unused variants.
+            srcset = ""
+            if not isinstance(self, Lightbox2CarouselPlugin):
+                srcset_parts = []
+                for width in (480, 960, 1440):
+                    url_w = image_plugin.get_scaled_by_width_url(width)
+                    if url_w:
+                        srcset_parts.append(f"{url_w} {width}w")
+                srcset = ", ".join(srcset_parts) if srcset_parts else ""
 
             items.append(
                 {

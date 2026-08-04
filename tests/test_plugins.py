@@ -409,6 +409,33 @@ def test_carousel_controls_toggle(db):
     assert "dclb2-download" not in html
 
 
+def test_carousel_does_not_generate_unused_srcset_variants(db):
+    ph = Placeholder.objects.create(slot="content")
+    carousel_pl = add_plugin(
+        ph,
+        Lightbox2CarouselPlugin.__name__,
+        language="en",
+        title="Carousel",
+    )
+    add_plugin(
+        ph,
+        Lightbox2ImagePlugin.__name__,
+        language="en",
+        target=carousel_pl,
+        image=make_filer_image("carousel-srcset.png"),
+    )
+    instance, plugin = carousel_pl.get_plugin_instance()
+
+    with patch.object(
+        Lightbox2ImagePlugin.model,
+        "get_scaled_by_width_url",
+        return_value="/unused-variant.jpg",
+    ) as scaled_by_width:
+        plugin.render(make_context(), instance, ph)
+
+    scaled_by_width.assert_not_called()
+
+
 def test_carousel_controls_can_be_hidden(db):
     ph = Placeholder.objects.create(slot="content")
     carousel_pl = add_plugin(
