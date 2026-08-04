@@ -7,6 +7,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Removed obsolete overlay sizing overrides that targeted the pre-2.12.0 positioning model.
 - Propagated image alternative text to every Lightbox trigger through `data-alt`, with caption fallback support.
 - Added a Chrome headless smoke test for the v2.12.0 dialog, accessibility, navigation, events, image loading, and selector-safe album contracts.
+- Synchronized carousel slides and thumbnails with Lightbox2 overlay navigation events.
 
 ## [0.2.0] - 2026-08-03 (Lightbox2 2.11.5)
 - Use viewport width for justified galleries so column breakpoints follow the page layout.
