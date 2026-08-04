@@ -13,6 +13,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Avoided generating unused responsive thumbnail variants for carousel slides.
 - Improved carousel accessibility with tab/tabpanel semantics, keyboard thumbnail navigation, and visible focus indicators.
 - Added a pinned Lightbox2 asset manifest with SHA-256 verification in CI.
+- Pinned the i18n workflow actions and build tooling for reproducible checks.
 
 ## [0.2.0] - 2026-08-03 (Lightbox2 2.11.5)
 - Use viewport width for justified galleries so column breakpoints follow the page layout.
