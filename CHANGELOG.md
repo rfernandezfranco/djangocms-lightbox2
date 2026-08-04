@@ -16,6 +16,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Pinned the i18n workflow actions and build tooling for reproducible checks.
 - Reconciled the historical model state so migration checks remain clean.
 - Removed the obsolete `default_app_config` declaration.
+- Clamped legacy gallery, Lightbox, and thumbnail values safely during rendering.
 
 ## [0.2.0] - 2026-08-03 (Lightbox2 2.11.5)
 - Use viewport width for justified galleries so column breakpoints follow the page layout.
