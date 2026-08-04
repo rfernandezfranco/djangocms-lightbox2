@@ -9,6 +9,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Added a Chrome headless smoke test for the v2.12.0 dialog, accessibility, navigation, events, image loading, and selector-safe album contracts.
 - Synchronized carousel slides and thumbnails with Lightbox2 overlay navigation events.
 - Guarded Lightbox and justified-gallery assets against duplicate loading when multiple plugin instances use Sekizai.
+- Added dynamic carousel initialization and teardown for CMS refreshes and DOM insertions/removals.
 
 ## [0.2.0] - 2026-08-03 (Lightbox2 2.11.5)
 - Use viewport width for justified galleries so column breakpoints follow the page layout.
