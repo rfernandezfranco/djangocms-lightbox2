@@ -10,10 +10,13 @@ const bundledPath =
   'lightbox-plus-jquery.min.js';
 const standalonePath =
   'djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/js/lightbox.min.js';
+const carouselPath =
+  'djangocms_lightbox2/static/djangocms_lightbox2/carousel/carousel.js';
 const bundledSource = fs.readFileSync(bundledPath, 'utf8');
 const lightboxStart = bundledSource.lastIndexOf('(function(root,factory)');
 const jquerySource = bundledSource.slice(0, lightboxStart);
 const standaloneSource = fs.readFileSync(standalonePath, 'utf8');
+const carouselSource = escapeScript(fs.readFileSync(carouselPath, 'utf8'));
 
 function escapeScript(source) {
   return source.replace(/<\/script/gi, '<\\/script');
@@ -84,6 +87,7 @@ const browserTest = `
     const $ = window.jQuery;
     const events = [];
     const trigger = document.getElementById('trigger-b');
+    const carousel = document.querySelector('.dclb2-carousel');
 
     function check(condition, message) {
       if (!condition) {
@@ -120,6 +124,10 @@ const browserTest = `
       wrapAround: true,
     });
 
+    await waitFor(
+      () => carousel.__dclb2CarouselInitialized,
+      'carousel did not initialize',
+    );
     trigger.focus();
     window.lightbox.start($(trigger));
     await waitFor(
@@ -150,6 +158,10 @@ const browserTest = `
     );
     check(events.includes('open') && events.includes('change'), 'missing open/change events');
     check(window.lightbox.album.length === 3, 'selector-safe album grouping failed');
+    check(
+      carousel.querySelector('.dclb2-slide.is-active').getAttribute('data-index') === '1',
+      'carousel did not follow the opened Lightbox image',
+    );
 
     const firstFocusable = document.querySelector('.lb-prev');
     const lastFocusable = document.querySelector('.lb-close');
@@ -182,6 +194,10 @@ const browserTest = `
         document.querySelector('.lb-image').getAttribute('alt') === 'Gamma',
       'next() did not load the following image',
     );
+    check(
+      carousel.querySelector('.dclb2-slide.is-active').getAttribute('data-index') === '2',
+      'carousel did not follow next() navigation',
+    );
     window.lightbox.next();
     await waitFor(
       () => window.lightbox.currentImageIndex === 0 &&
@@ -193,6 +209,10 @@ const browserTest = `
       () => window.lightbox.currentImageIndex === 2 &&
         document.querySelector('.lb-image').getAttribute('alt') === 'Gamma',
       'prev() did not load the previous image with wrap-around',
+    );
+    check(
+      carousel.querySelector('.dclb2-slide.is-active').getAttribute('data-index') === '2',
+      'carousel did not follow prev() navigation',
     );
 
     lightbox.dispatchEvent(
@@ -270,11 +290,19 @@ function createPage(runtime) {
     </style>
   </head>
   <body>
-    <a id="trigger-a" data-lightbox="group[0]" data-alt="Alpha" href="${imageUrl}#alpha">A</a>
-    <a id="trigger-b" data-lightbox="group[0]" data-alt="Beta" href="${imageUrl}?cache=1#beta">B</a>
-    <a id="trigger-c" data-lightbox="group[0]" data-alt="Gamma" href="${imageUrl}#gamma">C</a>
+    <div class="dclb2-carousel">
+      <div class="dclb2-slide is-active" data-index="0"><a id="trigger-a" class="dclb2-item" data-lightbox="group[0]" data-alt="Alpha" href="${imageUrl}#alpha">A</a></div>
+      <div class="dclb2-slide" data-index="1"><a id="trigger-b" class="dclb2-item" data-lightbox="group[0]" data-alt="Beta" href="${imageUrl}?cache=1#beta">B</a></div>
+      <div class="dclb2-slide" data-index="2"><a id="trigger-c" class="dclb2-item" data-lightbox="group[0]" data-alt="Gamma" href="${imageUrl}#gamma">C</a></div>
+      <div class="dclb2-thumbs-strip">
+        <button class="dclb2-thumb active" data-index="0" aria-selected="true"></button>
+        <button class="dclb2-thumb" data-index="1" aria-selected="false"></button>
+        <button class="dclb2-thumb" data-index="2" aria-selected="false"></button>
+      </div>
+    </div>
     <pre id="result"></pre>
     <script>${runtime}</script>
+    <script>${carouselSource}</script>
     <script>${browserTest}</script>
   </body>
 </html>`;

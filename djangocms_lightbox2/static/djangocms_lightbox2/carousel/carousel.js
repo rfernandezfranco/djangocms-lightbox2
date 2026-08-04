@@ -1,11 +1,13 @@
 (function() {
   function init(root) {
+    if (root.__dclb2CarouselInitialized) return;
     var slides = Array.prototype.slice.call(root.querySelectorAll('.dclb2-slide'));
     var thumbs = Array.prototype.slice.call(root.querySelectorAll('.dclb2-thumb'));
     if (!slides.length) return;
     var prev = root.querySelector('.dclb2-thumbs-prev') || root.querySelector('.dclb2-prev');
     var next = root.querySelector('.dclb2-thumbs-next') || root.querySelector('.dclb2-next');
     var strip = root.querySelector('.dclb2-thumbs-strip') || root.querySelector('.dclb2-carousel-thumbs');
+    root.__dclb2CarouselInitialized = true;
     var index = Math.max(0, slides.findIndex(function(s){ return s.classList.contains('is-active'); }));
     if (index === -1) index = 0;
     function activate(i) {
@@ -39,6 +41,23 @@
     });
     if (prev) prev.addEventListener('click', function() { activate(index - 1); });
     if (next) next.addEventListener('click', function() { activate(index + 1); });
+
+    // Keep the carousel state aligned with Lightbox2 overlay navigation.
+    var $ = window.jQuery;
+    if ($ && typeof $.fn.on === 'function') {
+      var anchors = slides.map(function(slide) {
+        return slide.querySelector('.dclb2-item');
+      });
+      $(document).on('lightbox:change.dclb2Carousel', function(event, data) {
+        if (!data || !Array.isArray(data.album)) return;
+        var current = data.album[data.currentImageIndex];
+        if (!current || !current.link) return;
+        var matchingIndex = anchors.findIndex(function(anchor) {
+          return anchor && anchor.getAttribute('href') === current.link;
+        });
+        if (matchingIndex !== -1) activate(matchingIndex);
+      });
+    }
 
     // Fullscreen button: open current slide anchor (Lightbox2)
     root.addEventListener('click', function(e){
