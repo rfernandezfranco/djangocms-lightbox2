@@ -1,0 +1,60 @@
+{
+  "upstream": {
+    "tag": "v2.12.0",
+    "commit": "fc01875e2175926c048bf3eb2a6b89a4b545f392"
+  },
+  "verification_toolchain": {
+    "node": "22.18.0",
+    "npm": "10.9.3"
+  },
+  "assets": [
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/css/lightbox.min.css",
+      "sha256": "5a84f4d3bcc035a49e7c323da27addb85edc0a00572f17f3e29a51d7704c875e"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/images/close.png",
+      "sha256": "5d62e6c90005bfb71f6abb440f9e4753681cb23bbd5e60477ab6f442d2f0e69c"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/images/lb-next.svg",
+      "sha256": "a90eac69d87251569eb895e24930cc05aba3a4c086b2322e3be59fe6b385ff83"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/images/lb-prev.svg",
+      "sha256": "a10d3f72635b6a29eaaf6bb950b06d1a4191e1472811aaab22fd74dbcf6836de"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/images/loading.gif",
+      "sha256": "225aa88b6ab02c06222ec9468d62e15fa188e39cdb9431d1f55401ad380753ed"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/images/next.png",
+      "sha256": "15b869b02c6fbaa8c6c26445a2dd2d9bad80fd27b1409f8179e5dd89dc89d90a"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/images/prev.png",
+      "sha256": "7fd9273f20fdb1229c224341271a119020a5eee74ccf6b4605730917c864caf2"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/images/README.txt",
+      "sha256": "bd398069c919540698ab698b57f6f2214ad5a5a4f3d3ff1de8b2a67d9bda242b"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js",
+      "sha256": "b34d47b36b3c43752edb082411be592413a75c842841e0a18dd20acdf245887c"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.map",
+      "sha256": "cb0c2dabde36371993ebbed6e2efd40cd8d3868a3c97db9d763c4df9290e2c2e"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/js/lightbox.min.js",
+      "sha256": "71af45b1072e4aa484f4024bbe1717cc046ec324c9deb926279aefbc24f8d422"
+    },
+    {
+      "path": "djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/js/lightbox.min.map",
+      "sha256": "cadf7906d08df369967c02a283648892569e5dafb14cf7ecc7e1c7335a0cf1a8"
+    }
+  ]
+}
