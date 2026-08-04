@@ -7,7 +7,7 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 - **Lightbox2 Gallery** plugin with grid, masonry, and justified layouts.
 - **Lightbox2 Carousel** plugin reusing the gallery model with extra carousel controls (aspect ratio, background, object-fit, button toggles).
 - **Lightbox2 Image** plugin supplying gallery/carousel items with Lightbox-ready metadata.
-- Bundled Lightbox2 2.11.5 assets (CSS/JS/source maps/images) and slim overrides that are injected via `sekizai` once per page.
+- Bundled Lightbox2 2.12.0 assets (CSS/JS/source maps/images) and slim overrides that are injected via `sekizai` once per page.
 - Easy-thumbnails integration for per-image thumbnail generation and responsive helpers (basic `srcset` for retina displays).
 - Configurable Lightbox2 options per gallery (wrap-around, fade durations, max size, scroll locking, etc.), plus global overrides with Django settings.
 

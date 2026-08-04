@@ -3,6 +3,7 @@
 This project follows Keep a Changelog and Semantic Versioning for plugin releases.
 
 ## [Unreleased]
+- Updated the bundled Lightbox2 assets to v2.12.0, including the fixed-position overlay, accessibility improvements, lifecycle fixes, and matching source maps.
 
 ## [0.2.0] - 2026-08-03 (Lightbox2 2.11.5)
 - Use viewport width for justified galleries so column breakpoints follow the page layout.
