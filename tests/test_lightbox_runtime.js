@@ -176,6 +176,12 @@ const browserTest = `
         document.querySelector('.lb-image').getAttribute('alt') === 'Alpha',
       'wrap-around navigation failed',
     );
+    window.lightbox.prev();
+    await waitFor(
+      () => window.lightbox.currentImageIndex === 2 &&
+        document.querySelector('.lb-image').getAttribute('alt') === 'Gamma',
+      'prev() did not load the previous image with wrap-around',
+    );
 
     lightbox.dispatchEvent(
       new KeyboardEvent('keyup', {
@@ -188,6 +194,44 @@ const browserTest = `
       () => events.includes('close') && document.activeElement === trigger,
       'Escape did not close the dialog and restore focus',
     );
+
+    const nativeImage = window.Image;
+    const pendingImages = [];
+    function ControlledImage() {
+      this.width = 8;
+      this.height = 6;
+      pendingImages.push(this);
+    }
+    Object.defineProperty(ControlledImage.prototype, 'src', {
+      set(value) {
+        this._src = value;
+      },
+      get() {
+        return this._src;
+      },
+    });
+    window.Image = ControlledImage;
+    window.lightbox.open([
+      { link: ${JSON.stringify(imageUrl + '#stale')}, alt: 'Stale' },
+      { link: ${JSON.stringify(imageUrl + '#current')}, alt: 'Current' },
+    ]);
+    check(pendingImages.length === 1, 'controlled image was not created');
+    const staleImage = pendingImages[0];
+    window.lightbox.next();
+    check(pendingImages.length === 2, 'current image was not created');
+    const currentImage = pendingImages[1];
+    staleImage.onload();
+    check(
+      document.querySelector('.lb-image').getAttribute('alt') !== 'Stale',
+      'stale image callback changed the displayed image',
+    );
+    currentImage.onload();
+    await waitFor(
+      () => document.querySelector('.lb-image').getAttribute('alt') === 'Current',
+      'current image callback did not update the displayed image',
+    );
+    window.Image = nativeImage;
+    window.lightbox.close();
 
     window.lightbox.open([{ link: ${JSON.stringify(brokenImageUrl)}, alt: 'Broken' }]);
     await waitFor(
