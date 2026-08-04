@@ -7,7 +7,7 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 - **Lightbox2 Gallery** plugin with grid, masonry, and justified layouts.
 - **Lightbox2 Carousel** plugin reusing the gallery model with extra carousel controls (aspect ratio, background, object-fit, button toggles).
 - **Lightbox2 Image** plugin supplying gallery/carousel items with Lightbox-ready metadata.
-- Bundled Lightbox2 2.12.0 assets (CSS/JS/source maps/images) and slim overrides that are injected via `sekizai` once per page.
+- Bundled Lightbox2 2.12.0 assets (CSS/JS/source maps/images), guarded against duplicate runtime loads, plus slim CMS integration helpers.
 - Easy-thumbnails integration for per-image thumbnail generation and responsive helpers (basic `srcset` for retina displays).
 - Configurable Lightbox2 options per gallery (wrap-around, fade durations, max size, scroll locking, etc.), plus global overrides with Django settings.
 
@@ -82,6 +82,21 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 2. **Carousel:** add “Lightbox2 Carousel”. The plugin reuses the same children and options as the gallery but exposes carousel-specific settings (aspect ratio, background colour, object-fit, fullscreen/download toggles). It still renders a gallery view and reuses Lightbox2 for the overlay.
 3. **Image items:** inside a gallery or carousel, add “Lightbox2 Image” children to populate the thumbnails and Lightbox overlay. The plugin is designed for child usage and cannot be dropped directly on a placeholder.
 
+### Browser API
+
+The assets expose `window.dclb2Lightbox2` as a small wrapper around the
+Lightbox2 runtime. It returns `false` when Lightbox2 is not loaded yet:
+
+```javascript
+window.dclb2Lightbox2.open([
+  {link: '/media/example.jpg', alt: 'Example image', title: 'Example'},
+]);
+window.dclb2Lightbox2.next();
+window.dclb2Lightbox2.close();
+```
+
+The wrapper also provides `prev`, `option`, `destroy`, and `isAvailable`.
+
 ## Plugin reference
 
 ### Gallery (`Lightbox2GalleryPlugin`)
@@ -115,7 +130,8 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 - JavaScript helpers:
   - `lightbox2/js/lightbox-plus-jquery.min.js` or `lightbox.min.js` (depending on the `USE_BUNDLED_JQUERY` setting).
   - `lightbox2/js/lightbox-plus-jquery.min.map` and `lightbox.min.map` are kept next to the minified bundles for browser debugging.
-  - `lightbox2/js/lightbox-overrides.js` patches Lightbox sizing so it plays nicely with the CMS toolbar.
+  - `lightbox2/js/lightbox-overrides.js` applies per-gallery Lightbox options before an album opens.
+  - `lightbox2/js/lightbox-api.js` exposes the documented `window.dclb2Lightbox2` wrapper.
   - `gallery/justified.js` arranges justified layouts responsively.
 
 ## Configuration knobs
@@ -141,4 +157,8 @@ Lightweight collection of Django CMS plugins that ship [Lightbox2](https://githu
 - JS source map (standalone): `static/djangocms_lightbox2/lightbox2/js/lightbox.min.map`
 - Images: `static/djangocms_lightbox2/lightbox2/images/{close.png, loading.gif, next.png, prev.png}`
 
-Replace these files if you upgrade Lightbox2 upstream, and re-run `collectstatic` so deployments receive the updates.
+The complete inventory and SHA-256 checksums are recorded in
+`scripts/lightbox2-assets.json`; verify them with
+`node scripts/verify_lightbox_assets.js`. Replace the vendor files only when you
+upgrade Lightbox2 upstream, update the manifest, and re-run `collectstatic` so
+deployments receive the updates.

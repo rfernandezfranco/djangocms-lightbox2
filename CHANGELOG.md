@@ -17,6 +17,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Reconciled the historical model state so migration checks remain clean.
 - Removed the obsolete `default_app_config` declaration.
 - Clamped legacy gallery, Lightbox, and thumbnail values safely during rendering.
+- Added the documented `window.dclb2Lightbox2` wrapper for programmatic Lightbox control.
 
 ## [0.2.0] - 2026-08-03 (Lightbox2 2.11.5)
 - Use viewport width for justified galleries so column breakpoints follow the page layout.
