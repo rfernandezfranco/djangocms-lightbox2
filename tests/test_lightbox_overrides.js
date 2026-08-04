@@ -6,6 +6,10 @@ const source = fs.readFileSync(
   'djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/js/lightbox-overrides.js',
   'utf8',
 );
+const cssSource = fs.readFileSync(
+  'djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/css/lightbox-overrides.css',
+  'utf8',
+);
 
 const options = {
   'dclb2-options-first': { textContent: '{"fadeDuration":100}' },
@@ -28,7 +32,8 @@ Lightbox.prototype.option = function (values) {
   Object.assign(this.options, values);
 };
 
-Lightbox.prototype.sizeOverlay = function () {};
+const originalSizeOverlay = function () {};
+Lightbox.prototype.sizeOverlay = originalSizeOverlay;
 
 Lightbox.prototype.start = function (element) {
   this.started.push(element);
@@ -57,5 +62,10 @@ assert.equal(lightbox.started.length, 1);
 lightbox.start(secondLink);
 assert.equal(lightbox.options.fadeDuration, 900);
 assert.equal(lightbox.started.length, 2);
+assert.equal(lightbox.sizeOverlay, originalSizeOverlay);
+
+assert.doesNotMatch(cssSource, /\.lightboxOverlay\s*\{/);
+assert.doesNotMatch(cssSource, /body\s*\{/);
+assert.match(cssSource, /#lightbox \.lb-nav a\.lb-prev/);
 
 console.log('lightbox-overrides options isolation: OK');
