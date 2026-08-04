@@ -26,6 +26,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = []
 
 ROOT_URLCONF = __name__
+urlpatterns = []
 
 TEMPLATES = [
     {
