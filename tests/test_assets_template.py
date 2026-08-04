@@ -56,5 +56,7 @@ def test_assets_multiple_includes_are_guarded_against_duplicate_loads():
 
     assert out.count("dclb2LightboxAssetsLoaded") == 4
     assert out.count("dclb2LightboxOverridesLoaded") == 4
+    assert out.count("dclb2LightboxApiLoaded") == 4
     assert out.count("lightbox-plus-jquery.min.js") == 2
     assert out.count("lightbox-overrides.js") == 2
+    assert out.count("lightbox-api.js") == 2
