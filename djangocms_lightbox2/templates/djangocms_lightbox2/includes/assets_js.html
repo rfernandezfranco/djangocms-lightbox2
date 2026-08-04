@@ -3,21 +3,41 @@
   {{ lb_options|json_script:lb_options_id }}
 {% endif %}
 {% if use_bundled_jquery %}
-  <script src="{% static 'djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js' %}"></script>
+  <script>
+    (function() {
+      if (window.dclb2LightboxAssetsLoaded) return;
+      window.dclb2LightboxAssetsLoaded = true;
+      var script = document.createElement('script');
+      script.src = "{% static 'djangocms_lightbox2/lightbox2/js/lightbox-plus-jquery.min.js' %}";
+      script.async = false;
+      document.head.appendChild(script);
+    })();
+  </script>
 {% else %}
   <script>
     (function() {
-      if (window.jQuery) {
-        var s = document.createElement('script');
-        s.src = "{% static 'djangocms_lightbox2/lightbox2/js/lightbox.min.js' %}";
-        s.async = true;
-        document.head.appendChild(s);
-      } else {
+      if (window.dclb2LightboxAssetsLoaded) return;
+      if (!window.jQuery) {
         if (window.console && console.error) {
           console.error('djangocms-lightbox2: jQuery is not loaded and use_bundled_jquery=False. Lightbox2 will not initialize.');
         }
+        return;
       }
+      window.dclb2LightboxAssetsLoaded = true;
+      var script = document.createElement('script');
+      script.src = "{% static 'djangocms_lightbox2/lightbox2/js/lightbox.min.js' %}";
+      script.async = true;
+      document.head.appendChild(script);
     })();
   </script>
 {% endif %}
-<script src="{% static 'djangocms_lightbox2/lightbox2/js/lightbox-overrides.js' %}"></script>
+<script>
+  (function() {
+    if (window.dclb2LightboxOverridesLoaded) return;
+    window.dclb2LightboxOverridesLoaded = true;
+    var script = document.createElement('script');
+    script.src = "{% static 'djangocms_lightbox2/lightbox2/js/lightbox-overrides.js' %}";
+    script.async = true;
+    document.head.appendChild(script);
+  })();
+</script>

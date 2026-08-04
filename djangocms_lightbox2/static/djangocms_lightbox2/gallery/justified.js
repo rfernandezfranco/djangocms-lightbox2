@@ -1,6 +1,9 @@
 /* Builds justified galleries while tolerating hidden containers and lazy images. */
 
 (function() {
+  if (window.dclb2JustifiedLoaded) return;
+  window.dclb2JustifiedLoaded = true;
+
   var containers = new Set();
   var resizeFallbackHandler = null;
   var TABLET_BREAKPOINT = 1024;

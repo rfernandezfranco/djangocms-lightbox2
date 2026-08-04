@@ -35,7 +35,10 @@ const container = {
 
 const document = {
   readyState: 'loading',
-  addEventListener() {},
+  domContentLoadedListeners: 0,
+  addEventListener(type) {
+    if (type === 'DOMContentLoaded') this.domContentLoadedListeners += 1;
+  },
   querySelectorAll() {
     return [container];
   },
@@ -64,7 +67,10 @@ const window = {
 window.ResizeObserver.prototype = Observer.prototype;
 window.IntersectionObserver.prototype = Observer.prototype;
 
-vm.runInNewContext(source, { window, document });
+const context = { window, document };
+vm.runInNewContext(source, context);
+vm.runInNewContext(source, context);
+assert.equal(document.domContentLoadedListeners, 1);
 
 window.dclb2JustifiedInit();
 assert.equal(resizeObservers.length, 1);
