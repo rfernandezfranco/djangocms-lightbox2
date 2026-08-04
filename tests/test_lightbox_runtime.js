@@ -128,6 +128,31 @@ const browserTest = `
       () => carousel.__dclb2CarouselInitialized,
       'carousel did not initialize',
     );
+    const dynamicCarousel = document.createElement('div');
+    dynamicCarousel.className = 'dclb2-carousel';
+    dynamicCarousel.innerHTML =
+      '<div class="dclb2-slide is-active" data-index="0"></div>';
+    document.body.appendChild(dynamicCarousel);
+    await waitFor(
+      () => dynamicCarousel.__dclb2CarouselInitialized,
+      'dynamically added carousel did not initialize',
+    );
+    dynamicCarousel.remove();
+    await waitFor(
+      () => dynamicCarousel.__dclb2CarouselInitialized === false,
+      'removed carousel was not destroyed',
+    );
+    document.body.appendChild(dynamicCarousel);
+    await waitFor(
+      () => dynamicCarousel.__dclb2CarouselInitialized,
+      'carousel did not reinitialize after reinsertion',
+    );
+    window.dclb2CarouselDestroy(dynamicCarousel);
+    check(
+      dynamicCarousel.__dclb2CarouselInitialized === false,
+      'explicit carousel destroy did not release listeners',
+    );
+    dynamicCarousel.remove();
     trigger.focus();
     window.lightbox.start($(trigger));
     await waitFor(
