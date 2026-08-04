@@ -25,6 +25,24 @@ DEFAULT_OPTIONS = {
 DEFAULT_OPTIONS.update(getattr(settings, "DJANGOCMS_LIGHTBOX2_OPTIONS", {}))
 
 
+def bounded_int(value, default, minimum, maximum):
+    """Return an integer constrained to the supported inclusive range."""
+    try:
+        value = int(value)
+    except (TypeError, ValueError):
+        return default
+    return max(minimum, min(maximum, value))
+
+
+def bounded_float(value, default, minimum, maximum):
+    """Return a float constrained to the supported inclusive range."""
+    try:
+        value = float(value)
+    except (TypeError, ValueError):
+        return default
+    return max(minimum, min(maximum, value))
+
+
 def build_options_from_gallery(gallery_instance):
     """Build Lightbox2 options dict combining defaults with gallery overrides."""
     opts = dict(DEFAULT_OPTIONS)
@@ -33,20 +51,26 @@ def build_options_from_gallery(gallery_instance):
     opts["alwaysShowNavOnTouchDevices"] = (
         gallery_instance.always_show_nav_on_touch_devices
     )
-    opts["fadeDuration"] = gallery_instance.fade_duration
+    opts["fadeDuration"] = bounded_int(gallery_instance.fade_duration, 600, 0, 10000)
     opts["fitImagesInViewport"] = gallery_instance.fit_images_in_viewport
-    opts["imageFadeDuration"] = gallery_instance.image_fade_duration
-    opts["positionFromTop"] = gallery_instance.position_from_top
-    opts["resizeDuration"] = gallery_instance.resize_duration
+    opts["imageFadeDuration"] = bounded_int(
+        gallery_instance.image_fade_duration, 600, 0, 10000
+    )
+    opts["positionFromTop"] = bounded_int(
+        gallery_instance.position_from_top, 50, 0, 2000
+    )
+    opts["resizeDuration"] = bounded_int(
+        gallery_instance.resize_duration, 700, 0, 10000
+    )
     opts["showImageNumberLabel"] = gallery_instance.show_image_number_label
     opts["wrapAround"] = gallery_instance.wrap_around
     opts["disableScrolling"] = gallery_instance.disable_scrolling
     if gallery_instance.max_width is not None:
-        opts["maxWidth"] = gallery_instance.max_width
+        opts["maxWidth"] = bounded_int(gallery_instance.max_width, 10000, 1, 10000)
     else:
         opts.pop("maxWidth", None)
     if gallery_instance.max_height is not None:
-        opts["maxHeight"] = gallery_instance.max_height
+        opts["maxHeight"] = bounded_int(gallery_instance.max_height, 10000, 1, 10000)
     else:
         opts.pop("maxHeight", None)
     return opts

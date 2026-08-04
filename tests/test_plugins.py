@@ -339,6 +339,31 @@ def test_expected_thumbnail_error_uses_fallback(db):
         assert plugin.get_thumbnail_url() == image.url
 
 
+def test_thumbnail_generation_clamps_legacy_dimensions(db):
+    image = make_filer_image("legacy-dimensions.png")
+    plugin = Lightbox2ImagePlugin.model(
+        image=image,
+        thumbnail_width=-10,
+        thumbnail_height=99999,
+    )
+    thumbnail = SimpleNamespace(url="/thumbnail.jpg")
+    calls = []
+
+    def get_thumbnail(options):
+        calls.append(options)
+        return thumbnail
+
+    thumbnailer = SimpleNamespace(get_thumbnail=get_thumbnail)
+
+    with patch(
+        "djangocms_lightbox2.models.get_thumbnailer",
+        return_value=thumbnailer,
+    ):
+        assert plugin.get_thumbnail_url() == "/thumbnail.jpg"
+
+    assert calls == [{"size": (1, 4096), "crop": True}]
+
+
 def test_unexpected_thumbnail_error_is_propagated(db):
     image = make_filer_image("unexpected.png")
     plugin = Lightbox2ImagePlugin.model(image=image)

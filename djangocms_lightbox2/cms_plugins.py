@@ -85,8 +85,25 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
             .select_related("image")
             .order_by("position", "pk")
         )
-        if instance.limit_items is not None:
-            images_qs = images_qs[: instance.limit_items]
+        layout = instance.layout
+        if layout not in (
+            instance.LAYOUT_GRID,
+            instance.LAYOUT_MASONRY,
+            instance.LAYOUT_JUSTIFIED,
+        ):
+            layout = instance.LAYOUT_GRID
+        limit_items = conf.bounded_int(instance.limit_items, None, 0, 1000)
+        if limit_items is not None:
+            images_qs = images_qs[:limit_items]
+
+        columns = {
+            "desktop": conf.bounded_int(instance.columns_desktop, 4, 1, 12),
+            "tablet": conf.bounded_int(instance.columns_tablet, 2, 1, 12),
+            "mobile": conf.bounded_int(instance.columns_mobile, 1, 1, 12),
+        }
+        gutter = conf.bounded_int(instance.gutter, 8, 0, 200)
+        row_height = conf.bounded_int(instance.justified_row_height, 220, 1, 2000)
+        tolerance = conf.bounded_float(instance.justified_tolerance, 0.25, 0, 1)
 
         items = []
         for image_plugin in images_qs:
@@ -94,11 +111,9 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
                 continue
 
             img_href = getattr(image_plugin.image, "url", "")
-            if instance.layout == instance.LAYOUT_JUSTIFIED:
-                thumb = image_plugin.get_scaled_by_height_url(
-                    instance.justified_row_height
-                )
-            elif instance.layout == instance.LAYOUT_MASONRY:
+            if layout == instance.LAYOUT_JUSTIFIED:
+                thumb = image_plugin.get_scaled_by_height_url(row_height)
+            elif layout == instance.LAYOUT_MASONRY:
                 thumb = image_plugin.get_scaled_by_width_url(
                     image_plugin.thumbnail_width
                 )
@@ -133,37 +148,32 @@ class Lightbox2GalleryPlugin(CMSPluginBase):
 
         context.update(
             {
-                "gallery_layout": instance.layout,
+                "gallery_layout": layout,
                 "gallery_show_captions": instance.show_captions,
-                "gallery_gutter": instance.gutter,
-                "gallery_cols": {
-                    "desktop": instance.columns_desktop,
-                    "tablet": instance.columns_tablet,
-                    "mobile": instance.columns_mobile,
-                },
-                "gallery_row_height": instance.justified_row_height,
-                "gallery_row_height_auto": instance.justified_row_height
-                == default_row_height,
-                "gallery_tolerance": instance.justified_tolerance,
+                "gallery_gutter": gutter,
+                "gallery_cols": columns,
+                "gallery_row_height": row_height,
+                "gallery_row_height_auto": row_height == default_row_height,
+                "gallery_tolerance": tolerance,
                 "items": items,
                 "group_name": instance.get_group(),
                 "sizes_attr": (
                     ", ".join(
                         [
                             _grid_size_entry(
-                                instance.columns_mobile,
-                                instance.gutter,
+                                columns["mobile"],
+                                gutter,
                                 breakpoint=640,
                             ),
                             _grid_size_entry(
-                                instance.columns_tablet,
-                                instance.gutter,
+                                columns["tablet"],
+                                gutter,
                                 breakpoint=1024,
                             ),
-                            _grid_size_entry(instance.columns_desktop, instance.gutter),
+                            _grid_size_entry(columns["desktop"], gutter),
                         ]
                     )
-                    if instance.layout == instance.LAYOUT_GRID
+                    if layout == instance.LAYOUT_GRID
                     else "100vw"
                 ),
             }

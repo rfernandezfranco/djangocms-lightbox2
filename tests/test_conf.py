@@ -71,3 +71,23 @@ def test_build_options_overrides_and_max_dimensions():
     assert opts["disableScrolling"] is True
     assert opts["maxWidth"] == 1024
     assert opts["maxHeight"] == 768
+
+
+def test_build_options_clamp_legacy_values():
+    g = DummyGallery(
+        fade_duration=-20,
+        image_fade_duration="invalid",
+        position_from_top=5000,
+        resize_duration=50000,
+        max_width=0,
+        max_height=50000,
+    )
+
+    opts = conf.build_options_from_gallery(g)
+
+    assert opts["fadeDuration"] == 0
+    assert opts["imageFadeDuration"] == 600
+    assert opts["positionFromTop"] == 2000
+    assert opts["resizeDuration"] == 10000
+    assert opts["maxWidth"] == 1
+    assert opts["maxHeight"] == 10000

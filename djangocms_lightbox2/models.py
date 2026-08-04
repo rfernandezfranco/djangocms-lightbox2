@@ -45,6 +45,14 @@ MAX_LIMIT_ITEMS = 1000
 MAX_THUMBNAIL_DIMENSION = 4096
 
 
+def _safe_thumbnail_dimension(value, fallback):
+    try:
+        value = int(value)
+    except (TypeError, ValueError):
+        return fallback
+    return max(1, min(MAX_THUMBNAIL_DIMENSION, value))
+
+
 def _handle_thumbnail_exception(instance, exc, operation):
     fallback = getattr(getattr(instance, "image", None), "url", "")
     logger.warning(
@@ -285,7 +293,10 @@ class Lightbox2Image(CMSPlugin):
         if not self.image:
             return ""
         options = {
-            "size": (self.thumbnail_width, self.thumbnail_height),
+            "size": (
+                _safe_thumbnail_dimension(self.thumbnail_width, 400),
+                _safe_thumbnail_dimension(self.thumbnail_height, 300),
+            ),
             "crop": True,
         }
         try:
@@ -299,7 +310,10 @@ class Lightbox2Image(CMSPlugin):
         if not self.image:
             return ""
         options = {
-            "size": (9999, int(target_height or self.thumbnail_height)),
+            "size": (
+                9999,
+                _safe_thumbnail_dimension(target_height, self.thumbnail_height),
+            ),
             "crop": False,
             "upscale": False,
         }
@@ -314,7 +328,10 @@ class Lightbox2Image(CMSPlugin):
         if not self.image:
             return ""
         options = {
-            "size": (int(target_width or self.thumbnail_width), 9999),
+            "size": (
+                _safe_thumbnail_dimension(target_width, self.thumbnail_width),
+                9999,
+            ),
             "crop": False,
             "upscale": False,
         }
