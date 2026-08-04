@@ -5,10 +5,22 @@ const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
-const bundlePath =
+const bundledPath =
   'djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/js/' +
   'lightbox-plus-jquery.min.js';
-const bundle = fs.readFileSync(bundlePath, 'utf8').replace(/<\/script/gi, '<\\/script');
+const standalonePath =
+  'djangocms_lightbox2/static/djangocms_lightbox2/lightbox2/js/lightbox.min.js';
+const bundledSource = fs.readFileSync(bundledPath, 'utf8');
+const lightboxStart = bundledSource.lastIndexOf('(function(root,factory)');
+const jquerySource = bundledSource.slice(0, lightboxStart);
+const standaloneSource = fs.readFileSync(standalonePath, 'utf8');
+
+function escapeScript(source) {
+  return source.replace(/<\/script/gi, '<\\/script');
+}
+
+const bundledRuntime = escapeScript(bundledSource);
+const standaloneRuntime = escapeScript(jquerySource + standaloneSource);
 
 function findChrome() {
   const candidates = [
@@ -247,7 +259,8 @@ const browserTest = `
   });
 `;
 
-const page = `<!doctype html>
+function createPage(runtime) {
+  return `<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -261,31 +274,37 @@ const page = `<!doctype html>
     <a id="trigger-b" data-lightbox="group[0]" data-alt="Beta" href="${imageUrl}?cache=1#beta">B</a>
     <a id="trigger-c" data-lightbox="group[0]" data-alt="Gamma" href="${imageUrl}#gamma">C</a>
     <pre id="result"></pre>
-    <script>${bundle}</script>
+    <script>${runtime}</script>
     <script>${browserTest}</script>
   </body>
 </html>`;
+}
 
 try {
-  fs.writeFileSync(pagePath, page);
-  const result = spawnSync(
-    chrome,
-    [
-      '--headless=new',
-      '--no-sandbox',
-      '--disable-gpu',
-      '--disable-dev-shm-usage',
-      '--allow-file-access-from-files',
-      '--dump-dom',
-      '--virtual-time-budget=5000',
-      pathToFileURL(pagePath).href,
-    ],
-    { encoding: 'utf8' },
-  );
+  for (const [label, runtime] of [
+    ['bundled jQuery', bundledRuntime],
+    ['standalone Lightbox with external jQuery', standaloneRuntime],
+  ]) {
+    fs.writeFileSync(pagePath, createPage(runtime));
+    const result = spawnSync(
+      chrome,
+      [
+        '--headless=new',
+        '--no-sandbox',
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--allow-file-access-from-files',
+        '--dump-dom',
+        '--virtual-time-budget=5000',
+        pathToFileURL(pagePath).href,
+      ],
+      { encoding: 'utf8' },
+    );
 
-  assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /LIGHTBOX_RUNTIME_SMOKE: PASS/);
-  console.log('Lightbox2 v2.12.0 runtime smoke: OK');
+    assert.equal(result.status, 0, `${label}: ${result.stderr}`);
+    assert.match(result.stdout, /LIGHTBOX_RUNTIME_SMOKE: PASS/);
+  }
+  console.log('Lightbox2 v2.12.0 runtime smoke (both asset paths): OK');
 } finally {
   fs.rmSync(temporaryDirectory, { recursive: true, force: true });
 }
