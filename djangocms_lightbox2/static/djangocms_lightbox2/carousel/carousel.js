@@ -37,17 +37,23 @@
     }
 
     function activate(i) {
-      slides.forEach(function(s) { s.classList.remove('is-active'); });
+      slides.forEach(function(s) {
+        s.classList.remove('is-active');
+        s.setAttribute('aria-hidden', 'true');
+      });
       thumbs.forEach(function(t) {
         t.classList.remove('active');
         t.setAttribute('aria-selected', 'false');
+        t.setAttribute('tabindex', '-1');
       });
       index = (i + slides.length) % slides.length;
       slides[index].classList.add('is-active');
+      slides[index].setAttribute('aria-hidden', 'false');
       if (thumbs[index]) {
         var thumbEl = thumbs[index];
         thumbEl.classList.add('active');
         thumbEl.setAttribute('aria-selected', 'true');
+        thumbEl.setAttribute('tabindex', '0');
         try {
           if (strip && typeof strip.scrollLeft === 'number') {
             var stripRect = strip.getBoundingClientRect();
@@ -69,6 +75,17 @@
       listen(btn, 'click', function(e) {
         e.preventDefault();
         activate(i);
+      });
+      listen(btn, 'keydown', function(e) {
+        var nextIndex = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextIndex = i + 1;
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') nextIndex = i - 1;
+        if (e.key === 'Home') nextIndex = 0;
+        if (e.key === 'End') nextIndex = slides.length - 1;
+        if (nextIndex === null) return;
+        e.preventDefault();
+        activate(nextIndex);
+        if (thumbs[index]) thumbs[index].focus();
       });
     });
     if (prev) listen(prev, 'click', function() { activate(index - 1); });

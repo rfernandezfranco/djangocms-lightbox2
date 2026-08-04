@@ -407,6 +407,9 @@ def test_carousel_controls_toggle(db):
     html = render_template(plugin.render_template, ctx)
     assert "dclb2-fullscreen" in html
     assert "dclb2-download" not in html
+    assert 'role="tabpanel"' in html
+    assert 'role="tablist"' in html
+    assert 'aria-controls="dclb2-slide-' in html
 
 
 def test_carousel_does_not_generate_unused_srcset_variants(db):

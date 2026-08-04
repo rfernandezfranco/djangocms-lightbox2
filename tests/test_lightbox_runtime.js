@@ -128,6 +128,28 @@ const browserTest = `
       () => carousel.__dclb2CarouselInitialized,
       'carousel did not initialize',
     );
+    const firstThumb = carousel.querySelector('.dclb2-thumb');
+    const secondThumb = carousel.querySelectorAll('.dclb2-thumb')[1];
+    firstThumb.focus();
+    firstThumb.dispatchEvent(
+      new KeyboardEvent('keydown', {bubbles: true, key: 'ArrowRight'}),
+    );
+    check(
+      carousel.querySelector('.dclb2-slide.is-active').getAttribute('data-index') === '1',
+      'thumbnail arrow navigation did not activate the next slide',
+    );
+    check(document.activeElement === secondThumb, 'thumbnail focus did not move');
+    secondThumb.dispatchEvent(
+      new KeyboardEvent('keydown', {bubbles: true, key: 'Home'}),
+    );
+    check(
+      carousel.querySelector('.dclb2-slide.is-active').getAttribute('data-index') === '0',
+      'thumbnail Home navigation did not activate the first slide',
+    );
+    check(
+      carousel.querySelector('.dclb2-slide.is-active').getAttribute('aria-hidden') === 'false',
+      'active slide is not exposed to assistive technology',
+    );
     const dynamicCarousel = document.createElement('div');
     dynamicCarousel.className = 'dclb2-carousel';
     dynamicCarousel.innerHTML =
@@ -316,13 +338,13 @@ function createPage(runtime) {
   </head>
   <body>
     <div class="dclb2-carousel">
-      <div class="dclb2-slide is-active" data-index="0"><a id="trigger-a" class="dclb2-item" data-lightbox="group[0]" data-alt="Alpha" href="${imageUrl}#alpha">A</a></div>
-      <div class="dclb2-slide" data-index="1"><a id="trigger-b" class="dclb2-item" data-lightbox="group[0]" data-alt="Beta" href="${imageUrl}?cache=1#beta">B</a></div>
-      <div class="dclb2-slide" data-index="2"><a id="trigger-c" class="dclb2-item" data-lightbox="group[0]" data-alt="Gamma" href="${imageUrl}#gamma">C</a></div>
+      <div class="dclb2-slide is-active" data-index="0" aria-hidden="false"><a id="trigger-a" class="dclb2-item" data-lightbox="group[0]" data-alt="Alpha" href="${imageUrl}#alpha">A</a></div>
+      <div class="dclb2-slide" data-index="1" aria-hidden="true"><a id="trigger-b" class="dclb2-item" data-lightbox="group[0]" data-alt="Beta" href="${imageUrl}?cache=1#beta">B</a></div>
+      <div class="dclb2-slide" data-index="2" aria-hidden="true"><a id="trigger-c" class="dclb2-item" data-lightbox="group[0]" data-alt="Gamma" href="${imageUrl}#gamma">C</a></div>
       <div class="dclb2-thumbs-strip">
-        <button class="dclb2-thumb active" data-index="0" aria-selected="true"></button>
-        <button class="dclb2-thumb" data-index="1" aria-selected="false"></button>
-        <button class="dclb2-thumb" data-index="2" aria-selected="false"></button>
+        <button class="dclb2-thumb active" data-index="0" aria-selected="true" tabindex="0"></button>
+        <button class="dclb2-thumb" data-index="1" aria-selected="false" tabindex="-1"></button>
+        <button class="dclb2-thumb" data-index="2" aria-selected="false" tabindex="-1"></button>
       </div>
     </div>
     <pre id="result"></pre>

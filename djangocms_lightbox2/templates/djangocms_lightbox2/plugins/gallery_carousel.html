@@ -16,7 +16,12 @@
          aria-label="{% trans 'Carousel' %}"
          style="--dclb2-main-bg: {{ carousel_background_color|default:'#F8F8F8' }}; --dclb2-main-aspect: {{ carousel_aspect_ratio_css|default:'4 / 3' }}; --dclb2-object-fit: {{ carousel_object_fit|default:'cover' }};">
       {% for item in items %}
-        <div class="dclb2-slide{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.counter0 }}">
+        <div id="dclb2-slide-{{ instance.pk }}-{{ forloop.counter0 }}"
+             class="dclb2-slide{% if forloop.first %} is-active{% endif %}"
+             data-index="{{ forloop.counter0 }}"
+             role="tabpanel"
+             aria-labelledby="dclb2-thumb-{{ instance.pk }}-{{ forloop.counter0 }}"
+             aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}">
           <a class="dclb2-item" href="{{ item.href }}" data-lightbox="{{ group_name }}" data-dclb2-options-id="{{ lb_options_id }}" data-alt="{{ item.alt }}"{% if item.caption %} data-title="{{ item.caption }}"{% endif %}>
             <img src="{{ item.href }}" alt="{{ item.alt }}">
           </a>
@@ -39,9 +44,12 @@
         {% for item in items %}
           <button class="dclb2-thumb{% if forloop.first %} active{% endif %}"
                   type="button"
+                  id="dclb2-thumb-{{ instance.pk }}-{{ forloop.counter0 }}"
                   data-index="{{ forloop.counter0 }}"
                   role="tab"
+                  aria-controls="dclb2-slide-{{ instance.pk }}-{{ forloop.counter0 }}"
                   aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
                   aria-label="{{ item.alt|default:item.caption }}"
                   style="background-image:url('{{ item.thumb }}');">
           </button>

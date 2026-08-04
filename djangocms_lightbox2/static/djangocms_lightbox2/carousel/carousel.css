@@ -36,6 +36,12 @@
   background-color: var(--dclb2-accent-hover, #006cd8);
   color: #fff;
 }
+.dclb2-btn:focus-visible,
+.dclb2-thumb:focus-visible,
+.dclb2-carousel:focus-visible {
+  outline: 3px solid var(--dclb2-accent, #0085ff);
+  outline-offset: 2px;
+}
 .dclb2-carousel-main {
   position: relative;
   border-radius: 8px 8px 0 0;
