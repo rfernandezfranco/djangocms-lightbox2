@@ -11,6 +11,7 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Guarded Lightbox and justified-gallery assets against duplicate loading when multiple plugin instances use Sekizai.
 - Added dynamic carousel initialization and teardown for CMS refreshes and DOM insertions/removals.
 - Avoided generating unused responsive thumbnail variants for carousel slides.
+- Improved carousel accessibility with tab/tabpanel semantics, keyboard thumbnail navigation, and visible focus indicators.
 
 ## [0.2.0] - 2026-08-03 (Lightbox2 2.11.5)
 - Use viewport width for justified galleries so column breakpoints follow the page layout.
