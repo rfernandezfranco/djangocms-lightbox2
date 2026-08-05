@@ -108,7 +108,7 @@ jobs:
 
       - name: Install audit environment
         run: |
-          python -m pip install --upgrade pip==25.0.1
+          python -m pip install --upgrade pip==26.1.2 setuptools==83.0.0
           pip install \
             "Django>=4.2,<4.3" \
             "django-cms>=4.1,<4.2" \
