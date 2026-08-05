@@ -1,4 +1,5 @@
 import base64
+from decimal import Decimal
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -8,6 +9,8 @@ from cms.models.placeholdermodel import Placeholder
 from django.core.files.base import ContentFile
 from django.template import engines
 from django.test import RequestFactory
+from django.test.utils import override_settings
+from django.utils import translation
 from filer.models.imagemodels import Image as FilerImage
 from sekizai.context import SekizaiContext
 
@@ -81,6 +84,29 @@ def test_gallery_template_handles_missing_sekizai():
     output = template.render(ctx)
     assert "gallery.css" in output
     assert "justified.js" in output
+
+
+def test_justified_tolerance_is_not_localized_for_javascript():
+    template = engines["django"].get_template(
+        "djangocms_lightbox2/plugins/gallery_justified.html"
+    )
+    ctx = {
+        "gallery_row_height": 220,
+        "gallery_row_height_auto": True,
+        "gallery_tolerance": Decimal("0.25"),
+        "gallery_cols": {"desktop": 3, "tablet": 2, "mobile": 1},
+        "gallery_gutter": 8,
+        "items": [],
+        "group_name": "group",
+        "lb_options_id": "options",
+        "gallery_show_captions": False,
+    }
+
+    with override_settings(USE_L10N=True), translation.override("es"):
+        output = template.render(ctx)
+
+    assert 'data-tolerance="0.25"' in output
+    assert 'data-tolerance="0,25"' not in output
 
 
 def test_carousel_template_handles_missing_sekizai():

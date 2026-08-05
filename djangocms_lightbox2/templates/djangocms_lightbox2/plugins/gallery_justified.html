@@ -1,6 +1,6 @@
-{% load static %}
+{% load l10n static %}
 <div class="dclb2-justified"
-     data-row-height="{{ gallery_row_height }}" data-row-height-auto="{{ gallery_row_height_auto|yesno:'true,false' }}" data-tolerance="{{ gallery_tolerance }}"
+     data-row-height="{{ gallery_row_height }}" data-row-height-auto="{{ gallery_row_height_auto|yesno:'true,false' }}" data-tolerance="{{ gallery_tolerance|unlocalize }}"
      data-cols-desktop="{{ gallery_cols.desktop }}" data-cols-tablet="{{ gallery_cols.tablet }}" data-cols-mobile="{{ gallery_cols.mobile }}"
      style="--dclb2-gutter: {{ gallery_gutter }}px; --dclb2-cols-desktop: {{ gallery_cols.desktop }}; --dclb2-cols-tablet: {{ gallery_cols.tablet }}; --dclb2-cols-mobile: {{ gallery_cols.mobile }};">
   {% for it in items %}

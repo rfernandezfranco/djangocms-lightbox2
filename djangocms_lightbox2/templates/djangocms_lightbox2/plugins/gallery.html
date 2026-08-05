@@ -1,4 +1,4 @@
-{% load cms_tags sekizai_tags static i18n %}
+{% load cms_tags sekizai_tags static i18n l10n %}
 {% include "djangocms_lightbox2/includes/assets.html" %}
 
 {% if sekizai %}
@@ -14,7 +14,7 @@
 <div class="dclb2-gallery" id="lb-gallery-{{ instance.pk }}" data-layout="{{ gallery_layout }}"
      data-gutter="{{ gallery_gutter }}" data-cols-desktop="{{ gallery_cols.desktop }}"
      data-cols-tablet="{{ gallery_cols.tablet }}" data-cols-mobile="{{ gallery_cols.mobile }}"
-     data-row-height="{{ gallery_row_height }}" data-tolerance="{{ gallery_tolerance }}">
+     data-row-height="{{ gallery_row_height }}" data-tolerance="{{ gallery_tolerance|unlocalize }}">
   {% if items %}
     {% if gallery_layout == 'grid' %}
       {% include 'djangocms_lightbox2/plugins/gallery_grid.html' %}
