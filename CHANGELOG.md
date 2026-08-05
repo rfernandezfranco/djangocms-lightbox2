@@ -3,6 +3,7 @@
 This project follows Keep a Changelog and Semantic Versioning for plugin releases.
 
 ## [Unreleased]
+- Updated the dependency-audit environment to pip 26.1.2 and setuptools 83.0.0 to cover the latest reported packaging-tool vulnerabilities.
 - Updated the bundled Lightbox2 assets to v2.12.0, including the fixed-position overlay, accessibility improvements, lifecycle fixes, and matching source maps.
 - Removed obsolete overlay sizing overrides that targeted the pre-2.12.0 positioning model.
 - Propagated image alternative text to every Lightbox trigger through `data-alt`, with caption fallback support.
