@@ -18,6 +18,8 @@ This project follows Keep a Changelog and Semantic Versioning for plugin release
 - Removed the obsolete `default_app_config` declaration.
 - Clamped legacy gallery, Lightbox, and thumbnail values safely during rendering.
 - Added the documented `window.dclb2Lightbox2` wrapper for programmatic Lightbox control.
+- Made justified rows respect the configured maximum column count.
+- Kept justified tolerance values in JavaScript-safe decimal notation under localized Django settings.
 
 ## [0.2.0] - 2026-08-03 (Lightbox2 2.11.5)
 - Use viewport width for justified galleries so column breakpoints follow the page layout.
