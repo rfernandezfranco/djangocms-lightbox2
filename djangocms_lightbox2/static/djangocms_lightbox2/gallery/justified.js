@@ -347,7 +347,8 @@
 
       var gapTotal = gutter * Math.max(0, currentRow.length - 1);
       var expectedWidth = currentAspect * baseRowHeight + gapTotal;
-      if (expectedWidth >= availableWidth * (1 - clampedTolerance)) {
+      var reachedColumnLimit = currentRow.length >= desiredColumns;
+      if (reachedColumnLimit || expectedWidth >= availableWidth * (1 - clampedTolerance)) {
         flushRow();
         currentAspect = 0;
         availableWidth = container.clientWidth || width;
